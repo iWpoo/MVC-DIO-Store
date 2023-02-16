@@ -1,0 +1,16 @@
+{
+    "name": "dio/dio",
+    "description": "---",
+    "autoload": {
+        "psr-4": {
+            "App\\": "./"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "twig/twig": "3.x-dev",
+        "mevdschee/php-crud-api": "dev-main",
+        "robmorgan/phinx": "1.x-dev",
+        "predis/predis": "dev-main"
+    }
+}

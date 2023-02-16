@@ -1,0 +1,142 @@
+body {
+	background-color: white;
+}
+
+.filter-price {
+	border: 1px solid #E7E8EA;
+	background-color: white;
+	margin: 25px 0 0 25px;
+	width: 355px;
+}
+
+@media (min-width: 2000px) {
+	.filter-price {
+	  margin-left: 0;
+	}
+}
+
+@media (max-width: 1200px) {
+  .filter-price {
+    width: 260px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .filter-price {
+    width: 330px;
+  }
+}
+
+@media (max-width: 1366px) {
+  .filter-price {
+    width: 280px;
+  }
+}
+
+@media (max-width: 1550px) {
+  .filter-price {
+    width: 320px;
+  }
+}
+
+.filter-price .title {
+	color: black;
+	font-family: Montserrat;
+    padding: 20px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.filter-price label {
+	color: black;
+	font-family: Montserrat;
+	font-size: 16px;
+	padding-left: 20px;
+}
+
+.filter-price input {
+	border: 1px solid #CACACA;
+	border-radius: 4px;
+	height: 26px;
+	width: 68px;
+	outline: none;
+	padding-left: 5px;
+	margin-bottom: 25px;
+}
+
+.show-filter {
+    font-size: 16px;
+    font-family: Roboto Mono;
+    outline: none;
+    color: white;
+    background-color: #00D270;
+    border: 1px solid #00D270;
+    border-radius: 4px;
+    margin-left: 5px;
+    cursor: pointer;
+    margin-left: 25px;
+    margin-top: 20px;
+    width: 45%;
+    height: 45px;
+}
+
+.sort {
+	background-color: white;
+	font-size: 16px;
+	font-family: Montserrat;
+	margin-top: 25px;
+	margin-left: 25px;
+	width: 91%;
+}
+
+.sort-item {
+	display: flex;
+	align-items: center;
+}
+
+@media (max-width: 1024px) {
+	.sort {
+		margin-top: 80px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		margin-bottom: 10px;
+	}
+
+	.sort-item {
+		padding-right: 20px;
+	}
+}
+
+@media (max-width: 615px) {
+    .sort {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.sort-item {
+		margin-bottom: 15px;
+	}
+}
+
+@media (max-width: 425px) {
+    .sort {
+		margin-left: 15px;
+	}
+}	
+
+.sort select {
+	border: 1px solid #E7E8EA;
+	border-radius: 4px;
+	font-size: 14px;
+	font-family: Montserrat;
+	outline: none;
+	padding: 5px;
+	color: gray;
+	margin-left: 10px;
+}
+
+#category {
+	display: none;
+}

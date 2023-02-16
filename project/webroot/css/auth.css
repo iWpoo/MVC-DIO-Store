@@ -1,0 +1,139 @@
+body {
+  margin: 0;
+}
+
+.auth-form {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.auth-form .title {
+  font-size: 24px;
+  font-family: Montserrat, sans-serif;
+  color: #232323;
+  font-weight: bold;
+}
+
+.auth-form form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20%;
+}
+
+@media (max-width: 2000px) {
+  .auth-form form {
+    width: 30%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .auth-form form {
+    width: 40%;
+  }
+}
+
+@media (max-width: 992px) {
+  .auth-form form {
+    width: 90%;
+  }
+}
+
+.auth-form form input {
+  width: 100%;
+  padding: 12px 30px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.auth-form form button {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+} 
+
+.auth-form label {
+  font-size: 15px;
+  font-family: Montserrat, sans-serif;
+  color: gray;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.oauth {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.oauth img {
+  width: 38px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.toRegister a {
+  color: #4CAF50;
+}
+
+.toRegister {
+  font-size: 16px;
+  font-family: Montserrat, sans-serif;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.toLogin {
+  font-size: 16px;
+  font-family: Montserrat;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.toLogin a {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.close {
+  width: 32px;
+  transform: rotate(90deg);
+  margin-top: 10px;
+  margin-left: 5%;
+  display: none;
+}
+
+.logo {
+  font-weight: bold;
+  font-family: Pacifico;
+  color: #232323;
+  margin: 0; 
+}
+
+@media (max-width: 1024px) {
+  .close {
+    display: block;
+  }
+}

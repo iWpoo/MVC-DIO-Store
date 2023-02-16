@@ -1,0 +1,36 @@
+body {
+	background-color: white;
+}
+
+.sort {
+	background-color: white;
+	font-size: 28px;
+	font-family: Montserrat;
+	margin-top: 25px;
+	margin-left: 25px;
+	text-align: center;
+}
+
+.categories-table {
+	align-items: flex-start;
+	margin: 25px;
+}
+
+.category-product {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border: 1px solid #E7E8EA;
+	padding: 25px;
+	text-decoration: none;
+	color: inherit;
+	font-size: 28px;
+	font-family: Montserrat;
+	font-weight: bold;
+	margin-top: 25px;
+	background-color: white;
+}
+
+.category-product img {
+	max-width: 100%;
+}

@@ -1,0 +1,50 @@
+main {
+    margin-top: 70px;
+}
+
+main ul {
+    display: none;
+}
+
+.categories_title {
+    font-family: Montserrat;
+    color: #232323;
+    font-weight: 900;
+    font-size: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.categories-phone {
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 50px;
+}
+
+.categories-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    font-family: Montserrat, sans-serif;
+    font-weight: 500;
+    margin-top: 30px;
+}
+
+.categories-phone ul {
+    list-style-type: none;
+}
+
+.categories-phone li {
+    font-size: 16px;
+    font-family: Montserrat;
+    border: 1px solid #232323;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 15px;
+    cursor: pointer;
+}
+
+.categories-phone li:hover {
+    color: #F0047F;
+}

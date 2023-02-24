@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/auth.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+    <title>Change Password</title>
+</head>
+<body>
+    <a href="/"><img alt="" src="/project/webroot/img/arrow-back.png" class="close"></a> 
+    <div class="auth-form">
+        <h1 class="logo">DIO</h1>
+        <div class="title">Изменить пароль</div><br>
+        <form method="POST">
+            <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.min_pass }}</div>
+            <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.max_pass }}</div>
+            <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.passwords_match }}</div>
+            <input type="password" name="new_password" placeholder="Новый пароль">
+            <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.confirm_pass }}</div>
+            <input type="password" name="confirm_password" placeholder="Подтвердить пароль">
+            <button type="submit" name="change-pass">Изменить пароль</button>
+        </form>
+    </div>     
+</body>
+</html>

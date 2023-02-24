@@ -16,7 +16,7 @@ class Model
 	}
 		
 	// Code for reading data from the database
-	public function find($attribute, $value)
+	public function find($value, $attribute = 'id')
 	{
 		$query = self::$link->prepare("SELECT * FROM ".$this->table." WHERE $attribute = :value");
         $query->execute([':value' => $value]);
@@ -51,7 +51,7 @@ class Model
     }
 
 	// Code for updating data in the database
-	public function update($id, array $data) 
+	public function update($element, string $attribute, array $data) 
     {
         $query = "UPDATE ".$this->table." SET ";
         $update_fields = [];
@@ -59,9 +59,9 @@ class Model
             $update_fields[] = "$key = :$key";
         }
         $query .= implode(', ', $update_fields);
-        $query .= " WHERE id = :id";
+        $query .= " WHERE $attribute = :element";
         $stmt = self::$link->prepare($query);
-        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':element', $element);
         foreach ($data as $key => $value) {
             $stmt->bindValue(":$key", $value);
         }
@@ -73,10 +73,10 @@ class Model
     }
 
 	// Code for deleting data from the database
-	public function delete($id) 
+	public function delete($element, $attribute) 
     {
-        $query = self::$link->prepare("DELETE FROM ".$this->table." WHERE id = :id");
-        $query->execute([':id' => $id]);
+        $query = self::$link->prepare("DELETE FROM ".$this->table." WHERE $attribute = :element");
+        $query->execute([':element' => $element]);
 
         if (isset($_SESSION['csrf_token'])) {
             unset($_SESSION['csrf_token']);

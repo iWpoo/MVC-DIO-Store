@@ -53,6 +53,28 @@ class Request
         return true;
     }
 
+    public static function validateConfirmPassword($password, $confirm_password, $key = 'confirm_pass', $errorMessage = "Пароли не совпадают.") 
+    {
+        if ($password === $confirm_password) {
+            return true;
+        }
+        self::$errors[$key] = $errorMessage;
+        return false;
+    }
+
+    public static function validatePasswordsMatch($input, $table, $column, $new_password, $key = 'passwords_match', $errorMessage = "Новый пароль не должен совпадать со старым.")
+    {
+        $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.'', DB_USER, DB_PASS);
+        $query = $pdo->prepare("SELECT * FROM $table WHERE $column = :input");
+        $query->execute([':input' => $input]);
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+        if (password_verify($new_password, $user['password'])) {
+            self::$errors[$key] = $errorMessage;
+            return false;
+        }
+        return true;
+    }
+
     public static function validateUnique($input, $table, $column, $key = 'unique', $errorMessage = "Данный запись уже используется.") {
         $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.'', DB_USER, DB_PASS);
         $query = $pdo->prepare("SELECT * FROM $table WHERE $column = :input");

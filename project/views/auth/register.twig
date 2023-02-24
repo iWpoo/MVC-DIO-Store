@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/auth.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+    <title>Register</title>
+</head>
+<body>
+    <a href="/"><img alt="" src="/project/webroot/img/arrow-back.png" class="close"></a>
+    <div class="auth-form">
+        <h1 class="logo">DIO</h1>
+        <div class="title">Регистрация</div><br>
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="email" name="email" placeholder="Email">
+            <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.email }}</div>
+            <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.unique }}</div>
+            <input type="password" name="password" placeholder="Введите пароль">
+            <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.max_pass }}</div>
+            <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.min_pass }}</div>
+            <input type="password" name="confirm_password" placeholder="Подтвердите пароль">
+            <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.confirm_pass }}</div>
+            <button type="submit" name="register">Регистрация</button>
+        </form>
+        <div class="toLogin">
+            <span>У вас уже есть аккаунт?&nbsp;</span>
+            <a href="/login">Войти</a>
+        </div>
+    </div>   
+</body>
+</html>

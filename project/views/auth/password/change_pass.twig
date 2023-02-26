@@ -16,6 +16,7 @@
         <h1 class="logo">DIO</h1>
         <div class="title">Изменить пароль</div><br>
         <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.min_pass }}</div>
             <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.max_pass }}</div>
             <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.passwords_match }}</div>

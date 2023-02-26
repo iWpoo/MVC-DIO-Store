@@ -5,6 +5,7 @@ use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\ResetCode;
 use App\Project\Models\User;
+use Predis\Client;
 	
 class UserController extends Controller
 {
@@ -12,8 +13,9 @@ class UserController extends Controller
     {
         $user = new User();
         
-        if (isset($_COOKIE['token'])) {
-            $this->redirect('/');   
+        $auth = $user->verifyAuth();
+        if ($auth) {
+            $this->redirect('/');
         }
 
         if (isset($_POST['register'])) {
@@ -50,23 +52,23 @@ class UserController extends Controller
         $userModel = new User;
         $auth_error = '';
 
-        if (isset($_SESSION['user_id'])) {
-            $this->redirect('/');   
+        $auth = $userModel->verifyAuth();
+        if ($auth) {
+            $this->redirect('/');
         }
         
         if (isset($_POST['login'])) {
             $email = $this->add('email');
             $password = $this->add('password');
 
+            $validator = [
+                Request::validateCsrfToken()
+            ];
+
             $user = $userModel->find($email, 'email');
-            if ($user and password_verify($password, $user['password'])) {
-                $token = $this->createToken($user['id'], '$XhmMR&$mZNy-ouTngs&%aQcf+2Y3brc', 'HS256'); 
-                
-                // Шифрование токена
-                $encryption_key = '+i"�]��#�j�T��Vf|hU#H��Gh�';
-                $iv = 'eyF574i1v!Z_3tsK';
-                $encrypted_jwt = openssl_encrypt($token, "AES-256-CBC", $encryption_key, 0, $iv);
-		        setcookie('auth_token', $encrypted_jwt, time() + 3600 * 24 * 30, '/', 'localhost', false, true);
+
+            if (Request::validate($validator) and $user and password_verify($password, $user['password'])) {
+                $userModel->auth($user['email']); 
                 $this->redirect('/');
             } else {
                 $auth_error = "Неверный email или пароль.";
@@ -74,33 +76,17 @@ class UserController extends Controller
         }
 
         return $this->render('auth/auth.twig', [
+            'csrf_token' => $this->generateCsrfToken(),
             'auth_error' => $auth_error,
         ]);
     }
 
     public function index() {
-        if (!isset($_COOKIE['auth_token'])) {
-            $this->redirect('/login');
-        }
+        $user = new User;
+        $auth = $user->verifyAuth();
 
-        if (!isset($_SESSION['user_id'])) {
-            $encryption_key = '+i"�]��#�j�T��Vf|hU#H��Gh�';
-            $iv = 'eyF574i1v!Z_3tsK';
-            $encrypted_jwt = $_COOKIE["auth_token"];
-            $jwt = openssl_decrypt($encrypted_jwt, "AES-256-CBC", $encryption_key, 0, $iv);
-            
-            $decoded = $this->verifyToken($jwt, '$XhmMR&$mZNy-ouTngs&%aQcf+2Y3brc', 'HS256');
-            $user_id = $decoded->user_id;
-    
-            $_SESSION["user_id"] = $user_id;
-            }
-
-        if (isset($_SESSION['user_id'])) {
-            $userModel = new User;
-            $user = $userModel->findAll();
-            foreach ($user as $item) {
-                echo $item['email'] . "<br>";
-            }
+        if ($auth) {
+            echo "<h1>Hello, $auth!</h1>";
         } else {
             $this->redirect('/login');
         }

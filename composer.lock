@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "30c6be8772de9fe7091bb53e69bc87f4",
+    "content-hash": "4144fb9a45d254289ade49ea96ca38ae",
     "packages": [
         {
             "name": "cakephp/core",
@@ -659,16 +659,16 @@
         },
         {
             "name": "predis/predis",
-            "version": "dev-main",
+            "version": "v2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/predis/predis.git",
-                "reference": "50e005bfe33b94a137609ebe8bcbffd5e92886b4"
+                "reference": "26c625230fa5f9dc97e39cb61942530a223a93a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/predis/predis/zipball/50e005bfe33b94a137609ebe8bcbffd5e92886b4",
-                "reference": "50e005bfe33b94a137609ebe8bcbffd5e92886b4",
+                "url": "https://api.github.com/repos/predis/predis/zipball/26c625230fa5f9dc97e39cb61942530a223a93a5",
+                "reference": "26c625230fa5f9dc97e39cb61942530a223a93a5",
                 "shasum": ""
             },
             "require": {
@@ -706,7 +706,7 @@
             ],
             "support": {
                 "issues": "https://github.com/predis/predis/issues",
-                "source": "https://github.com/predis/predis/tree/main"
+                "source": "https://github.com/predis/predis/tree/v2.x"
             },
             "funding": [
                 {
@@ -714,7 +714,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-25T16:00:23+00:00"
+            "time": "2023-02-21T16:30:43+00:00"
         },
         {
             "name": "psr/container",
@@ -2081,8 +2081,8 @@
         "twig/twig": 20,
         "mevdschee/php-crud-api": 20,
         "robmorgan/phinx": 20,
-        "predis/predis": 20,
-        "firebase/php-jwt": 20
+        "firebase/php-jwt": 20,
+        "phpmailer/phpmailer": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

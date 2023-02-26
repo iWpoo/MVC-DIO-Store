@@ -60,34 +60,13 @@ class Controller
 	// CSRF token
 	protected function generateCsrfToken() {
         if(!isset($_SESSION['csrf_token'])){
-          $token = bin2hex(random_bytes(32));
-          $_SESSION['csrf_token'] = $token;
+            $token = bin2hex(random_bytes(32));
+            $_SESSION['csrf_token'] = $token;
         } else {
-			$token = $_SESSION['csrf_token'];
+		    $token = $_SESSION['csrf_token'];
 		}
         return $token;
     }
-
-    // JWT
-	protected function createToken($user_id, $secret_key, $alg) 
-	{
-		$payload = array(
-			"user_id" => $user_id,
-			"exp" => time() + 3600 * 24 * 30 // JWT будет действителен в течение 1 месяца
-		);
-		$jwt = JWT::encode($payload, $secret_key, $alg); 
-		return $jwt;
-	}
-
-	protected function verifyToken($token, $secret_key, $alg) 
-	{
-        try {
-			$decoded = JWT::decode($token, new Key($secret_key, $alg));
-			return $decoded;
-		} catch (Exception $e) {
-			return false;
-		}
-	}
 
 	// PHPMailer
 	protected function mail($username, $password, array $data)

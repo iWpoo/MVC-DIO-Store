@@ -18,7 +18,8 @@ class PasswordResetController extends Controller
             $email = $this->add('email');
                    
             $validator = [
-                Request::validateUnique($email, 'users', 'email', 'unique')
+                Request::validateUnique($email, 'users', 'email', 'unique'),
+                Request::validateCsrfToken()
             ];
             
             // Проверяем существует ли профиль с данной почтой
@@ -60,7 +61,8 @@ class PasswordResetController extends Controller
 
         return $this->render('auth/password/password-reset.twig', [
             'error' => $error,   
-            'success' => $success
+            'success' => $success,
+            'csrf_token' => $this->generateCsrfToken()
         ]);
     }
 
@@ -87,6 +89,7 @@ class PasswordResetController extends Controller
                 Request::validateMaxLine($new_pass, 99, 'max_pass', 'Пароль не должен превышать больше 99 символов.'),
                 Request::validateConfirmPassword($new_pass, $confirm_pass),
                 Request::validatePasswordsMatch($token['email'], 'users', 'email', $new_pass),
+                Request::validateCsrfToken()
             ];
 
             if (Request::validate($validator)) {
@@ -95,7 +98,7 @@ class PasswordResetController extends Controller
                 ]); 
                 $tokenModel->delete($token['token'], 'token');
 
-                if (isset($_COOKIE['token'])) {
+                if (isset($_COOKIE['session_token'])) {
                     $this->redirect('/change/password');   
                 } else {
                     $this->redirect('/login');
@@ -105,6 +108,7 @@ class PasswordResetController extends Controller
 
         return $this->render('auth/password/change_pass.twig', [
             'errors' => Request::$errors,
+            'csrf_token' => $this->generateCsrfToken()
         ]);
     }
 }

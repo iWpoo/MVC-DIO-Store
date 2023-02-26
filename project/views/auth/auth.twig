@@ -16,6 +16,7 @@
         <h1 class="logo">DIO</h1>
         <div class="title">Авторизация</div><br>
         <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <div style="color: #DC3545; font-family: Roboto Mono;">{{ auth_error }}</div>
             <input type="email" name="email" placeholder="Email">
             <input type="password" name="password" placeholder="Введите пароль">

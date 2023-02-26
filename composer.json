@@ -11,7 +11,7 @@
         "twig/twig": "3.x-dev",
         "mevdschee/php-crud-api": "dev-main",
         "robmorgan/phinx": "1.x-dev",
-        "predis/predis": "dev-main",
+        "predis/predis": "v2.x-dev",
         "firebase/php-jwt": "dev-main",
         "phpmailer/phpmailer": "dev-master"
     }

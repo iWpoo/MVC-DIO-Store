@@ -3,18 +3,16 @@
 namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
-use App\Project\Models\ResetCode;
 use App\Project\Models\User;
-use Predis\Client;
 	
 class UserController extends Controller
 {
-	public function register () 
+    // Регистрация
+	public function register() 
     {
         $user = new User();
-        
-        $auth = $user->verifyAuth();
-        if ($auth) {
+
+        if ($user->verifyAuth()) {
             $this->redirect('/');
         }
 
@@ -32,13 +30,36 @@ class UserController extends Controller
                 Request::validateCsrfToken(),
             ];
 
+            // Валидация
             if (Request::validate($validator)) {
-                $user->create([
-                    'email' => $email,
-                    'password' => password_hash($password, PASSWORD_DEFAULT),
-                ]);
+                try {
+                    // Отправляем случайный код в Redis
+                    $code = mt_rand(100000, 999999);
+                    $dataUser = ['email' => $email, 'password' => password_hash($password, PASSWORD_DEFAULT)];
+                    $this->redis()->setex(hash('sha256', $code), 3600 * 12, serialize($dataUser));
 
-                $this->redirect('/login');
+                    $data = [
+                        'from' => 'iwpoo23@gmail.com',
+                        'from_name' => 'DIO',
+                        'to' => $email,
+                        'subject' => 'Подтверждение почты',
+                        'body' => '',
+                        'html' => "
+                            <div style='text-align: center;'>
+                                <div style='font-weight: bold; font-size: 32px; font-family: Arial, sans-serif;'>DIO</h1>
+                                <div style='font-size: 24px; font-family: Arial, sans-serif; color: #232323; font-weight: bold;'>Код для подтверждения почты</div>
+                                <div style='font-weight: bold; font-size: 32px; font-family: Arial, sans-serif;'>$code</div>
+                            </div> 
+                        "
+                    ];
+                    
+                    // Отправляем код на почту
+                    $this->mail('iwpoo23@gmail.com', 'jifpsnwtcrtodnhj', $data);
+                } catch (Exception $e) {
+                    Request::$errors['mail'] = $this->mailException();
+                }   
+
+                $this->redirect('/register/verification');
             }
         }
 
@@ -48,12 +69,49 @@ class UserController extends Controller
         ]);
     }
 
-    public function login() {
+    public function registerVerification()
+    {
+        $user = new User();  
+        $error = '';
+
+        if (isset($_POST['send-code'])) {
+            $code = $this->add('code');
+            $encrypted_code = hash('sha256', $code);  
+            $code_redis = $this->redis()->get($encrypted_code);
+
+            $validator = [
+                Request::validateCsrfToken()
+            ];
+            
+            // Если код и валидация корректна, то регистрируем пользователя и авторизовываем заодно
+            if ($code_redis and Request::validate($validator)) {
+                $data = unserialize($code_redis);
+                $user->create([
+                    'email' => $data['email'],
+                    'password' => $data['password'],
+                ]);
+                $id = User::getLink()->lastInsertId();
+                $user->auth(['id' => $id, 'email' => $data['email']]);
+                $this->redis()->del($encrypted_code);
+                $this->redirect('/');
+            } else {
+                $error = 'Код для подтверждения почты не верный или устарел.';
+            }
+        }
+
+        return $this->render('auth/register_verification.twig', [
+            'error' => $error,
+            'csrf_token' => $this->generateCsrfToken(),
+        ]);
+    }
+
+    // Авторизация
+    public function login() 
+    {
         $userModel = new User;
         $auth_error = '';
 
-        $auth = $userModel->verifyAuth();
-        if ($auth) {
+        if ($userModel->verifyAuth()) {
             $this->redirect('/');
         }
         
@@ -68,7 +126,7 @@ class UserController extends Controller
             $user = $userModel->find($email, 'email');
 
             if (Request::validate($validator) and $user and password_verify($password, $user['password'])) {
-                $userModel->auth($user['email']); 
+                $userModel->auth(['id' => $user['id'], 'email' => $user['email']]);
                 $this->redirect('/');
             } else {
                 $auth_error = "Неверный email или пароль.";
@@ -81,12 +139,30 @@ class UserController extends Controller
         ]);
     }
 
+    public function logout()
+    {
+        $user = new User;
+
+        // Получаем токен из куки и шифруем его для сравнения токена из Redis
+        $token = $_COOKIE['session_token'];
+        $key = '5fQ-1VloNNPMsvo5HK_ylkX^%9%5+=B8';
+        $iv = 'iI^WL%GPVow6Ae3t';
+        $encrypted_token = openssl_encrypt($token, 'AES-128-CBC', $key, 0, $iv);
+        
+        // Если данный токен сущесвует, то удаляем его из Redis и очищаем куки
+        $this->redis()->del($encrypted_token);
+        setcookie('session_token', '', time() - 86400 * 30, '/');
+
+        // Перенаправляем на страницу авторизации
+        $this->redirect('/login');
+    }
+
     public function index() {
         $user = new User;
         $auth = $user->verifyAuth();
 
         if ($auth) {
-            echo "<h1>Hello, $auth!</h1>";
+            echo "Hello, {$auth['email']}!";
         } else {
             $this->redirect('/login');
         }

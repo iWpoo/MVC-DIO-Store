@@ -28,6 +28,10 @@
     margin-top: 30px;
   }
 
+  .products {
+    width: 100%;
+  } 
+
   @media (min-width: 1800px) {
     main .container {
         max-width: 1600px;
@@ -245,3 +249,58 @@
     font-size: 16px;
   }
   
+
+  /* Orders */
+  .order {
+    font-family: "Montserrat", sans-serif;
+    margin: 15px;
+	  padding: 15px;
+ 	  border: 1px solid #ccc;
+  }
+
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .order-info .order-text {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .order-actions a {
+    margin-left: 10px;
+    padding: 5px;
+    background-color: #eee;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .order-actions a:hover {
+    background-color: #ccc;
+  }
+  
+  .order-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .order-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+
+  .order-item .item-info p {
+    font-family: "Montserrat", sans-serif;
+  }
+  
+  .order-summary {
+    margin-top: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+  }

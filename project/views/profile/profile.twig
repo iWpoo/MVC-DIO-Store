@@ -3,54 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" type="text/css" href="profile.css">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/profile.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
     <title>DIO</title>
 </head>
 <body>
-    <header>
-      <div class="container">
-        <nav class="navbar">
-            <div>
-                <a href="#"><span class="active">Главная</span></a>
-                <a href="#">О Магазине</a>
-                <a href="#">Контакты</a>
-            </div>
-            <div>
-                <a id="myBtnLogin" href="#">Вход</a>
-                <a id="myBtnRegister" href="#">Регистрация</a>
-            </div>
-        </nav>
-        <hr>
-         
-        <div class="header">
-            <a href="#" class="logo">DIO</a>
-            <div class="search-container">
-                <input type="text" placeholder="🔍 Поиск по каталогу магазина">
-                <button type="submit">Найти</button>
-            </div>
-            <div class="basket">
-                <img src="basket.png">
-                <label>Корзина</label>
-            </div>
-        </div>
-      </div>
-    </header>
+    {% include '/layouts/header.twig' %}
 
     <main>
         <div class="container" id="profile_computer_version">
             <div class="sidebar">
               <ul>
-                <li><a href="#">Редактировать данные</a></li>
-                <li><a href="#">Изменить пароль</a></li>
+                <li><a href="/edit/profile">Редактировать данные</a></li>
+                <li><a href="/change/password">Изменить пароль</a></li>
                 <li><a href="#">Активные заказы</a></li>
                 <li><a href="#">Избранное</a></li>
                 <li><a href="#">История покупок</a></li>
-                <li><a href="#">Выйти</a></li>
-                <li><a href="#">Удалить аккаунт</a></li>
+                <li><a href="/logout">Выйти</a></li>
+                <li><a href="/delete/profile">Удалить аккаунт</a></li>
               </ul>
             </div>
             <div class="main">
@@ -65,25 +38,25 @@
                 <div class="profile-info-first">
                   <div class="profile-info__item">
                     <span class="profile-info__label">Имя:</span>
-                    <span class="profile-info__value">Иван</span>
+                    <span class="profile-info__value">{{ user.first_name }}</span>
                   </div>
                   <div class="profile-info__item">
                     <span class="profile-info__label">Фамилия:</span>
-                    <span class="profile-info__value">Иванов</span>
+                    <span class="profile-info__value">{{ user.last_name }}</span>
                   </div>
                   </div>
                   <div class="profile-info-second">
                   <div class="profile-info__item">
                     <span class="profile-info__label">Email:</span>
-                    <span class="profile-info__value">ivanov@example.com</span>
+                    <span class="profile-info__value">{{ user.email }}</span>
                   </div>
                   <div class="profile-info__item">
                     <span class="profile-info__label">Телефон:</span>
-                    <span class="profile-info__value">+7 999 123-45-67</span>
+                    <span class="profile-info__value">{{ user.phone }}</span>
                   </div>
                   <div class="profile-info__item">
                     <span class="profile-info__label">Адрес:</span>
-                    <span class="profile-info__value">г. Москва, ул. Примерная, д. 1, кв. 1</span>
+                    <span class="profile-info__value">{{ user.address }}</span>
                   </div>
                 </div>
                 </div>
@@ -103,41 +76,41 @@
                 <div>
                   <div class="profile-info__item">
                     <span class="profile-info__label">Имя:</span>
-                    <span class="profile-info__value">Иван</span>
+                    <span class="profile-info__value">{{ user.first_name }}</span>
                   </div>
                   <div class="profile-info__item">
                     <span class="profile-info__label">Фамилия:</span>
-                    <span class="profile-info__value">Иванов</span>
+                    <span class="profile-info__value">{{ user.last_name }}</span>
                   </div>
                   <div class="profile-info__item">
                     <span class="profile-info__label">Email:</span>
-                    <span class="profile-info__value">ivanov@example.com</span>
+                    <span class="profile-info__value">{{ user.email }}</span>
                   </div>
                   <div class="profile-info__item">
                     <span class="profile-info__label">Телефон:</span>
-                    <span class="profile-info__value">+7 999 123-45-67</span>
+                    <span class="profile-info__value">{{ user.phone }}</span>
                   </div>
                   <div class="profile-info__item">
                     <span class="profile-info__label">Адрес:</span>
-                    <span class="profile-info__value">г. Москва, ул. Примерная, д. 1, кв. 1</span>
+                    <span class="profile-info__value">{{ user.address }}</span>
                   </div>
                 </div>
               </div>
-            <li><a href="#">Редактировать данные</a></li>
-            <li><a href="#">Изменить пароль</a></li>
+            <li><a href="/edit/profile">Редактировать данные</a></li>
+            <li><a href="/change/password">Изменить пароль</a></li>
             <li><a href="#">Активные заказы</a></li>
             <li><a href="#">Избранное</a></li>
-            <li><a href="#">Выйти</a></li>
-            <li><a href="#">Удалить аккаунт</a></li>
+            <li><a href="/logout">Выйти</a></li>
+            <li><a href="/delete/profile">Удалить аккаунт</a></li>
         </ul>
     </main>
 
     <div class="MobileShowNavigation">
         <div class="menu">
-        <img src="home.png">
-        <img src="category.png">
-        <img src="basketicon.png">
-        <a href="auth.html"><img src="profile.png"></a>
+        <img src="/project/webroot/img/home.png">
+        <img src="/project/webroot/img/category.png">
+        <img src="/project/webroot/img/basketicon.png">
+        <a href="/login"><img src="/project/webroot/img/profile.png"></a>
         </div>
     </div>
 

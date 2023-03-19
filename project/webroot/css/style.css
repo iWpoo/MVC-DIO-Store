@@ -143,6 +143,10 @@ header hr {
     width: 100%;
   }
 
+  header hr {
+    display: none;
+  }
+
   .header {
     height: 0%;
     background-color: white;
@@ -550,6 +554,12 @@ footer {
   justify-content: space-around;
   padding-top: 30px;
   padding-bottom: 20px;
+}
+
+@media (max-width: 1024px) {
+  footer {
+    padding-bottom: 110px;
+  }
 }
 
 @media (max-width: 768px) {

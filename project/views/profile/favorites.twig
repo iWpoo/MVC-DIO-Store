@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" type="text/css" href="profile.css">
-    <link rel="stylesheet" type="text/css" href="auth.css">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/profile.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
     <title>DIO</title>
 </head>
 <body>
-    <header id="header">
+    <header>
       <div class="container">
         <nav class="navbar">
             <div>
@@ -34,14 +33,14 @@
                 <button type="submit">Найти</button>
             </div>
             <div class="basket">
-                <img src="basket.png">
+                <img src="/project/webroot/img/basket.png">
                 <label>Корзина</label>
             </div>
         </div>
       </div>
     </header>
 
-    <main id="main">
+    <main>
         <div class="container">
             <div class="sidebar">
               <ul>
@@ -55,39 +54,27 @@
               </ul>
             </div>
             <div class="main">
-              <form>
-                <label for="old_password">Старый пароль:</label>
-                <input type="password" id="old_password" name="old_password" required>
-                <label for="new_password">Новый пароль:</label>
-                <input type="password" id="new_password" name="new_password" required>
-                <label for="confirm_password">Подтвердите новый пароль:</label>
-                <input type="password" id="confirm_password" name="confirm_password" required>
-                <button type="submit">Сменить пароль</button>
-              </form>
+              <h1>Избранное</h1>
+              <div class="products">
+                {% for product in products %}
+                    <div class="product">
+                        <a href="/product/{{ product.id }}" class="picture"><img src="/project/webroot/uploads/{{ product.image }}"></a>
+                        <a href="/product/{{ product.id }}" class="title"><span>{{ product.title }}</span></a>
+                        <a href="/product/{{ product.id }}" class="price"><span>{{ product.price }}₽</span></a>
+                    </div>
+                {% endfor %}     
+                            
+            </div>
             </div>
           </div>
     </main>
 
-    <div class="mobile-version">
-        <a href="#"><img alt="" src="arrow-back.png" class="close"></a> 
-      <div class="auth-form">
-          <h1 class="logo">DIO</h1>
-          <div class="title">Сменить пароль</div><br>
-          <form>
-                <input type="password" id="old_password" name="old_password" placeholder="Старый пароль" required>
-                <input type="password" id="new_password" name="new_password" placeholder="Новый пароль" required>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Подтвердите пароль" required>
-                <button type="submit">Сменить пароль</button>
-          </form>
-      </div> 
-      </div>
-
-    <div class="MobileShowNavigation" id="MobileShowNavigation">
+    <div class="MobileShowNavigation">
         <div class="menu">
-        <img src="home.png">
-        <img src="category.png">
-        <img src="basketicon.png">
-        <a href="auth.html"><img src="profile.png"></a>
+        <img src="/project/webroot/img/home.png">
+        <img src="/project/webroot/img/category.png">
+        <img src="/project/webroot/img/basketicon.png">
+        <a href="#"><img src="/project/webroot/img/profile.png"></a>
         </div>
     </div>
 

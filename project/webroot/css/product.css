@@ -16,15 +16,39 @@ main {
     display: flex;
 }
 
-.gallery {
+.product-gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 24px;
-}
-
-.gallery img {
+  }
+  
+  .product-image img {
     width: 500px;
     height: auto;
     cursor: pointer;
-}
+  }
+  
+  .image-thumbnails {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 500px;
+    overflow: auto;
+  }
+  
+  .image-thumbnails img {
+    width: 75px;
+    height: 75px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  .image-thumbnails img.active {
+    border: 2px solid #000;
+  }
+  
 
 .product_info {
     display: flex;
@@ -94,16 +118,21 @@ main {
         box-sizing: border-box;
     }
 
-    .gallery {
+    .product-gallery {
         width: 100%;
         padding: 0;
-    }
-    
-    .gallery img {
+      }
+      
+      .product-image img {
         width: 100%;
         height: auto;
         object-fit: cover;
-    }
+      }
+      
+      .image-thumbnails {
+        width: 100%;
+        overflow: auto;
+      }
     
     .product_info .title {
         font-size: 20px;
@@ -147,6 +176,14 @@ main {
     margin-top: 10px;
 }
 
+.product_mod ul .active {
+    border: 2px solid #00D270;
+}
+
+.modification {
+    font-family: Montserrat, sans-serif;
+}
+
 .parametr_info {
     width: 1200px;
     display: flex;
@@ -166,6 +203,28 @@ main {
     font-weight: bold;
 }
 
+.ch {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.ch div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ch .name {
+    font-weight: bold;
+    font-family: Montserrat, sans-serif;
+    font-size: 18px;
+}
+
+.ch span {
+    font-family: Montserrat, sans-serif;
+    font-size: 18px;
+}
+
 .similar_products .title-text {
     text-align: center;
     font-size: 24px;
@@ -175,10 +234,23 @@ main {
 }
 
 @media (max-width: 1024px) {
+    .product_mod {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
     .parametr_info {
         width: 100%;
         margin: 16px 0 40px 0;
         padding-top: 20px;
+    }
+
+    .ch .name {
+        font-size: 15px;
+    }
+    
+    .ch span {
+        font-size: 15px;
     }
 }
 

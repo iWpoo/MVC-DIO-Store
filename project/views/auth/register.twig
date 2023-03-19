@@ -17,15 +17,16 @@
         <div class="title">Регистрация</div><br>
         <form method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            <input type="email" name="email" placeholder="Email">
             <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.email }}</div>
             <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.unique }}</div>
-            <input type="password" name="password" placeholder="Введите пароль">
+            <input type="email" name="email" placeholder="Email">
             <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.max_pass }}</div>
             <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.min_pass }}</div>
-            <input type="password" name="confirm_password" placeholder="Подтвердите пароль">
+            <input type="password" name="password" placeholder="Введите пароль">
             <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.confirm_pass }}</div>
+            <input type="password" name="confirm_password" placeholder="Подтвердите пароль">
             <button type="submit" name="register">Регистрация</button>
+            <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.mail }}</div>
         </form>
         <div class="toLogin">
             <span>У вас уже есть аккаунт?&nbsp;</span>

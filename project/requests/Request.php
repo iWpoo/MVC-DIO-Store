@@ -37,7 +37,7 @@ class Request
 
     public static function validateRequired($element, $key = 'required', $errorMessage = "Поле является обязательным.")
     {
-        if (!isset($element)) {
+        if (empty($element)) {
             self::$errors[$key] = $errorMessage;
             return false;
         }
@@ -75,7 +75,8 @@ class Request
         return true;
     }
 
-    public static function validateUnique($input, $table, $column, $key = 'unique', $errorMessage = "Данный запись уже используется.") {
+    public static function validateUnique($input, $table, $column, $key = 'unique', $errorMessage = "Данный запись уже используется.") 
+    {
         $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.'', DB_USER, DB_PASS);
         $query = $pdo->prepare("SELECT * FROM $table WHERE $column = :input");
         $query->execute([':input' => $input]);
@@ -86,7 +87,8 @@ class Request
         return true;
     }
 
-    public static function hasFile($file, $extensions = ["jpg", "png", "gif", "mp4", "jpeg"], $maxSize = 5000000) {
+    public static function hasFile($file, $extensions = ["jpg", "png", "gif", "mp4", "jpeg"], $maxSize = 5000000) 
+    {
         $allowedExtensions = $extensions;
         $extension = pathinfo($file["name"], PATHINFO_EXTENSION);
         $maxFileSize = $maxSize;

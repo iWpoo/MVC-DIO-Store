@@ -8,19 +8,18 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
-    <title>Reset Password</title>
+    <title>Register Verification</title>
 </head>
 <body>
     <a href="/"><img alt="" src="/project/webroot/img/arrow-back.png" class="close"></a> 
     <div class="auth-form">
         <h1 class="logo">DIO</h1>
-        <div class="title">Восстановления пароля</div><br>
+        <div class="title">Подтверждение почты</div><br>
         <form method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <div style="color: #DC3545; font-family: Roboto Mono;">{{ error }}</div>
-            <input type="email" name="email" placeholder="Введите email" required>
-            <button type="submit" name="send-token">Сбросить</button>
-            <div style="color: #28A745; font-family: Roboto Mono;">{{ success }}</div>
+            <input type="number" name="code" placeholder="Введите код" required>
+            <button type="submit" name="send-code">Подтвердить</button>
         </form>
     </div>     
 </body>

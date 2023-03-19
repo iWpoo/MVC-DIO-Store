@@ -4,17 +4,15 @@ namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\User;
-use App\Project\Models\ResetToken;
 
 class PasswordResetController extends Controller
 {
-	public function sendResetCode() 
+	public function sendResetToken() 
     {
-        $resetCode = new ResetToken();
         $error = ''; 
         $success = ''; 
 
-        if (isset($_POST['send-code'])) {
+        if (isset($_POST['send-token'])) {
             $email = $this->add('email');
                    
             $validator = [
@@ -27,11 +25,7 @@ class PasswordResetController extends Controller
                 try {
                     // Отправляем случайный токен в БД
                     $token = bin2hex(random_bytes(16));
-                    $resetCode->create([
-                        'token' => hash('sha256', $token),
-                        'email' => $email,
-                        'expiration' => date('Y-m-d H:i:s', time() + 3600 * 24)
-                    ]);
+                    $this->redis()->setex(hash('sha256', $token), 86400, $email);
 
                     $data = [
                         'from' => 'iwpoo23@gmail.com',
@@ -41,8 +35,8 @@ class PasswordResetController extends Controller
                         'body' => '',
                         'html' => "
                             <div style='text-align: center;'>
-                                <div style='font-weight: bold; font-size: 32px; font-family: Arial, sans-serif; font-family: Arial, sans-serif;'>DIO</h1>
-                                <div style='font-size: 24px; font-family: Arial, sans-serif; color: #232323; font-weight: bold;'>Код для восстановления пароля</div>
+                                <div style='font-weight: bold; font-size: 32px; font-family: Arial, sans-serif;'>DIO</h1>
+                                <div style='font-size: 24px; font-family: Arial, sans-serif; color: #232323; font-weight: bold;'>Перейдите по ссылке для восстановления пароля</div>
                                 <a href='http://localhost:8000/change/password/reset/$token'><button style='background: #007BFF; color: white; font-weight: bold; font-size: 16px; font-family: Arial; border: none; outline: none; padding: 10px; border-radius: 4px;'>Восстановить пароль</button></a>
                             </div> 
                         "
@@ -52,7 +46,7 @@ class PasswordResetController extends Controller
 
                     $success = 'Проверьте вашу почту.';
                 } catch (Exception $e) {
-                    $error = 'Код не отправлено. Ошибка: ' . $mail->ErrorInfo;
+                    $error = $this->mailException();
                 }   
             } else {
                 $error = 'Профиль пользователя не найден.';
@@ -68,11 +62,13 @@ class PasswordResetController extends Controller
 
     public function changePass($params)
     {
-        $user = new User();
-        $tokenModel = new ResetToken;
-        $token = $tokenModel->checkToken(hash('sha256', $params['token']));     
-        $error = '';   
+        $user = new User();  
+
+        // Шифруем токен и добавляем в Redis
+        $encrypted_token = hash('sha256', $params['token']);  
+        $token = $this->redis()->get($encrypted_token);  
         
+        // В случае если токен не верный или устарел
         if (!$token) {
             echo "<h3 style='text-align: center; font-family: Arial;'>
                 Ссылка для восстановления пароля не верный или устарел.
@@ -88,17 +84,18 @@ class PasswordResetController extends Controller
                 Request::validateMinLine($new_pass, 8, 'min_pass', 'Пароль должен содержать не менее 8 символов.'),
                 Request::validateMaxLine($new_pass, 99, 'max_pass', 'Пароль не должен превышать больше 99 символов.'),
                 Request::validateConfirmPassword($new_pass, $confirm_pass),
-                Request::validatePasswordsMatch($token['email'], 'users', 'email', $new_pass),
+                Request::validatePasswordsMatch($token, 'users', 'email', $new_pass),
                 Request::validateCsrfToken()
             ];
 
             if (Request::validate($validator)) {
-                $user->update($token['email'], 'email', [
+                // Меняем пароль на новый
+                $user->update($token, 'email', [
                     'password' => password_hash($new_pass, PASSWORD_DEFAULT)
                 ]); 
-                $tokenModel->delete($token['token'], 'token');
+                $this->redis()->del($encrypted_token);
 
-                if (isset($_COOKIE['session_token'])) {
+                if ($user->verifyAuth()) {
                     $this->redirect('/change/password');   
                 } else {
                     $this->redirect('/login');

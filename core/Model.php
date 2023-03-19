@@ -2,6 +2,7 @@
 
 namespace App\Core;
 use \PDO;	
+use Predis\Client;
 
 class Model
 { 
@@ -15,17 +16,17 @@ class Model
 		}
 	}
 		
-	// Code for reading data from the database
-	public function find($value, $attribute = 'id')
+	public function find($value, $column = 'id')
 	{
-		$query = self::$link->prepare("SELECT * FROM ".$this->table." WHERE $attribute = :value");
+		$query = self::$link->prepare("SELECT * FROM ".$this->table." WHERE $column = :value");
         $query->execute([':value' => $value]);
+        
         return $query->fetch(PDO::FETCH_ASSOC);
 	}
     
 
     // CRUD
-	// Code for inserting data into the database
+
 	public function create(array $data)
 	{
         $fields = implode(', ', array_keys($data));
@@ -42,16 +43,21 @@ class Model
         }
 	}
 
-	// Code for reading all data from the database
-	public function findAll($by = 'id', $order = 'ASC') 
+	public function findAll($get = '', array $data = []) 
 	{
-        $query = self::$link->prepare("SELECT * FROM ". $this->table ." ORDER BY $by $order");
-        $query->execute();
+        $query = self::$link->prepare("SELECT * FROM ". $this->table ." $get");
+        $query->execute($data);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-	// Code for updating data in the database
-	public function update($element, string $attribute, array $data) 
+    public function findSpecific($get, array $data = []) 
+	{
+        $query = self::$link->prepare("SELECT * FROM ". $this->table ." $get");
+        $query->execute($data);
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+	public function update($element, string $column, array $data) 
     {
         $query = "UPDATE ".$this->table." SET ";
         $update_fields = [];
@@ -59,7 +65,7 @@ class Model
             $update_fields[] = "$key = :$key";
         }
         $query .= implode(', ', $update_fields);
-        $query .= " WHERE $attribute = :element";
+        $query .= " WHERE $column = :element";
         $stmt = self::$link->prepare($query);
         $stmt->bindValue(':element', $element);
         foreach ($data as $key => $value) {
@@ -72,14 +78,36 @@ class Model
         }
     }
 
-	// Code for deleting data from the database
-	public function delete($element, $attribute) 
+	public function delete($element, $column = 'id') 
     {
-        $query = self::$link->prepare("DELETE FROM ".$this->table." WHERE $attribute = :element");
+        $query = self::$link->prepare("DELETE FROM ".$this->table." WHERE $column = :element");
         $query->execute([':element' => $element]);
 
         if (isset($_SESSION['csrf_token'])) {
             unset($_SESSION['csrf_token']);
         }
+    }
+
+    // REDIS
+    public function redis()
+    {
+        $redis = new Client([
+            'scheme' => REDIS_SCHEME,
+            'host' => REDIS_HOST,
+            'port' => REDIS_PORT,
+        ]);
+        return $redis;
+    }
+
+    // Caching data
+    public function caching($key, $data, $expireTime)
+    {
+        if ($this->redis()->exists($key)) {
+            $object = $this->redis()->get($key);
+            return unserialize($object);
+        }
+
+        $this->redis()->setex($key, $expireTime, serialize($data));
+        return $data;
     }
 }

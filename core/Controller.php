@@ -7,6 +7,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Predis\Client;
 
 class Controller
 {	
@@ -99,4 +100,21 @@ class Controller
 		// Отправляем письмо
 		$mail->send();
 	}
+
+	protected function mailException()
+	{
+		$mail = new PHPMailer(true);
+        return 'Письмо не отправлено. Ошибка: ' . $mail->ErrorInfo;
+	}
+    
+	// Redis
+	public function redis()
+    {
+        $redis = new Client([
+            'scheme' => REDIS_SCHEME,
+            'host' => REDIS_HOST,
+            'port' => REDIS_PORT,
+        ]);
+        return $redis;
+    }
 }

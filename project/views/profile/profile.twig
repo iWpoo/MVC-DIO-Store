@@ -8,29 +8,35 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
-    <title>DIO</title>
+    <title>Профиль</title>
 </head>
 <body>
-    {% include '/layouts/header.twig' %}
+    {% include 'layouts/header.twig' %}
 
     <main>
+    <div class="breadcrumbs">
+			    <div class="pathPages">
+    <div class="breadcrumbs_arrow" onclick="goBack()">
+        <img src="/project/webroot/img/down-arrow.png">
+    </div>
+    <div class="path">
+        <a href="/" class="pathText" style="color: #a9a7a6; text-decoration: none;">Главная / </a> 
+        <span class="pathText">Профиль</span>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</div>
         <div class="container" id="profile_computer_version">
-            <div class="sidebar">
-              <ul>
-                <li><a href="/edit/profile">Редактировать данные</a></li>
-                <li><a href="/change/password">Изменить пароль</a></li>
-                <li><a href="#">Активные заказы</a></li>
-                <li><a href="#">Избранное</a></li>
-                <li><a href="#">История покупок</a></li>
-                <li><a href="/logout">Выйти</a></li>
-                <li><a href="/delete/profile">Удалить аккаунт</a></li>
-              </ul>
-            </div>
+            {% include 'layouts/sidebar.twig' %}
+
             <div class="main">
-
-
-
               <div class="profile-container">
+
                 <div class="profile-header">
                   <h1>Профиль</h1>
                 </div>
@@ -98,21 +104,22 @@
               </div>
             <li><a href="/edit/profile">Редактировать данные</a></li>
             <li><a href="/change/password">Изменить пароль</a></li>
-            <li><a href="#">Активные заказы</a></li>
-            <li><a href="#">Избранное</a></li>
-            <li><a href="/logout">Выйти</a></li>
-            <li><a href="/delete/profile">Удалить аккаунт</a></li>
+            <li><a href="/profile/active/orders">Активные заказы</a></li>
+            <li><a href="/profile/favorites">Избранное</a></li>
+            <li><a href="/profile/history/orders">История покупок</a></li>
+            <li>
+            <form action="/logout" method="POST">
+              <button type="submit" name="logout">Выйти</button>
+            </form>
+            </li>
+            <li>
+            <form action="/delete/profile" method="POST">
+              <button type="submit" name="delete_user_account">Удалить аккаунт</button>
+            </form>
+            </li>
         </ul>
     </main>
 
-    <div class="MobileShowNavigation">
-        <div class="menu">
-        <img src="/project/webroot/img/home.png">
-        <img src="/project/webroot/img/category.png">
-        <img src="/project/webroot/img/basketicon.png">
-        <a href="/login"><img src="/project/webroot/img/profile.png"></a>
-        </div>
-    </div>
-
+    {% include 'layouts/mobile_navigation.twig' %}
 </body>
 </html>

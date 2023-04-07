@@ -141,6 +141,7 @@ header hr {
   header {
     position: fixed;
     width: 100%;
+    z-index: 10;
   }
 
   header hr {
@@ -152,7 +153,7 @@ header hr {
     background-color: white;
   }
 
-  .header .search-container{
+  .header .search-container {
     max-width: 100%;
     display: flex;
     justify-content: center;
@@ -200,9 +201,76 @@ header hr {
   cursor: pointer;
 }
 
+.pathPages {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.pathPages .breadcrumbs_arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #00D270;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pathPages .breadcrumbs_arrow img {
+  width: 28px;
+  height: 28px;
+  transform: rotate(90deg);
+}
+
+.pathPages .path {
+  font-weight: bold;
+  font-size: 16px;
+  color: #a9a7a6;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  margin-left: 16px;
+}
+
+.pathPages .path span {
+  color: #232323; 
+}
+
+.countCart:not(:empty) {
+  color: white; 
+  font-size:16px;
+  font-family: Roboto Mono;
+  background-color: #DC3545;
+  border-radius: 25px;
+  padding: 1px 7px 1px 7px;
+  float: right;
+  margin-left: -15px;
+  margin-top: -10px;
+  position: relative;
+  z-index: 3;
+}
+
+.countCartMobile:not(:empty) {
+  color: white; 
+  font-size:14px;
+  font-family: Roboto Mono;
+  background-color: #DC3545;
+  border-radius: 25px;
+  padding: 1px 6px 1px 6px;
+  float: right;
+  margin-left: -10px;
+  margin-top: -5px;
+  position: relative;
+  z-index: 3;
+}
+
 @media (max-width: 1024px) {
   .header .basket {
     display: none;
+  }
+
+  .pathPages .path {
+    font-size: 14px;
+    margin-left: 14px;
   }
 }
 
@@ -231,7 +299,7 @@ main .container {
 }
 
 .category {
-  height: 460px;
+  height: 500px;
   background-color: white;
   margin: -20px 0 0 25px;
   width: 355px;
@@ -316,12 +384,9 @@ main .container {
   margin-top: 15px;
 }
 
-.categories-list li {
+.categories-list a {
   padding: 0px 0px 34px 24px;
   cursor: pointer;
-}
-
-.categories-list a {
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -348,6 +413,7 @@ main .container {
 
 .subcategories {
   margin-top: -20px;
+  z-index: 3;
 }
 
 .subcategory {
@@ -369,6 +435,7 @@ main .container {
 .subcategory a {
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
 }
 
 .subcategory a:hover {
@@ -383,11 +450,15 @@ main .container {
 
 .right .title-products {
   text-align: center;
-  font-size: 24px;
+  font-size: 28px;
   font-family: Montserrat, sans-serif;
   color: #232323;
   font-weight: bold;
   margin-top: 24px;
+}
+
+.right .new-products {
+  margin-top: 70px;
 }
 
 .products {
@@ -493,16 +564,28 @@ main .container {
   }
 }
 
-.product:hover {
-  background-color: rgba(0, 0, 0, 0.3);
-  opacity: 0.8;
-  transition: 0.5s;
+.product .marker {
+  color: white;
+  font-family: "Roboto Mono", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 3px 0 3px 7px;
+  border-radius: 4px;
+  cursor: default;
+  width: 70px;
+  position: absolute;
+  z-index: 1;
 }
 
 .product img{
   vertical-align: middle;
   max-height: 90%;
   max-width: 90%;
+}
+
+.product:hover img {
+  transform: scale(1.1);
+  transition: all 0.5s;
 }
 
 .product .title {
@@ -542,6 +625,42 @@ main .container {
   }
 }
 
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.pagination .iPage {
+  font-size: 16px;
+  font-family: Roboto Mono;
+  margin: 0 2px 15px 2px;
+  background-color: #EFF0F1;
+  border-radius: 16px;
+  color: #444;
+  text-align: center;
+  height: 32px;
+  min-width: 32px;
+  line-height: 32px;
+  vertical-align: middle;
+}
+
+.pagination .navigatePage {
+  font-size: 16px;
+  font-family: Roboto Mono;
+  color: #444;
+  border: 2px solid #EFF0F1;
+  border-radius: 16px;
+  margin: 0 2px 15px 2px;
+  text-align: center;
+  height: 32px;
+  min-width: 32px;
+  line-height: 32px;
+  vertical-align: middle;
+  padding: 0 18px;
+}
 
 footer {
   background-color: #232323;
@@ -729,6 +848,7 @@ footer .icons {
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 10;
 }
 
 .MobileShowNavigation .menu {
@@ -751,4 +871,26 @@ footer .icons {
   width: 30px;
   height: 30px;
   position: relative;
+}
+
+.error_block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error_block img {
+  max-height: 60%;
+  max-width: 60%;
+}
+
+@media(max-width: 1024px) {
+  .error_block {
+    margin-top: 80px;
+  }
+  .error_block img {
+    max-height: 80%;
+    max-width: 80%;
+  }
 }

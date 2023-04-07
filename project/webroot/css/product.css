@@ -5,9 +5,21 @@ main {
     align-items: center;
 }
 
+.breadcrumbs {
+    margin: 24px 0 0 24px;
+}
+
 @media (max-width: 1024px) {
     main {
         margin-top: 80px;
+    }
+
+    .breadcrumbs {
+        margin: 16px 0 16px 16px;
+    }
+
+    .pathPages .path {
+        font-size: 12px;
     }
 }
 
@@ -24,9 +36,8 @@ main {
   }
   
   .product-image img {
-    width: 500px;
-    height: auto;
-    cursor: pointer;
+    max-width: 100%;
+    max-height: 100%;
   }
   
   .image-thumbnails {
@@ -35,11 +46,13 @@ main {
     align-items: center;
     width: 500px;
     overflow: auto;
+    margin-top: 15px;
   }
   
   .image-thumbnails img {
     width: 75px;
     height: 75px;
+    object-fit: contain;
     margin-right: 10px;
     border: 1px solid #ccc;
     cursor: pointer;
@@ -123,12 +136,6 @@ main {
         padding: 0;
       }
       
-      .product-image img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-      }
-      
       .image-thumbnails {
         width: 100%;
         overflow: auto;
@@ -142,6 +149,29 @@ main {
         margin-top: 14px;
         font-size: 20px;
     }
+}
+
+@media(max-width: 480px) {
+    .product-image {
+        display: flex;
+        justify-content: center;
+    }
+    .product-image img {
+        max-width: 80%;
+        max-height: 80%;
+    }
+}
+
+.marker {
+  color: white;
+  font-family: "Roboto Mono", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 3px 0 3px 7px;
+  border-radius: 4px;
+  cursor: default;
+  width: 70px;
+  margin-top: 20px;
 }
 
 .product_mod {
@@ -209,9 +239,10 @@ main {
     margin-top: 20px;
 }
 
-.ch div {
-    display: flex;
-    justify-content: space-between;
+@media(min-width: 1200px) {
+    .ch div {
+        width: 685px;
+    }    
 }
 
 .ch .name {
@@ -223,6 +254,11 @@ main {
 .ch span {
     font-family: Montserrat, sans-serif;
     font-size: 18px;
+    float: right;
+}
+
+.similar_products {
+    width: 100%;
 }
 
 .similar_products .title-text {

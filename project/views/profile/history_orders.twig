@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/profile.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+    <title>DIO</title>
+</head>
+<body>
+    {% include 'layouts/header.twig' %}
+
+    <main>
+    <div class="breadcrumbs">
+			    <div class="pathPages">
+    <div class="breadcrumbs_arrow" onclick="goBack()">
+        <img src="/project/webroot/img/down-arrow.png">
+    </div>
+    <div class="path">
+        <a href="/" class="pathText" style="color: #a9a7a6; text-decoration: none;">Главная / </a> 
+        <span class="pathText">Профиль</span>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</div>
+        <div class="container">
+            {% include 'layouts/sidebar.twig' %}
+            
+            <div class="main">
+              <h1>История покупок</h1>
+                {% for order in orders %}
+                <div class="order">
+                    <div class="order-header">
+            <div class="order-info">
+                <div class="order-text">Заказ №{{ order.order_num }}</div><br>
+                <p><b>Дата заказа:</b> {{ order.created_at }}</p><br>
+                <p><b>Статус:</b> {{ order.status }}</p>
+            </div>
+        </div><br>
+        {% for product in products %}
+        {% if product.order_id is same as order.id %}
+        <div class="order-items" style="cursor: pointer;" onclick="window.location = '/product/{{ product.product_id }}';">
+            <div class="order-item">
+                <img src="/project/webroot/uploads/{{ product.image }}">
+                <div class="item-info">
+                    <p><b>Товар:</b> {{ product.title }}</p><br>
+                    <p><b>Кол-во:</b> {{ product.quantity }}</p><br>
+                    <p><b>Цена:</b> {{ product.price }}₽</p>
+                </div>
+            </div>
+        </div><br>
+        {% endif %}
+        {% endfor %}
+        <div class="order-summary">
+            <p><b>Общая стоимость:</b> {{ order.total_price }}₽</p><br>
+            <p><b>Способ оплаты:</b> {{ order.payment_method }}</p><br>
+            <p><b>Адрес доставки:</b> {{ order.address }}</p>
+        </div>
+        </div>
+                {% endfor %}     
+            </div>
+          </div>
+    </main>
+
+    {% include 'layouts/mobile_navigation.twig' %}
+
+</body>
+</html>

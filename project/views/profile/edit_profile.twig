@@ -9,51 +9,68 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
-    <title>DIO</title>
+    <title>Личные данные</title>
 </head>
 <body>
     <header id="header">
       <div class="container">
         <nav class="navbar">
             <div>
-                <a href="#"><span>Главная</span></a>
-                <a href="#">О Магазине</a>
-                <a href="#">Контакты</a>
+                <a href="/"><span class="active">Главная</span></a>
+                <a href="/about-us">О Магазине</a>
+                <a href="/contacts">Контакты</a>
             </div>
             <div>
-                <a id="myBtnLogin" href="#">Вход</a>
-                <a id="myBtnRegister" href="#">Регистрация</a>
+                {% if auth %}
+                <a href="/profile" style="display: flex; align-items: center;"><img alt="user" src="/project/webroot/img/user.png" width="16px" height="16px" style="margin-right: 8px;"><span>Мой профиль</span></a>
+                {% else %}
+                <a href="/login" id="myBtnLogin">Вход</a>
+                <a href="/register" id="myBtnRegister">Регистрация</a>
+                {% endif %}
             </div>
         </nav>
         <hr>
          
         <div class="header">
-            <a href="#" class="logo">DIO</a>
+            <a href="/" class="logo">DIO</a>
             <div class="search-container">
-                <input type="text" placeholder="🔍 Поиск по каталогу магазина">
-                <button type="submit">Найти</button>
+                <form action="/search/?" method="GET" style="display: flex; width: 100%;">
+                    <input type="text" name="q" placeholder="🔍 Поиск по каталогу магазина" value="{{ search }}">
+                    <button type="submit">Найти</button>
+                </form>
             </div>
-            <div class="basket">
+            <a href="/cart" class="basket">
+<div>
+                <span id="countCart" class="countCart">{{ cart_qty }}</span>
                 <img src="/project/webroot/img/basket.png">
-                <label>Корзина</label>
-            </div>
+                </div>
+                                <label style="cursor: pointer;">Корзина</label>
+            </a>
         </div>
       </div>
 </header>
 
     <main id="main">
+    <div class="breadcrumbs" id="breadcrumbs">
+			    <div class="pathPages">
+    <div class="breadcrumbs_arrow" onclick="goBack()">
+        <img src="/project/webroot/img/down-arrow.png">
+    </div>
+    <div class="path">
+        <a href="/" class="pathText" style="color: #a9a7a6; text-decoration: none;">Главная / </a> 
+        <span class="pathText">Профиль</span>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</div>
         <div class="container">
-            <div class="sidebar">
-              <ul>
-                <li><a href="/edit/profile">Редактировать данные</a></li>
-                <li><a href="/change/password">Изменить пароль</a></li>
-                <li><a href="#">Активные заказы</a></li>
-                <li><a href="#">Избранное</a></li>
-                <li><a href="#">История покупок</a></li>
-                <li><a href="/logout">Выйти</a></li>
-                <li><a href="/delete/profile">Удалить аккаунт</a></li>
-              </ul>
-            </div>
+            {% include 'layouts/sidebar.twig' %}
+
             <div class="main">
               <h1>Личные данные</h1>
               <form method="POST">
@@ -75,7 +92,12 @@
     </main>
 
     <div class="mobile-version">
-      <a href="#"><img alt="" src="/project/webroot/img/arrow-back.png" class="close"></a> 
+    <img onclick="goBack()" alt="arrow-back" src="/project/webroot/img/arrow-back.png" class="close">
+    <script>
+    function goBack() {
+        window.history.back();
+    }
+    </script>
     <div class="auth-form">
         <h1 class="logo">DIO</h1>
         <div class="title">Личные данные</div><br>
@@ -94,10 +116,16 @@
 
     <div class="MobileShowNavigation" id="MobileShowNavigation">
         <div class="menu">
-        <img src="/project/webroot/img/home.png">
-        <img src="/project/webroot/img/category.png">
-        <img src="/project/webroot/img/basketicon.png">
-        <a href="/login"><img src="/project/webroot/img/profile.png"></a>
+        <a href="/"><img src="/project/webroot/img/home.png"></a>
+        <a href="/mobile/categories"><img src="/project/webroot/img/category.png"></a>
+<a href="/cart">
+            <span id="countCart" class="countCartMobile">{{ cart_qty }}</span>
+            <img src="/project/webroot/img/basketicon.png">
+        </a>        {% if auth %}
+            <a href="/profile"><img src="/project/webroot/img/profile.png"></a>
+        {% else %}
+            <a href="/login"><img src="/project/webroot/img/profile.png"></a>
+        {% endif %}
         </div>
     </div>
 

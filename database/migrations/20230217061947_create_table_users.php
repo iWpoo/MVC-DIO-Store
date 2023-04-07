@@ -18,5 +18,17 @@ final class CreateTableUsers extends AbstractMigration
               ->addColumn('created_at', 'timestamp', ['null' => TRUE, 'default' => 'CURRENT_TIMESTAMP'])
               ->addIndex(['email'], ['unique' => TRUE])
               ->create();
+
+        // Запись в качестве примера для тестирования. Последующий код можно удалить
+        
+        $data = [
+            [
+                'role' => 'admin',
+                'email' => 'admin@gmail.com',
+                'password' => '12345678',
+            ]
+        ];
+
+        $table->insert($data)->save();
     }
 }

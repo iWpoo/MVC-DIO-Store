@@ -9,9 +9,17 @@
     height: 100%;
 }
 
+.breadcrumbs {
+    margin: 50px 0 0 325px;
+}
+
 @media (max-width: 2000px) {
     .block-basket {
         margin: 50px 100px 100px 100px;
+    }
+
+    .breadcrumbs {
+        margin: 50px 0 0 120px;
     }
 }
 
@@ -19,12 +27,19 @@
     .block-basket {
         margin: 50px;
     }
+
+    .breadcrumbs {
+        margin: 50px 0 0 70px;
+    }
 }
 
 @media (max-width: 1024px) {
     .block-basket {
         margin: 10px;
-        margin-top: 60px;
+    }
+
+    .breadcrumbs {
+        margin: 90px 0 0 24px;
     }
 }
 
@@ -125,6 +140,10 @@
     .block-title h1 {
         font-size: 28px;
     }
+
+    .breadcrumbs {
+        margin: 90px 0 0 16px;
+    }
 }
 
 .card-item {
@@ -164,11 +183,11 @@
 .card-item-image {
     width: 73px;
     height: 100px;
-    object-fit: cover;
+    object-fit: contain;
     margin-left: 16px;
 }
 
-.card-item a, label {
+.card-item a, .card-item label {
     font-size: 16px;
     font-family: Montserrat;
     font-weight: bold;

@@ -1,0 +1,58 @@
+<footer>
+        <div class="footer">
+        <div class="subfooters">
+            <div class="title" onclick="showList('category-list', 'c_arrow', 'c_title')" id="c_title">Категории<img id="c_arrow" alt="" src="/project/webroot/img/arrow.png" class="arrow"></div><br>
+            <ul id="category-list" class="footer-categories-list">
+                <li><a href="/search/category/?category=1">Аксессуары</a></li>
+                <li><a href="/search/category/?category=2">Смартфоны</a></li>
+                <li><a href="/search/category/?category=3">Планшеты</a></li>
+                <li><a href="/search/category/?category=4">Наушники и колонки</a></li>
+                <li><a href="/search/category/?category=5">Часы</a></li>
+                <li><a href="/search/category/?category=6">Гаджеты</a></li>
+                <li><a href="/search/category/?category=7">Электросамокаты</a></li>
+                <li><a href="/search/category/?category=8">Ноутбуки</a></li>
+            </ul>
+        </div>
+
+        <div class="subfooters">
+            <div class="title" onclick="showList('info-list', 'i_arrow', 'info-title')" id="info-title">Информация<img id="i_arrow" alt="" src="/project/webroot/img/arrow.png" class="arrow"></div><br>
+            <ul id="info-list" class="footer-categories-list">
+                <li><a href="/">Главная</a></li>
+                <li><a href="/about-us">О магазине</a></li>
+                <li><a href="/contacts">Контакты</a></li>
+            </ul> 
+        </div>
+
+        <div class="subfooters">
+            <div class="title" onclick="showList('contacts-list', 'con_arrow', 'con_title')" id="con_title">Контакты<img id="con_arrow" alt="" src="/project/webroot/img/arrow.png" class="arrow"></div><br>
+            <ul id="contacts-list" class="footer-categories-list">
+                <li>EMAIL: dio@gmail.com</li>
+                <li>+7 (7777) 777-77-77</li>
+            </ul>  
+        </div>
+        </div>
+        <hr>
+        <div class="icons">
+            <a href="#"><img class="icon" src="/project/webroot/img/instagram.png"></a>
+            <a href="#"><img class="icon" src="/project/webroot/img/telegram.png"></a>
+            <a href="#"><img class="icon" src="/project/webroot/img/twitter.png"></a>
+            <a href="#"><img class="icon" src="/project/webroot/img/vk.png"></a>
+        </div>
+    </footer>
+
+    <script>
+        function showList(id, id_arrow, id_title) {
+            const x = document.getElementById(id);
+                    const arrow = document.getElementById(id_arrow);
+                    const title = document.getElementById(id_title);
+                    if (x.style.display === "block") {
+                        x.style.display = "none";
+                        title.style.color = "white";
+                        arrow.style = "transform: rotate(0deg); transition: 0.5s;";
+                    } else {
+                        x.style.display = "block";
+                        title.style.color = "#00D270";
+                        arrow.style = "transform: rotate(180deg); transition: 0.5s;";
+                    }
+        }
+    </script>

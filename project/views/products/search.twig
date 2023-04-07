@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/search.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+    <title>Страница поиска</title>
+</head>
+<body>
+    {% include 'layouts/header.twig' %}
+
+    <main>
+        <div class="container">
+        <div class="left">
+        <div class="catalog-container">
+            <h2 class="catalog-title" id="myButton">Категории</h2>
+            <div class="block-left">
+            <div class="catalog-container">
+                <div id="category" class="category">
+                    <div>
+                        <ul class="categories-list">
+                            <a href="/search/category/?category=1" onmouseover="MouseOverCategory('acc')" onmouseout="MouseOutCategory('acc')"><li><img src="/project/webroot/img/acc.png"><span>Аксессуары</span></li></a>
+                            <a href="/search/category/?category=2" onmouseover="MouseOverCategory('phones')" onmouseout="MouseOutCategory('phones')"><li><img src="/project/webroot/img/smartphone.png"><span>Смартфоны</span></li></a>
+                            <a href="/search/category/?category=3" onmouseover="MouseOverCategory('tablets')" onmouseout="MouseOutCategory('tablets')"><li><img src="/project/webroot/img/pl.png"><span>Планшеты</span></li></a>
+                            <a href="/search/category/?category=4" onmouseover="MouseOverCategory('headphones')" onmouseout="MouseOutCategory('headphones')"><li><img src="/project/webroot/img/headphone.png"><span>Наушники и колонки</span></li></a>
+                            <a href="/search/category/?category=5" onmouseover="MouseOverCategory('clocks')" onmouseout="MouseOutCategory('clocks')"><li><img src="/project/webroot/img/clock.png"><span>Часы</span></li></a>
+                            <a href="/search/category/?category=6" onmouseover="MouseOverCategory('gadjets')" onmouseout="MouseOutCategory('gadjets')"><li><img src="/project/webroot/img/gadjet.png"><span>Гаджеты</span></li></a>
+                            <a href="/search/category/?category=7" onmouseover="MouseOverCategory('samokats')" onmouseout="MouseOutCategory('samokats')"><li href="#"><img src="/project/webroot/img/samokat.png"><span>Электросамокаты</span></li></a>
+                            <a href="/search/category/?category=8" onmouseover="MouseOverCategory('notebooks')" onmouseout="MouseOutCategory('notebooks')"><li><img src="/project/webroot/img/notebook.png"><span>Ноутбуки</span></li></a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="subcategories">
+            <div id="acc" onmouseover="MouseOverCategory('acc')" onmouseout="MouseOutCategory('acc')" class="subcategory">
+                <ul>
+                    <a href="/search/subcategory/?subcategory=1"><li>Для смартфонов</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=2"><li>Для фото и видео</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=3"><li>Для ноутбуков</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=4"><li>Для наушников</li></a>
+                    <hr>
+                </ul>
+            </div>
+            <div id="phones" onmouseover="MouseOverCategory('phones')" onmouseout="MouseOutCategory('phones')" class="subcategory">
+                <ul>
+                    <a href="/search/subcategory/?subcategory=5"><li>Apple</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=6"><li>Samsung</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=7"><li>Xiaomi</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=8"><li>Poco</a></li>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=9"><li>Vivo</a></li>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=10"><li>Realme</a></li>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=11"><li>Huawei</a></li>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=12"><li>Asus</a></li>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=13"><li>Honor</a></li>
+                    <hr>
+                </ul>
+            </div>
+            <div id="tablets" onmouseover="MouseOverCategory('tablets')" onmouseout="MouseOutCategory('tablets')"  class="subcategory">
+                <ul>
+                    <a href="/search/subcategory/?subcategory=14"><li>Apple</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=15"><li>Samsung</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=16"><li>Xiaomi</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=17"><li>Lenovo</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=18"><li>Hp</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=19"><li>Realme</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=20"><li>Huawei</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=21"><li>Honor</li></a>
+                    <hr>
+                </ul>
+            </div>
+            <div id="headphones" onmouseover="MouseOverCategory('headphones')" onmouseout="MouseOutCategory('headphones')" class="subcategory">
+                <ul>
+                    <a href="/search/subcategory/?subcategory=22"><li>Безпроводные наушники</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=23"><li>Колонки</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=24"><li>Проводные наушники</li></a>
+                    <hr>
+                </ul>
+            </div>
+            <div id="clocks" onmouseover="MouseOverCategory('clocks')" onmouseout="MouseOutCategory('clocks')" class="subcategory">
+                <ul>
+                    <a href="/search/subcategory/?subcategory=25"><li>Garmin</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=26"><li>Honor</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=27"><li>Xiaomi</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=28"><li>Apple</li></a>
+                    <hr>
+                </ul>
+            </div>
+            <div id="gadjets" onmouseover="MouseOverCategory('gadjets')" onmouseout="MouseOutCategory('gadjets')" class="subcategory">
+                <ul>
+                    <a href="/search/subcategory/?subcategory=29"><li>Яндекс Станции</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=30"><li>Игровые приставки</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=31"><li>PowerPank</li></a>
+                    <hr>
+                </ul>
+            </div>
+            <div id="samokats" onmouseover="MouseOverCategory('samokats')" onmouseout="MouseOutCategory('samokats')" class="subcategory">
+                <ul>
+                    <a href="/search/subcategory/?subcategory=32"><li>Электросамокаты</li></a>
+                    <hr>
+                </ul>
+            </div>
+            <div id="notebooks" onmouseover="MouseOverCategory('notebooks')" onmouseout="MouseOutCategory('notebooks')" class="subcategory">
+                <ul>
+                    <a href="/search/subcategory/?subcategory=33"><li>Apple</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=34"><li>Hp</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=35"><li>Asus</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=36"><li>Lenovo</li></a>
+                    <hr>
+                    <a href="/search/subcategory/?subcategory=37"><li>Xiaomi</li></a>
+                    <hr>
+                </ul>
+            </div><br>
+            </div>
+            </div>
+
+        <script>
+                function MouseOverCategory(id) {
+                    const subcategory = document.getElementById(id);
+                    subcategory.style.display = "block";
+                }
+    
+                function MouseOutCategory(id) {
+                    const subcategory = document.getElementById(id);
+                    subcategory.style.display = "none";
+                }
+
+                document.getElementById("myButton").onclick = function() {
+                    const x = document.getElementById("category");
+                    if (x.style.display === "block") {
+                        x.style.display = "none";
+                    } else {
+                        x.style.display = "block";
+                    }
+                }
+            </script>
+
+            <form action="/search/?" method="GET">
+            <input type="hidden" name="q" value="{{ search }}">
+            <div class="filter-price">
+                <h2 class="title">Сортировка</h2>
+                <select name="sort_products">
+                    <option value="popularity" {{ sort_value == 'popularity' ? 'selected' : '' }}>Популярные</option>
+                    <option value="new" {{ sort_value == 'new' ? 'selected' : '' }}>Новые</option>
+                    <option value="price_inc" {{ sort_value == 'price_inc' ? 'selected' : '' }}>По увеличению цены</option>
+                    <option value="price_dec" {{ sort_value == 'price_dec' ? 'selected' : '' }}>По уменьшению цены</option>
+                </select>
+                <h2 class="title">Цена</h2>
+                <label>От</label>
+                <input type="number" name="price_from" value="{{ price_from }}">
+                <label>До</label>
+                <input type="number" name="price_to" value="{{ price_to }}">
+            </div>
+            <button type="submit" class="show-filter">Показать</button>
+            </form>
+        </div>
+        </div>
+
+        <div class="right">
+        <div class="breadcrumbs">
+			    <div class="pathPages">
+    <div class="breadcrumbs_arrow" onclick="goBack()">
+        <img src="/project/webroot/img/down-arrow.png">
+    </div>
+    <div class="path">
+        <a href="/">Главная / </a> 
+        <span>Страница поиска</span>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+			</div>
+        {% if not products %}
+        <div class="block_search_products">
+        <p class="search_text">Товары по запросу: «{{ search }}»</p>
+        <h2 class="notFoundText">Ничего не найдено :(</h2>
+        </div>
+        {% else %}
+        <div class="block_search_products">
+        <p class="search_text">Товары по запросу: «{{ search }}»</p>
+        <div class="products">
+            {% for product in products %}
+                <div class="product">
+                {% set publish_date = product.created_at|date('U') %}
+{% set now = 'now'|date('U') %}
+
+{% if now - publish_date < 2592000 %}
+    <div class="markerContainer"><div class="marker" style="background-color: #09d32a">Новинки</div></div>
+{% endif %}
+                    <a href="/product/{{ product.id }}" class="picture"><img src="/project/webroot/uploads/{{ product.image }}"></a>
+                    <a href="/product/{{ product.id }}" class="title"><span>{{ product.title }}</span></a>
+                    <a href="/product/{{ product.id }}" class="price"><span>{{ product.price }}₽</span></a>
+                </div>
+            {% endfor %}
+        </div>
+        </div>
+
+        <div class="pagination">
+        {% if page > 1 %}
+            <a class="navigatePage" href="{{ urlPages }}&page={{ page - 1 }}">Назад</a>
+        {% endif %}
+        {% for i in 1..total_pages %}
+            {% if i != 0 %}
+                <a class="iPage" style="{{ i == page ? 'background: #00D270; color: white;' : '' }}" href="{{ urlPages }}&page={{ i }}">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page < total_pages %}
+            <a class="navigatePage" href="{{ urlPages }}&page={{ page + 1 }}">Вперед</a>
+        {% endif %}
+        {% endif %}
+        </div>
+
+        </div>
+
+    </main>
+
+    {% include 'layouts/footer.twig' %}
+    {% include 'layouts/mobile_navigation.twig' %}
+</body>
+</html>

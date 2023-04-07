@@ -119,6 +119,7 @@ body {
   transform: rotate(90deg);
   margin-top: 10px;
   margin-left: 5%;
+  cursor: pointer;
   display: none;
 }
 

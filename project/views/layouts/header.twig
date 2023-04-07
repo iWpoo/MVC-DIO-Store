@@ -2,27 +2,39 @@
       <div class="container">
         <nav class="navbar">
             <div>
-                <a href="#"><span>Главная</span></a>
-                <a href="#">О Магазине</a>
-                <a href="#">Контакты</a>
+                <a href="/"><span class="active">Главная</span></a>
+                <a href="/about-us">О Магазине</a>
+                <a href="/contacts">Контакты</a>
             </div>
             <div>
-                <a id="myBtnLogin" href="#">Вход</a>
-                <a id="myBtnRegister" href="#">Регистрация</a>
+                {% if auth %}
+                <a href="/profile" style="display: flex; align-items: center; text-decoration: none;">
+                    <img alt="user" src="/project/webroot/img/user.png" width="16px" height="16px" style="margin-right: 8px;">
+                    <span>Мой профиль</span>
+                </a>
+                {% else %}
+                <a href="/login" id="myBtnLogin">Вход</a>
+                <a href="/register" id="myBtnRegister">Регистрация</a>
+                {% endif %}
             </div>
         </nav>
         <hr>
          
         <div class="header">
-            <a href="#" class="logo">DIO</a>
+            <a href="/" class="logo">DIO</a>
             <div class="search-container">
-                <input type="text" placeholder="🔍 Поиск по каталогу магазина">
-                <button type="submit">Найти</button>
+                <form action="/search/?" method="GET" style="display: flex; width: 100%;">
+                    <input type="text" name="q" placeholder="🔍 Поиск по каталогу магазина" value="{{ search }}">
+                    <button type="submit">Найти</button>
+                </form>
             </div>
-            <div class="basket">
+            <a href="/cart" class="basket">
+                <div>
+                <span id="countCart" class="countCart">{{ cart_qty }}</span>
                 <img src="/project/webroot/img/basket.png">
-                <label>Корзина</label>
-            </div>
+                </div>
+                <label style="cursor: pointer;">Корзина</label>
+            </a>    
         </div>
       </div>
 </header>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/categories.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+    <title>Категории</title>
+</head>
+<body>
+    {% include 'layouts/header.twig' %}
+
+    <main>
+        <div class="container">
+        <div class="left">
+        {% include 'layouts/categories.twig' %}
+        </div>
+        </div>
+
+        <div class="right">
+            <div class="breadcrumbs">
+			    <div class="pathPages">
+    <div class="breadcrumbs_arrow" onclick="goBack()">
+        <img src="/project/webroot/img/down-arrow.png">
+    </div>
+    <div class="path">
+        <a href="/">Главная / </a> 
+        <span>Категории</span>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+			</div>
+        <div class="categories-table">
+
+        <a href="/search/category/?category=1" class="category-product">
+            <img src="/project/webroot/img/category_acc.png">
+            <label>Аксессуары</label>
+        </a>
+
+        <a href="/search/category/?category=2" class="category-product">
+            <img src="/project/webroot/img/smartphones.jpg">
+            <label>Смартфоны</label>
+        </a>
+
+        <a href="/search/category/?category=3" class="category-product">
+            <img width="50%" src="/project/webroot/img/planshet.jpg">
+            <label>Планшеты</label>
+        </a>
+
+        <a href="/search/category/?category=4" class="category-product">
+            <img width="50%" src="/project/webroot/img/headphones.jpg">
+            <label>Наушники и колонки</label>
+        </a>
+
+        <a href="/search/category/?category=5" class="category-product">
+            <img src="/project/webroot/img/clocks.jpg">
+            <label>Часы</label>
+        </a>
+
+        <a href="/search/category/?category=6" class="category-product">
+            <img src="/project/webroot/img/gadjets.jpg">
+            <label>Гаджеты</label>
+        </a>
+
+        <a href="/search/category/?category=7" class="category-product">
+            <img src="/project/webroot/img/electrosamokat.jpg">
+            <label>Электросамокаты</label>
+        </a>
+
+        <a href="/search/category/?category=8" class="category-product">
+            <img width="50%" src="/project/webroot/img/notebooks.jpg">
+            <label>Ноутбуки</label>
+        </a>
+
+        </div>
+
+        </div>
+    </main>
+
+    {% include 'layouts/footer.twig' %}
+</body>
+</html>

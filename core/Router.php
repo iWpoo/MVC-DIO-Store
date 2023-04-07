@@ -25,6 +25,7 @@ class Router
 	{
 		return '#^' . preg_replace('#/:([^/]+)#', '/(?<$1>[^/]+)', $path) . '/?$#';
 	}
+	
 		
 	private function clearParams($params)
 	{
@@ -39,3 +40,4 @@ class Router
 		return $result;
 	}	
 }
+

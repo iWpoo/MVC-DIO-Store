@@ -9,40 +9,30 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
     <script src="/project/webroot/js/jquery-3.6.4.min.js"></script>
-    <title>DIO</title>
+    <title>Оформление заказа</title>
 </head>
 <body>
-    <header>
-      <div class="container">
-        <nav class="navbar">
-            <div>
-                <a href="#"><span class="active">Главная</span></a>
-                <a href="#">О Магазине</a>
-                <a href="#">Контакты</a>
-            </div>
-            <div>
-                <a href="#">Вход</a>
-                <a href="#">Регистрация</a>
-            </div>
-        </nav>
-        <hr>
-         
-        <div class="header">
-            <a href="#" class="logo">DIO</a>
-            <div class="search-container">
-                <input type="text" placeholder="🔍 Поиск по каталогу магазина">
-                <button type="submit">Найти</button>
-            </div>
-            <div class="basket">
-                <img src="/project/webroot/img/basket.png">
-                <label>Корзина</label>
-            </div>
-        </div>
-      </div>
-    </header>
+    {% include 'layouts/header.twig' %}
 
     <main class="order">
         <div class="order_container">
+        <div class="breadcrumbs">
+			    <div class="pathPages">
+    <div class="breadcrumbs_arrow" onclick="goBack()">
+        <img src="/project/webroot/img/down-arrow.png">
+    </div>
+    <div class="path">
+        <a href="/">Главная / </a> 
+        <span>Оформление заказа</span>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+			</div>
         <h3 class="order_title">ОФОРМЛЕНИЕ ЗАКАЗА</h3>
         <div class="order_block">
             <div class="address_info">
@@ -185,57 +175,23 @@ window.onload = updateTotalPrice();
 
 </script>
 
-    <footer>
-        <div class="footer">
-            <div class="subfooters">
-                <div class="title">Категории</div><br>
-                <ul class="footer-categories-list">
-                    <li><a href="#">Аксессуары</a></li>
-                    <li><a href="#">Смартфоны</a></li>
-                    <li><a href="#">Планшеты</a></li>
-                    <li><a href="#">Наушники и колонки</a></li>
-                    <li><a href="#">Часы</a></li>
-                    <li><a href="#">Гаджеты</a></li>
-                    <li><a href="#">Электросамокаты</a></li>
-                    <li><a href="#">Ноутбуки</a></li>
-                </ul>
-            </div>
-    
-            <div class="subfooters">
-                <div class="title">Информация</div><br>
-                <ul class="footer-categories-list">
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">О магазине</a></li>
-                    <li><a href="#">Контакты</a></li>
-                </ul> 
-            </div>
-    
-            <div class="subfooters">
-                <div class="title">Контакты</div><br>
-                <ul class="footer-categories-list">
-                    <li>EMAIL: dio@gmail.com</li>
-                    <li>+7 (7777) 777-77-77</li>
-                </ul>  
-            </div>
-            </div>
-        <hr>
-        <div class="icons">
-            <a href="#"><img class="icon" src="instagram.png"></a>
-            <a href="#"><img class="icon" src="telegram.png"></a>
-            <a href="#"><img class="icon" src="twitter.png"></a>
-            <a href="#"><img class="icon" src="vk.png"></a>
-        </div>
-    </footer>
+    {% include 'layouts/footer.twig' %}
 
     <div class="MobileShowNavigation">
         <div class="button-buy-mobile">
             <button onclick="makeOrder()" type="button">Оформить заказ</button>
         </div>
         <div class="menu">
-        <img src="/project/webroot/img/home.png">
-        <img src="/project/webroot/img/category.png">
-        <img src="/project/webroot/img/basketicon.png">
-        <a href=""><img src="/project/webroot/img/profile.png"></a>
+        <a href="/"><img src="/project/webroot/img/home.png"></a>
+        <a href="/mobile/categories"><img src="/project/webroot/img/category.png"></a>
+<a href="/cart">
+            <span id="countCart" class="countCartMobile">{{ cart_qty }}</span>
+            <img src="/project/webroot/img/basketicon.png">
+        </a>        {% if auth %}
+            <a href="/profile"><img src="/project/webroot/img/profile.png"></a>
+        {% else %}
+            <a href="/login"><img src="/project/webroot/img/profile.png"></a>
+        {% endif %}
     </div>
     </div>
 

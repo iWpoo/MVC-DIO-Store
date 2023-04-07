@@ -26,7 +26,9 @@ class OrderController extends Controller
         return $this->render('products/order.twig', [
             'user' => $user,
             'products' => $cart->joinProductCart($auth['id']),
-            'csrf_token' => $this->generateCsrfToken()
+            'csrf_token' => $this->generateCsrfToken(),
+            'auth' => $auth,
+            'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
     }
 
@@ -35,22 +37,35 @@ class OrderController extends Controller
         $userModel = new User();
         $auth = $userModel->verifyAuth();
 
-        $order = new Order();
-        $cart = new Cart();
+        if (!$auth) {
+            $this->redirect('/login');
+        }
 
-        $product_ids = $_POST['product_ids'];
-        $productsCart = $cart->findAll("WHERE user_id = ".$auth['id']." AND product_id = " . implode(' OR product_id = ', $product_ids));       
-        
+        $order = new Order();
+        $db = Order::getLink();
+        $cart = new Cart();
+       
+        // Если id заказанных товаров будет не определено
+        if (!isset($_POST['product_ids']) or !is_array($_POST['product_ids'])) {
+            return 'Выберите товары для покупки.';
+        }
+
+        // Вывод товаров из корзинки пользователя
+        $product_ids = $_POST['product_ids'] ?? null;
+        $productsCart = $cart->findAll("WHERE user_id = ".$auth['id']." AND product_id = " . implode(' OR product_id = ', $product_ids));
+
         $orderNumber = mt_rand(1000, 9999) . mt_rand(10000, 99999);
         $payment_methods = [1 => 'Через курьера', 2 => 'Самовызов', 3 => 'Переводы', 4 => 'Криптовалютой'];
         $payment_method = $payment_methods[$this->add('payment_method')] ?? null;
         $prices = array_column($productsCart, 'price');
         $total_price = array_sum($prices);
 
+        // Если способ оплаты был не выбран
         if ($payment_method === null) {
             return 'Выберите способ оплаты.';
         }
 
+        // Валидация данных для заказа
         $user = $userModel->find($auth['id']);
         $validator = [
             Request::validateRequired($user['address'], 'address_required'),
@@ -60,28 +75,39 @@ class OrderController extends Controller
         ];
 
         if (Request::validate($validator)) {
-            $order->create([
-                'user_id' => $auth['id'],
-                'order_num' => $orderNumber,
-                'payment_method' => $payment_method,
-                'total_price' => $total_price,
-                'address' => $user['address'],
-                'created_at' => date('d M Y H:i:s')
-            ]);
-    
-            $order_id = Order::getLink()->lastInsertId();
-    
-            foreach ($productsCart as $product) {
-                $order->setOrdersProducts([
-                    ':order_id' => $order_id,
-                    ':product_id' => $product['product_id'],
-                    ':quantity' => $product['count'],
-                    ':price' => $product['price']
+            // Начало транзакции
+            $db->beginTransaction();
+            try {
+                // Оформление заказа
+                $order->create([
+                    'user_id' => $auth['id'],
+                    'order_num' => $orderNumber,
+                    'payment_method' => $payment_method,
+                    'total_price' => $total_price,
+                    'address' => $user['address'],
+                    'status' => 'Новый',
+                    'created_at' => date('d M Y H:i:s')
                 ]);
-                $cart->delete($product['id']);
-            }
+    
+                $order_id = Order::getLink()->lastInsertId();
+    
+                foreach ($productsCart as $product) {
+                    $order->setOrdersProducts([
+                        ':order_id' => $order_id,
+                        ':product_id' => $product['product_id'],
+                        ':quantity' => $product['count'],
+                        ':price' => $product['price']
+                    ]);
+                    $cart->delete($product['id']);
+                    setcookie('cart_qty', '', time() - 86400 * 30, '/');
+                }
+                $db->commit();
 
-            return 'Заказ успешно оформлен!';
+                return 'Заказ успешно оформлен!';
+            } catch(PDOException $e) {
+                $db->rollBack();
+                return 'Возникли ошибки при оформлении заказа.';
+            }
         }
 
         return "Заполните адрес доставки и контактную информацию.";
@@ -99,12 +125,14 @@ class OrderController extends Controller
 
         // Вывод данных о пользователя
         $user = $userModel->find($auth['id']);
-        $product = $productModel->find($params['id']);
+        $product = $productModel->getProduct($params['id']);
 
         return $this->render('products/orderOne.twig', [
             'user' => $user,
             'product' => $product,
-            'csrf_token' => $this->generateCsrfToken()
+            'csrf_token' => $this->generateCsrfToken(),
+            'auth' => $auth,
+            'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
     }
 
@@ -113,14 +141,18 @@ class OrderController extends Controller
         $userModel = new User();
         $auth = $userModel->verifyAuth();
 
+        if (!$auth) {
+            $this->redirect('/login');
+        }
+
         $productModel = new Product();
-        $product = $productModel->find($params['id']);
         
         $order = new Order();
+        $db = Order::getLink();
 
         $orderNumber = mt_rand(1000, 9999) . mt_rand(10000, 99999);
         $payment_methods = [1 => 'Через курьера', 2 => 'Самовызов', 3 => 'Переводы', 4 => 'Криптовалютой'];
-        $payment_method = $payment_methods[$this->add('payment_method')] ?? null;
+        $payment_method = $payment_methods[$_POST['payment_method'] ?? null] ?? null;
 
         if ($payment_method === null) {
             return 'Выберите способ оплаты.';
@@ -135,26 +167,82 @@ class OrderController extends Controller
         ];
 
         if (Request::validate($validator)) {
-            $order->create([
-                'user_id' => $auth['id'],
-                'order_num' => $orderNumber,
-                'payment_method' => $payment_method,
-                'total_price' => $product['price'],
-                'address' => $user['address'],
-                'created_at' => date('d M Y H:i:s')
-            ]);
+            $db->beginTransaction();
+            try {
+                $product = $productModel->getProduct($params['id']);
+                $order->create([
+                    'user_id' => $auth['id'],
+                    'order_num' => $orderNumber,
+                    'payment_method' => $payment_method,
+                    'total_price' => $product['price'],
+                    'address' => $user['address'],
+                    'status' => 'Новый',
+                    'created_at' => date('d M Y H:i:s')
+                ]);
     
-            $order_id = Order::getLink()->lastInsertId();
-            $order->setOrdersProducts([
-                ':order_id' => $order_id,
-                ':product_id' => $params['id'],
-                ':quantity' => 1,
-                ':price' => $product['price']
-            ]);
+                $order_id = $db->lastInsertId();
+                $order->setOrdersProducts([
+                    ':order_id' => $order_id,
+                    ':product_id' => $params['id'],
+                    ':quantity' => 1,
+                    ':price' => $product['price']
+                ]);
+                setcookie('cart_qty', '', time() - 86400 * 30, '/');
+                $db->commit();
 
-            return 'Заказ успешно оформлен!';
+                return 'Заказ успешно оформлен!';
+            } catch(PDOException $e) {
+                $db->rollBack();
+                return 'Возникли ошибки при оформлении заказа.';
+            }
         }
 
         return "Заполните адрес доставки и контактную информацию.";
+    }
+
+    public function completeOrder($params)
+    {
+        $product = new Product();
+        $order = new Order();
+        $db = Order::getLink();
+
+        $validator = [
+            Request::validateCsrfToken()
+        ];
+
+        // Начало транзакции
+        $db->beginTransaction();
+
+        // Запрос на отмену заказа и перемещение заказа в историю покупок
+        if (isset($_POST['cancel_order']) and Request::validate($validator)) {
+            try {
+                $order->moveToOrderHistory($params['id'], 'Отменен');
+                $lastInsertOrderId = $db->lastInsertId();        ;
+                $order->moveToOrdersProductsHistory($params['id'], $lastInsertOrderId, 'canceled');
+                $order->delete($params['id']);
+                $db->commit();
+
+                return $this->generateCsrfToken();
+            } catch (PDOException $e) {
+                $db->rollBack();
+            }
+        }
+
+        // Запрос на подтверждение заказа и перемещение заказа в историю покупок
+        if (isset($_POST['confirm_order']) and Request::validate($validator)) {
+            try {
+                $order->moveToOrderHistory($params['id'], 'Доставлен');
+                $lastInsertOrderId = $db->lastInsertId();        ;
+                $order->moveToOrdersProductsHistory($params['id'], $lastInsertOrderId, 'delivered');
+                $order->delete($params['id']);
+                $db->commit();
+
+                return $this->generateCsrfToken();
+            } catch (PDOException $e) {
+                $db->rollBack();
+            }
+        }
+
+        return false;
     }
 }

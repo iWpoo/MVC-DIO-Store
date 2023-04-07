@@ -19,7 +19,9 @@ class ProfileController extends Controller
         }
 
         return $this->render('profile/profile.twig', [
-            'user' => $user->find($auth['id'])
+            'user' => $user->find($auth['id']),
+            'auth' => $auth,
+            'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
     }
 
@@ -51,15 +53,18 @@ class ProfileController extends Controller
                     'first_name' => $fname,
                     'last_name' => $lname,
                     'address' => $address,
-                    'phone' => $phone
+                    'phone' => $phone,
                 ]);
+                $this->redirect('/profile');
             }
         }
 
         return $this->render('profile/edit_profile.twig', [
             'errors' => Request::$errors,
             'csrf_token' => $this->generateCsrfToken(),
-            'user' => $user->find($auth['id'])
+            'user' => $user->find($auth['id']),
+            'auth' => $auth,
+            'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
     }
 
@@ -101,6 +106,8 @@ class ProfileController extends Controller
         return $this->render('profile/change_password.twig', [
             'errors' => Request::$errors,
             'csrf_token' => $this->generateCsrfToken(),
+            'auth' => $auth,
+            'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
     }
 
@@ -116,7 +123,9 @@ class ProfileController extends Controller
         $products = new Product();
 
         return $this->render('profile/favorites.twig', [
-            'products' => $products->getFavoritesByUser($auth['id']),
+            'products' => $products->findAll("WHERE id IN (SELECT product_id FROM favorites WHERE user_id = :user_id)", [':user_id' => $auth['id']]),
+            'auth' => $auth,
+            'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
     }
 
@@ -134,7 +143,30 @@ class ProfileController extends Controller
 
         return $this->render('profile/active_orders.twig', [
             'orders' => $order->getOrdersInfo($auth['id']),
-            'products' => $products->getOrdersByUser($auth['id'])
+            'products' => $products->getOrdersByUser($auth['id']),
+            'csrf_token' => $this->generateCsrfToken(),
+            'auth' => $auth,
+            'cart_qty' => $_COOKIE['cart_qty'] ?? null
+        ]);
+    }
+
+    public function historyOrders()
+    {
+        $user = new User();
+        $auth = $user->verifyAuth();
+        
+        if (!$auth) {
+            $this->redirect('/login');
+        }
+
+        $products = new Product();
+        $order = new Order();
+
+        return $this->render('profile/history_orders.twig', [
+            'orders' => $order->getHistoryOrdersInfo($auth['id']),
+            'products' => $products->getHistoryOrdersByUser($auth['id']),
+            'auth' => $auth,
+            'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
     }
 
@@ -143,18 +175,20 @@ class ProfileController extends Controller
         $user = new User;
         $auth = $user->verifyAuth();
 
-        // Очистка токена и куки
-        $token = $_COOKIE['session_token'];
-        $key = '5fQ-1VloNNPMsvo5HK_ylkX^%9%5+=B8';
-        $iv = 'iI^WL%GPVow6Ae3t';
-        $encrypted_token = openssl_encrypt($token, 'AES-128-CBC', $key, 0, $iv);
-        $this->redis()->del($encrypted_token);
-        setcookie('session_token', '', time() - 86400 * 30, '/');
+        if (isset($_POST['delete_user_account'])) {
+            // Очистка токена и куки
+            $token = $_COOKIE['session_token'];
+            $key = '5fQ-1VloNNPMsvo5HK_ylkX^%9%5+=B8';
+            $iv = 'iI^WL%GPVow6Ae3t';
+            $encrypted_token = openssl_encrypt($token, 'AES-128-CBC', $key, 0, $iv);
+            $this->redis()->del($encrypted_token);
+            setcookie('session_token', '', time() - 86400 * 30, '/');
 
-        // Удаление аккаунта
-        $user->delete($auth['id'], 'id');
+            // Удаление аккаунта
+            $user->delete($auth['id']);
 
-        // Перенаправляем пользователя на страницу авторизации
-        $this->redirect('/login');
+            // Перенаправляем пользователя на страницу авторизации
+            $this->redirect('/login');
+        }
     }
 }

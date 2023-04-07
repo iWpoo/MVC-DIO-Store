@@ -7,7 +7,6 @@ use App\Project\Models\User;
 	
 class UserController extends Controller
 {
-    // Регистрация
 	public function register() 
     {
         $user = new User();
@@ -71,7 +70,9 @@ class UserController extends Controller
 
     public function registerVerification()
     {
-        $user = new User();  
+        $user = new User();
+        $db = User::getLink(); 
+        
         $error = '';
 
         if (isset($_POST['send-code'])) {
@@ -85,15 +86,32 @@ class UserController extends Controller
             
             // Если код и валидация корректна, то регистрируем пользователя и авторизовываем заодно
             if ($code_redis and Request::validate($validator)) {
-                $data = unserialize($code_redis);
-                $user->create([
-                    'email' => $data['email'],
-                    'password' => $data['password'],
-                ]);
-                $id = User::getLink()->lastInsertId();
-                $user->auth(['id' => $id, 'email' => $data['email']]);
-                $this->redis()->del($encrypted_code);
-                $this->redirect('/');
+                // Начало транзакции
+                $db->beginTransaction();
+
+                try {
+                    // Сохраняем данные регистрации в БД
+                    $data = unserialize($code_redis);
+                    $user->create([
+                        'email' => $data['email'],
+                        'password' => $data['password'],
+                    ]);
+        
+                    // Получаем id с последней добавленной записи
+                    $id = User::getLink()->lastInsertId();
+
+                    // Авторизовываем
+                    $user->auth(['id' => $id, 'email' => $data['email']]);
+
+                    // Удаляем токен из Redis
+                    $this->redis()->del($encrypted_code);
+
+                    $db->commit();
+                    $this->redirect('/');
+                } catch(PDOException $e) {
+                    // Откат транзакции
+                    $db->rollBack();
+                }
             } else {
                 $error = 'Код для подтверждения почты не верный или устарел.';
             }
@@ -105,7 +123,6 @@ class UserController extends Controller
         ]);
     }
 
-    // Авторизация
     public function login() 
     {
         $userModel = new User;
@@ -143,28 +160,19 @@ class UserController extends Controller
     {
         $user = new User;
 
-        // Получаем токен из куки и шифруем его для сравнения токена из Redis
-        $token = $_COOKIE['session_token'];
-        $key = '5fQ-1VloNNPMsvo5HK_ylkX^%9%5+=B8';
-        $iv = 'iI^WL%GPVow6Ae3t';
-        $encrypted_token = openssl_encrypt($token, 'AES-128-CBC', $key, 0, $iv);
+        if (isset($_POST['logout'])) {
+            // Получаем токен из куки и шифруем его для сравнения токена из Redis
+            $token = $_COOKIE['session_token'];
+            $key = '5fQ-1VloNNPMsvo5HK_ylkX^%9%5+=B8';
+            $iv = 'iI^WL%GPVow6Ae3t';
+            $encrypted_token = openssl_encrypt($token, 'AES-128-CBC', $key, 0, $iv);
         
-        // Если данный токен сущесвует, то удаляем его из Redis и очищаем куки
-        $this->redis()->del($encrypted_token);
-        setcookie('session_token', '', time() - 86400 * 30, '/');
+            // Если данный токен существует, то удаляем его из Redis и очищаем куки
+            $this->redis()->del($encrypted_token);
+            setcookie('session_token', '', time() - 86400 * 30, '/');
 
-        // Перенаправляем на страницу авторизации
-        $this->redirect('/login');
-    }
-
-    public function index() {
-        $user = new User;
-        $auth = $user->verifyAuth();
-
-        if ($auth) {
-            echo "Hello, {$auth['email']}!";
-        } else {
+            // Перенаправляем на страницу авторизации
             $this->redirect('/login');
-        }
+        }        
     }
 }

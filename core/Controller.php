@@ -27,7 +27,7 @@ class Controller
         return $json;
 	}
     
-	// Add element data
+	// Add post element with xss defence
 	protected function add($element, string $way = 'htmlspecialchars')
 	{
 		if ($way === 'htmlspecialchars') {
@@ -38,9 +38,10 @@ class Controller
 	}
 
     // Upload files
-	protected function uploadFile($file, $filename)
+	protected function uploadFile($file, $filename, $path)
 	{
-		$destination = $_SERVER['DOCUMENT_ROOT'] . '/project/webroot/uploads/' . $filename;
+		$allPath = '/project/webroot/' . $path . '/';
+		$destination = $_SERVER['DOCUMENT_ROOT'] . $allPath . $filename;
 		move_uploaded_file($file['tmp_name'], $destination);
     }
 
@@ -57,6 +58,18 @@ class Controller
         header("Location: $to");
 		return $this;
 	}
+
+	// Redirect to previous page
+	protected function back()
+	{	
+		// Получаем URL-адрес предыдущей страницы из суперглобального массива $_SERVER
+		$url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/';
+	
+		// Отправляем HTTP-заголовок с кодом 302 и URL-адресом предыдущей страницы
+		header("Location: $url", true, 302);
+        return $this;
+	}
+	
 
 	// CSRF token
 	protected function generateCsrfToken() {

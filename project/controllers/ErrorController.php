@@ -6,8 +6,6 @@ use App\Core\Controller;
 class ErrorController extends Controller
 {
 	public function notFound() {
-		echo 'Страница не найдена';
+		return $this->render('error/notfound.twig', []);
 	}
-
-
 }

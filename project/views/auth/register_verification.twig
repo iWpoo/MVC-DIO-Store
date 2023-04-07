@@ -11,7 +11,12 @@
     <title>Register Verification</title>
 </head>
 <body>
-    <a href="/"><img alt="" src="/project/webroot/img/arrow-back.png" class="close"></a> 
+    <img onclick="goBack()" alt="arrow-back" src="/project/webroot/img/arrow-back.png" class="close">
+    <script>
+    function goBack() {
+        window.history.back();
+    }
+    </script>
     <div class="auth-form">
         <h1 class="logo">DIO</h1>
         <div class="title">Подтверждение почты</div><br>

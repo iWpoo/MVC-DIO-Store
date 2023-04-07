@@ -8,59 +8,42 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+    <script src="/project/webroot/js/jquery-3.6.4.min.js"></script>
     <title>DIO</title>
 </head>
 <body>
-    <header>
-      <div class="container">
-        <nav class="navbar">
-            <div>
-                <a href="#"><span class="active">Главная</span></a>
-                <a href="#">О Магазине</a>
-                <a href="#">Контакты</a>
-            </div>
-            <div>
-                <a id="myBtnLogin" href="#">Вход</a>
-                <a id="myBtnRegister" href="#">Регистрация</a>
-            </div>
-        </nav>
-        <hr>
-         
-        <div class="header">
-            <a href="#" class="logo">DIO</a>
-            <div class="search-container">
-                <input type="text" placeholder="🔍 Поиск по каталогу магазина">
-                <button type="submit">Найти</button>
-            </div>
-            <div class="basket">
-                <img src="/project/webroot/img/basket.png">
-                <label>Корзина</label>
-            </div>
-        </div>
-      </div>
-    </header>
+    {% include 'layouts/header.twig' %}
 
     <main>
+    <div class="breadcrumbs">
+			    <div class="pathPages">
+    <div class="breadcrumbs_arrow" onclick="goBack()">
+        <img src="/project/webroot/img/down-arrow.png">
+    </div>
+    <div class="path">
+        <a href="/" class="pathText" style="color: #a9a7a6; text-decoration: none;">Главная / </a> 
+        <span class="pathText">Профиль</span>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</div>
         <div class="container">
-            <div class="sidebar">
-              <ul>
-                <li><a href="#">Редактировать данные</a></li>
-                <li><a href="#">Изменить пароль</a></li>
-                <li><a href="#">Активные заказы</a></li>
-                <li><a href="#">Избранное</a></li>
-                <li><a href="#">История покупок</a></li>
-                <li><a href="#">Выйти</a></li>
-                <li><a href="#">Удалить аккаунт</a></li>
-              </ul>
-            </div>
+            {% include 'layouts/sidebar.twig' %}
+
             <div class="main">
               <h1>Активные заказы</h1>
                 {% for order in orders %}
-                <div class="order">
+                <div class="order order-{{ order.id }}">
                     <div class="order-header">
             <div class="order-info">
                 <div class="order-text">Заказ №{{ order.order_num }}</div><br>
-                <p><b>Дата заказа:</b> {{ order.created_at }}</p>
+                <p><b>Дата заказа:</b> {{ order.created_at }}</p><br>
+                <p><b>Статус:</b> {{ order.status }}</p>
             </div>
         </div><br>
         {% for product in products %}
@@ -82,20 +65,68 @@
             <p><b>Способ оплаты:</b> {{ order.payment_method }}</p><br>
             <p><b>Адрес доставки:</b> {{ order.address }}</p>
         </div>
+        {% if order.status is same as 'Новый' %}
+        <form>
+            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token }}">
+            <button type="button" name="cancel_order" class="cancel-button cancelOrder-{{ order.id }}">Отменить</button>
+        </form>
+        {% elseif order.status is same as 'Доставлен' %}
+        <form>
+            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token }}">
+            <button type="button" name="confirm_order" class="confirm-button confirmOrder-{{ order.id }}">Подтвердить</button>        
+        </form>
+        {% endif %}
         </div>
+
+        <script>
+        function reloadPage(csrf) {
+$.ajax({
+url: '/profile/active/orders',
+method: 'POST',
+dataType: 'html',
+data: {},
+success: function (data) {
+$('#csrf_token').val(csrf);
+}
+});
+}
+
+            $(".cancelOrder-{{ order.id }}").on("click", function() {
+            let csrf = $('#csrf_token').val();
+            $.ajax({
+                url: '/order/complete/{{ order.id }}',
+                type: 'POST',
+                cache: false,
+                data: {'cancel_order': true, 'csrf_token': csrf},
+                dataType: 'html',
+                success: function (data) {
+                    $('.order-{{ order.id }}').remove();
+                    reloadPage(data);        
+                }
+            });
+            });
+
+            $(".confirmOrder-{{ order.id }}").on("click", function() {
+            let csrf = $('#csrf_token').val();
+            $.ajax({
+                url: '/order/complete/{{ order.id }}',
+                type: 'POST',
+                cache: false,
+                data: {'confirm_order': true, 'csrf_token': csrf},
+                dataType: 'html',
+                success: function (data) {
+                    $('.order-{{ order.id }}').remove();
+                    reloadPage(data);
+                }
+            });
+        });
+        </script>
                 {% endfor %}     
             </div>
           </div>
     </main>
 
-    <div class="MobileShowNavigation">
-        <div class="menu">
-        <img src="/project/webroot/img/home.png">
-        <img src="/project/webroot/img/category.png">
-        <img src="/project/webroot/img/basketicon.png">
-        <a href="#"><img src="/project/webroot/img/profile.png"></a>
-        </div>
-    </div>
+    {% include 'layouts/mobile_navigation.twig' %}
 
 </body>
 </html>

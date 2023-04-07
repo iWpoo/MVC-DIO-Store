@@ -2,18 +2,23 @@ body {
 	background-color: white;
 }
 
-.sort {
-	background-color: white;
-	font-size: 28px;
-	font-family: Montserrat;
-	margin-top: 25px;
-	margin-left: 25px;
-	text-align: center;
-}
-
 .categories-table {
 	align-items: flex-start;
 	margin: 25px;
+}
+
+.breadcrumbs {
+	margin: 24px 0 0 24px;
+}
+
+@media(max-width: 1024px) {
+	.categories-table {
+		margin-top: 30px;
+	}
+
+	.breadcrumbs {
+		margin: 90px 0 0 24px;
+	}
 }
 
 .category-product {
@@ -32,5 +37,15 @@ body {
 }
 
 .category-product img {
-	max-width: 100%;
+	width: 30%;
+}
+
+@media(max-width: 480px) {
+    .category-product {
+		font-size: 24px;
+	}
+
+	.category-product img {
+		width: 80%;
+	}
 }

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/project/webroot/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto Mono">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+    <title>О нас</title>
+    <style>
+        .breadcrumbs {
+            margin: 24px 0 0 24px;
+        }
+
+        @media(max-width: 1024px) {
+            .breadcrumbs {
+                margin: 90px 0 0 24px;
+            }
+        }
+
+        @media(max-width: 425px) {
+            .breadcrumbs {
+                margin: 90px 0 0 16px;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: white;">
+    {% include 'layouts/header.twig' %}
+
+    <main>
+        <div class="container">
+        <div class="left">
+            {% include 'layouts/categories.twig' %}
+        </div>
+        </div>
+
+        <div class="right">
+        <div class="breadcrumbs">
+			    <div class="pathPages">
+    <div class="breadcrumbs_arrow" onclick="goBack()">
+        <img src="/project/webroot/img/down-arrow.png">
+    </div>
+    <div class="path">
+        <a href="/">Главная / </a> 
+        <span>О нас</span>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+			</div>
+
+            <h2 style="color: #00C469; margin-top: 25px; font-family: Montserrat; text-align: center;">О МАГАЗИНЕ</h2>
+
+            <div style="font-size: 18px; font-family: Montserrat; text-align: center;">Информация о магазине</div>
+
+        </div>
+
+    </main>
+
+    {% include 'layouts/footer.twig' %}
+    {% include 'layouts/mobile_navigation.twig' %}
+</body>
+</html>

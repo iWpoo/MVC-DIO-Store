@@ -30,12 +30,14 @@ DIO использует следующие технологии:
 ## Скриншоты
 
 **Скриншоты компьютерной версии**
+
 ![Screenshot 1](screenshots/screenshot1.png "Главная страница")
 ![Screenshot 2](screenshots/screenshot2.png "Страница товара")
 ![Screenshot 3](screenshots/screenshot3.png "Страница оформление заказа")
 ![Screenshot 4](screenshots/screenshot4.png "Страница активных заказов")
 
 **Скриншоты мобильной версии**
+
 ![Screenshot 5](screenshots/screenshot5.png "Страница корзинки мобильной версии")
 ![Screenshot 6](screenshots/screenshot6.jpg "Страница активных заказов мобильной версии")
 

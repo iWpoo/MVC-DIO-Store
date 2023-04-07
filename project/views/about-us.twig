@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,34 +27,35 @@
         }
     </style>
 </head>
+
 <body style="background-color: white;">
     {% include 'layouts/header.twig' %}
 
     <main>
         <div class="container">
-        <div class="left">
-            {% include 'layouts/categories.twig' %}
-        </div>
+            <div class="left">
+                {% include 'layouts/categories.twig' %}
+            </div>
         </div>
 
         <div class="right">
-        <div class="breadcrumbs">
-			    <div class="pathPages">
-    <div class="breadcrumbs_arrow" onclick="goBack()">
-        <img src="/project/webroot/img/down-arrow.png">
-    </div>
-    <div class="path">
-        <a href="/">Главная / </a> 
-        <span>О нас</span>
-    </div>
-</div>
+            <div class="breadcrumbs">
+                <div class="pathPages">
+                    <div class="breadcrumbs_arrow" onclick="goBack()">
+                        <img src="/project/webroot/img/down-arrow.png">
+                    </div>
+                    <div class="path">
+                        <a href="/">Главная / </a>
+                        <span>О нас</span>
+                    </div>
+                </div>
 
-<script>
-    function goBack() {
-        window.history.back();
-    }
-</script>
-			</div>
+                <script>
+                    function goBack() {
+                        window.history.back();
+                    }
+                </script>
+            </div>
 
             <h2 style="color: #00C469; margin-top: 25px; font-family: Montserrat; text-align: center;">О МАГАЗИНЕ</h2>
 
@@ -66,4 +68,5 @@
     {% include 'layouts/footer.twig' %}
     {% include 'layouts/mobile_navigation.twig' %}
 </body>
+
 </html>

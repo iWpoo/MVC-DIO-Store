@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,27 +11,28 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
     <title>Категории</title>
 </head>
+
 <body>
     {% include 'layouts/header.twig' %}
 
     <main>
-    <div class="breadcrumbs">
-			    <div class="pathPages">
-    <div class="breadcrumbs_arrow" onclick="goBack()">
-        <img src="/project/webroot/img/down-arrow.png">
-    </div>
-    <div class="path">
-        <a href="/">Главная / </a> 
-        <span>Категории</span>
-    </div>
-</div>
+        <div class="breadcrumbs">
+            <div class="pathPages">
+                <div class="breadcrumbs_arrow" onclick="goBack()">
+                    <img src="/project/webroot/img/down-arrow.png">
+                </div>
+                <div class="path">
+                    <a href="/">Главная / </a>
+                    <span>Категории</span>
+                </div>
+            </div>
 
-<script>
-    function goBack() {
-        window.history.back();
-    }
-</script>
-</div>
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+        </div>
         <h3 class="categories_title">Категории</h3>
         <div class="categories-phone">
             <div class="categories-item" id="acc_title" onclick="showListCategory('acc', 'acc_arrow', 'acc_title')">Аксессуары<img id="acc_arrow" alt="" src="black_arrow.png" class="arrow"></div>
@@ -87,34 +89,35 @@
                 <li><a href="/search/subcategory/?subcategory=32">Электросамокаты</a></li>
             </ul>
             <div class="categories-item" onclick="showListCategory('notebooks', 'note_arrow', 'note_title')" id="note_title">Ноутбуки<img id="note_arrow" alt="" src="black_arrow.png" class="arrow"></div>
-                <ul id="notebooks">
-                    <li><a href="/search/subcategory/?subcategory=33">Apple</a></li>
-                    <li><a href="/search/subcategory/?subcategory=34">Hp</a></li>
-                    <li><a href="/search/subcategory/?subcategory=35">Asus</a></li>
-                    <li><a href="/search/subcategory/?subcategory=36">Lenovo</a></li>
-                    <li><a href="/search/subcategory/?subcategory=37">Xiaomi</a></li>
-                </ul>
+            <ul id="notebooks">
+                <li><a href="/search/subcategory/?subcategory=33">Apple</a></li>
+                <li><a href="/search/subcategory/?subcategory=34">Hp</a></li>
+                <li><a href="/search/subcategory/?subcategory=35">Asus</a></li>
+                <li><a href="/search/subcategory/?subcategory=36">Lenovo</a></li>
+                <li><a href="/search/subcategory/?subcategory=37">Xiaomi</a></li>
+            </ul>
         </div>
     </main>
 
     <script>
         function showListCategory(id, id_arrow, id_title) {
             const x = document.getElementById(id);
-                    const arrow = document.getElementById(id_arrow);
-                    const title = document.getElementById(id_title);
-                    if (x.style.display === "block") {
-                        x.style.display = "none";
-                        title.style.color = "black";
-                        arrow.style = "transform: rotate(0deg); transition: 0.5s;";
-                    } else {
-                        x.style.display = "block";
-                        title.style.color = "#00B561";
-                        arrow.style = "transform: rotate(180deg); transition: 0.5s;";
-                    }
+            const arrow = document.getElementById(id_arrow);
+            const title = document.getElementById(id_title);
+            if (x.style.display === "block") {
+                x.style.display = "none";
+                title.style.color = "black";
+                arrow.style = "transform: rotate(0deg); transition: 0.5s;";
+            } else {
+                x.style.display = "block";
+                title.style.color = "#00B561";
+                arrow.style = "transform: rotate(180deg); transition: 0.5s;";
+            }
         }
-    </script>   
+    </script>
 
     {% include 'layouts/footer.twig' %}
     {% include 'layouts/mobile_navigation.twig' %}
 </body>
+
 </html>

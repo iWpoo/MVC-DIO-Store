@@ -33,35 +33,35 @@ main {
     flex-direction: column;
     align-items: center;
     padding: 24px;
-  }
-  
-  .product-image img {
+}
+
+.product-image img {
     max-width: 100%;
     max-height: 100%;
-  }
-  
-  .image-thumbnails {
+}
+
+.image-thumbnails {
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 500px;
     overflow: auto;
     margin-top: 15px;
-  }
-  
-  .image-thumbnails img {
+}
+
+.image-thumbnails img {
     width: 75px;
     height: 75px;
     object-fit: contain;
     margin-right: 10px;
     border: 1px solid #ccc;
     cursor: pointer;
-  }
-  
-  .image-thumbnails img.active {
+}
+
+.image-thumbnails img.active {
     border: 2px solid #000;
-  }
-  
+}
+
 
 .product_info {
     display: flex;
@@ -134,13 +134,13 @@ main {
     .product-gallery {
         width: 100%;
         padding: 0;
-      }
-      
-      .image-thumbnails {
+    }
+
+    .image-thumbnails {
         width: 100%;
         overflow: auto;
-      }
-    
+    }
+
     .product_info .title {
         font-size: 20px;
     }
@@ -156,6 +156,7 @@ main {
         display: flex;
         justify-content: center;
     }
+
     .product-image img {
         max-width: 80%;
         max-height: 80%;
@@ -163,15 +164,15 @@ main {
 }
 
 .marker {
-  color: white;
-  font-family: "Roboto Mono", sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  padding: 3px 0 3px 7px;
-  border-radius: 4px;
-  cursor: default;
-  width: 70px;
-  margin-top: 20px;
+    color: white;
+    font-family: "Roboto Mono", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    padding: 3px 0 3px 7px;
+    border-radius: 4px;
+    cursor: default;
+    width: 70px;
+    margin-top: 20px;
 }
 
 .product_mod {
@@ -242,7 +243,7 @@ main {
 @media(min-width: 1200px) {
     .ch div {
         width: 685px;
-    }    
+    }
 }
 
 .ch .name {
@@ -284,7 +285,7 @@ main {
     .ch .name {
         font-size: 15px;
     }
-    
+
     .ch span {
         font-size: 15px;
     }

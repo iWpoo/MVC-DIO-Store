@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,46 +11,48 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
     <title>DIO</title>
 </head>
+
 <body>
     {% include 'layouts/header.twig' %}
 
     <main>
-    <div class="breadcrumbs">
-			    <div class="pathPages">
-    <div class="breadcrumbs_arrow" onclick="goBack()">
-        <img src="/project/webroot/img/down-arrow.png">
-    </div>
-    <div class="path">
-        <a href="/" class="pathText" style="color: #a9a7a6; text-decoration: none;">Главная / </a> 
-        <span class="pathText">Профиль</span>
-    </div>
-</div>
+        <div class="breadcrumbs">
+            <div class="pathPages">
+                <div class="breadcrumbs_arrow" onclick="goBack()">
+                    <img src="/project/webroot/img/down-arrow.png">
+                </div>
+                <div class="path">
+                    <a href="/" class="pathText" style="color: #a9a7a6; text-decoration: none;">Главная / </a>
+                    <span class="pathText">Профиль</span>
+                </div>
+            </div>
 
-<script>
-    function goBack() {
-        window.history.back();
-    }
-</script>
-</div>
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+        </div>
         <div class="container">
             {% include 'layouts/sidebar.twig' %}
-            
+
             <div class="main">
-              <h1>Избранное</h1>
-              <div class="products">
-                {% for product in products %}
+                <h1>Избранное</h1>
+                <div class="products">
+                    {% for product in products %}
                     <div class="product">
                         <a href="/product/{{ product.id }}" class="picture"><img src="/project/webroot/uploads/{{ product.image }}"></a>
                         <a href="/product/{{ product.id }}" class="title"><span>{{ product.title }}</span></a>
                         <a href="/product/{{ product.id }}" class="price"><span>{{ product.price }}₽</span></a>
                     </div>
-                {% endfor %}              
+                    {% endfor %}
+                </div>
             </div>
-            </div>
-          </div>
+        </div>
     </main>
 
     {% include 'layouts/mobile_navigation.twig' %}
 
 </body>
+
 </html>

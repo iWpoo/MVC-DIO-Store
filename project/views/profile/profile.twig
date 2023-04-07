@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,116 +11,118 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
     <title>Профиль</title>
 </head>
+
 <body>
     {% include 'layouts/header.twig' %}
 
     <main>
-    <div class="breadcrumbs">
-			    <div class="pathPages">
-    <div class="breadcrumbs_arrow" onclick="goBack()">
-        <img src="/project/webroot/img/down-arrow.png">
-    </div>
-    <div class="path">
-        <a href="/" class="pathText" style="color: #a9a7a6; text-decoration: none;">Главная / </a> 
-        <span class="pathText">Профиль</span>
-    </div>
-</div>
+        <div class="breadcrumbs">
+            <div class="pathPages">
+                <div class="breadcrumbs_arrow" onclick="goBack()">
+                    <img src="/project/webroot/img/down-arrow.png">
+                </div>
+                <div class="path">
+                    <a href="/" class="pathText" style="color: #a9a7a6; text-decoration: none;">Главная / </a>
+                    <span class="pathText">Профиль</span>
+                </div>
+            </div>
 
-<script>
-    function goBack() {
-        window.history.back();
-    }
-</script>
-</div>
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+        </div>
         <div class="container" id="profile_computer_version">
             {% include 'layouts/sidebar.twig' %}
 
             <div class="main">
-              <div class="profile-container">
+                <div class="profile-container">
 
-                <div class="profile-header">
-                  <h1>Профиль</h1>
+                    <div class="profile-header">
+                        <h1>Профиль</h1>
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-info-first">
+                            <div class="profile-info__item">
+                                <span class="profile-info__label">Имя:</span>
+                                <span class="profile-info__value">{{ user.first_name }}</span>
+                            </div>
+                            <div class="profile-info__item">
+                                <span class="profile-info__label">Фамилия:</span>
+                                <span class="profile-info__value">{{ user.last_name }}</span>
+                            </div>
+                        </div>
+                        <div class="profile-info-second">
+                            <div class="profile-info__item">
+                                <span class="profile-info__label">Email:</span>
+                                <span class="profile-info__value">{{ user.email }}</span>
+                            </div>
+                            <div class="profile-info__item">
+                                <span class="profile-info__label">Телефон:</span>
+                                <span class="profile-info__value">{{ user.phone }}</span>
+                            </div>
+                            <div class="profile-info__item">
+                                <span class="profile-info__label">Адрес:</span>
+                                <span class="profile-info__value">{{ user.address }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="profile-info">
-                <div class="profile-info-first">
-                  <div class="profile-info__item">
-                    <span class="profile-info__label">Имя:</span>
-                    <span class="profile-info__value">{{ user.first_name }}</span>
-                  </div>
-                  <div class="profile-info__item">
-                    <span class="profile-info__label">Фамилия:</span>
-                    <span class="profile-info__value">{{ user.last_name }}</span>
-                  </div>
-                  </div>
-                  <div class="profile-info-second">
-                  <div class="profile-info__item">
-                    <span class="profile-info__label">Email:</span>
-                    <span class="profile-info__value">{{ user.email }}</span>
-                  </div>
-                  <div class="profile-info__item">
-                    <span class="profile-info__label">Телефон:</span>
-                    <span class="profile-info__value">{{ user.phone }}</span>
-                  </div>
-                  <div class="profile-info__item">
-                    <span class="profile-info__label">Адрес:</span>
-                    <span class="profile-info__value">{{ user.address }}</span>
-                  </div>
-                </div>
-                </div>
-              </div>
-              
+
 
             </div>
-          </div>
+        </div>
 
 
         <!-- For mobile version -->
         <ul class="list_profile">
             <div class="profile-container">
                 <div class="profile-header">
-                  <h2>Профиль</h2>
+                    <h2>Профиль</h2>
                 </div>
                 <div>
-                  <div class="profile-info__item">
-                    <span class="profile-info__label">Имя:</span>
-                    <span class="profile-info__value">{{ user.first_name }}</span>
-                  </div>
-                  <div class="profile-info__item">
-                    <span class="profile-info__label">Фамилия:</span>
-                    <span class="profile-info__value">{{ user.last_name }}</span>
-                  </div>
-                  <div class="profile-info__item">
-                    <span class="profile-info__label">Email:</span>
-                    <span class="profile-info__value">{{ user.email }}</span>
-                  </div>
-                  <div class="profile-info__item">
-                    <span class="profile-info__label">Телефон:</span>
-                    <span class="profile-info__value">{{ user.phone }}</span>
-                  </div>
-                  <div class="profile-info__item">
-                    <span class="profile-info__label">Адрес:</span>
-                    <span class="profile-info__value">{{ user.address }}</span>
-                  </div>
+                    <div class="profile-info__item">
+                        <span class="profile-info__label">Имя:</span>
+                        <span class="profile-info__value">{{ user.first_name }}</span>
+                    </div>
+                    <div class="profile-info__item">
+                        <span class="profile-info__label">Фамилия:</span>
+                        <span class="profile-info__value">{{ user.last_name }}</span>
+                    </div>
+                    <div class="profile-info__item">
+                        <span class="profile-info__label">Email:</span>
+                        <span class="profile-info__value">{{ user.email }}</span>
+                    </div>
+                    <div class="profile-info__item">
+                        <span class="profile-info__label">Телефон:</span>
+                        <span class="profile-info__value">{{ user.phone }}</span>
+                    </div>
+                    <div class="profile-info__item">
+                        <span class="profile-info__label">Адрес:</span>
+                        <span class="profile-info__value">{{ user.address }}</span>
+                    </div>
                 </div>
-              </div>
+            </div>
             <li><a href="/edit/profile">Редактировать данные</a></li>
             <li><a href="/change/password">Изменить пароль</a></li>
             <li><a href="/profile/active/orders">Активные заказы</a></li>
             <li><a href="/profile/favorites">Избранное</a></li>
             <li><a href="/profile/history/orders">История покупок</a></li>
             <li>
-            <form action="/logout" method="POST">
-              <button type="submit" name="logout">Выйти</button>
-            </form>
+                <form action="/logout" method="POST">
+                    <button type="submit" name="logout">Выйти</button>
+                </form>
             </li>
             <li>
-            <form action="/delete/profile" method="POST">
-              <button type="submit" name="delete_user_account">Удалить аккаунт</button>
-            </form>
+                <form action="/delete/profile" method="POST">
+                    <button type="submit" name="delete_user_account">Удалить аккаунт</button>
+                </form>
             </li>
         </ul>
     </main>
 
     {% include 'layouts/mobile_navigation.twig' %}
 </body>
+
 </html>

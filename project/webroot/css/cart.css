@@ -64,7 +64,10 @@
     height: 18px;
 }
 
-.block-title input, label, img, #choose-all {
+.block-title input,
+label,
+img,
+#choose-all {
     cursor: pointer;
 }
 
@@ -112,13 +115,13 @@
         font-size: 20px;
         margin-top: 90px;
     }
-    
+
     .empty_cart img {
         width: 100px;
         height: auto;
         object-fit: cover;
     }
-    
+
     .empty_cart span {
         font-size: 14px;
         width: 90%;
@@ -126,8 +129,8 @@
     }
 }
 
-@media (max-width: 1024px) { 
-    .block-elem img{
+@media (max-width: 1024px) {
+    .block-elem img {
         width: 24px;
     }
 
@@ -136,7 +139,7 @@
     }
 }
 
-@media (max-width: 425px) { 
+@media (max-width: 425px) {
     .block-title h1 {
         font-size: 28px;
     }
@@ -187,7 +190,8 @@
     margin-left: 16px;
 }
 
-.card-item a, .card-item label {
+.card-item a,
+.card-item label {
     font-size: 16px;
     font-family: Montserrat;
     font-weight: bold;
@@ -236,31 +240,31 @@
     width: 100%;
 }
 
-@media (max-width: 1024px) { 
+@media (max-width: 1024px) {
     .block-basket button {
         display: none;
     }
-    
-.button-buy-mobile {
-    box-shadow: 0px -4px 10px rgb(0 0 0 / 12%);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    height: 52px;
-    width: 100%;
-    z-index: 2;
-}
 
-.button-buy-mobile button {
-    width: 95%;
-    height: 31px;
-    box-sizing: border-box;
-    font-weight: bold;
-    font-size: 12px;
-    color: white;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 4px;
-}
+    .button-buy-mobile {
+        box-shadow: 0px -4px 10px rgb(0 0 0 / 12%);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        height: 52px;
+        width: 100%;
+        z-index: 2;
+    }
+
+    .button-buy-mobile button {
+        width: 95%;
+        height: 31px;
+        box-sizing: border-box;
+        font-weight: bold;
+        font-size: 12px;
+        color: white;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 4px;
+    }
 }

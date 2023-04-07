@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,122 +12,130 @@
     <script src="/project/webroot/js/jquery-3.6.4.min.js"></script>
     <title>DIO</title>
 </head>
+
 <body>
     {% include 'layouts/header.twig' %}
 
     <main>
-    <div class="breadcrumbs">
-			    <div class="pathPages">
-    <div class="breadcrumbs_arrow" onclick="goBack()">
-        <img src="/project/webroot/img/down-arrow.png">
-    </div>
-    <div class="path">
-        <a href="/" class="pathText" style="color: #a9a7a6; text-decoration: none;">Главная / </a> 
-        <span class="pathText">Профиль</span>
-    </div>
-</div>
+        <div class="breadcrumbs">
+            <div class="pathPages">
+                <div class="breadcrumbs_arrow" onclick="goBack()">
+                    <img src="/project/webroot/img/down-arrow.png">
+                </div>
+                <div class="path">
+                    <a href="/" class="pathText" style="color: #a9a7a6; text-decoration: none;">Главная / </a>
+                    <span class="pathText">Профиль</span>
+                </div>
+            </div>
 
-<script>
-    function goBack() {
-        window.history.back();
-    }
-</script>
-</div>
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+        </div>
         <div class="container">
             {% include 'layouts/sidebar.twig' %}
 
             <div class="main">
-              <h1>Активные заказы</h1>
+                <h1>Активные заказы</h1>
                 {% for order in orders %}
                 <div class="order order-{{ order.id }}">
                     <div class="order-header">
-            <div class="order-info">
-                <div class="order-text">Заказ №{{ order.order_num }}</div><br>
-                <p><b>Дата заказа:</b> {{ order.created_at }}</p><br>
-                <p><b>Статус:</b> {{ order.status }}</p>
-            </div>
-        </div><br>
-        {% for product in products %}
-        {% if product.order_id is same as order.id %}
-        <div class="order-items" style="cursor: pointer;" onclick="window.location = '/product/{{ product.product_id }}';">
-            <div class="order-item">
-                <img src="/project/webroot/uploads/{{ product.image }}">
-                <div class="item-info">
-                    <p><b>Товар:</b> {{ product.title }}</p><br>
-                    <p><b>Кол-во:</b> {{ product.quantity }}</p><br>
-                    <p><b>Цена:</b> {{ product.price }}₽</p>
+                        <div class="order-info">
+                            <div class="order-text">Заказ №{{ order.order_num }}</div><br>
+                            <p><b>Дата заказа:</b> {{ order.created_at }}</p><br>
+                            <p><b>Статус:</b> {{ order.status }}</p>
+                        </div>
+                    </div><br>
+                    {% for product in products %}
+                    {% if product.order_id is same as order.id %}
+                    <div class="order-items" style="cursor: pointer;" onclick="window.location = '/product/{{ product.product_id }}';">
+                        <div class="order-item">
+                            <img src="/project/webroot/uploads/{{ product.image }}">
+                            <div class="item-info">
+                                <p><b>Товар:</b> {{ product.title }}</p><br>
+                                <p><b>Кол-во:</b> {{ product.quantity }}</p><br>
+                                <p><b>Цена:</b> {{ product.price }}₽</p>
+                            </div>
+                        </div>
+                    </div><br>
+                    {% endif %}
+                    {% endfor %}
+                    <div class="order-summary">
+                        <p><b>Общая стоимость:</b> {{ order.total_price }}₽</p><br>
+                        <p><b>Способ оплаты:</b> {{ order.payment_method }}</p><br>
+                        <p><b>Адрес доставки:</b> {{ order.address }}</p>
+                    </div>
+                    {% if order.status is same as 'Новый' %}
+                    <form>
+                        <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token }}">
+                        <button type="button" name="cancel_order" class="cancel-button cancelOrder-{{ order.id }}">Отменить</button>
+                    </form>
+                    {% elseif order.status is same as 'Доставлен' %}
+                    <form>
+                        <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token }}">
+                        <button type="button" name="confirm_order" class="confirm-button confirmOrder-{{ order.id }}">Подтвердить</button>
+                    </form>
+                    {% endif %}
                 </div>
+
+                <script>
+                    function reloadPage(csrf) {
+                        $.ajax({
+                            url: '/profile/active/orders',
+                            method: 'POST',
+                            dataType: 'html',
+                            data: {},
+                            success: function(data) {
+                                $('#csrf_token').val(csrf);
+                            }
+                        });
+                    }
+
+                    $(".cancelOrder-{{ order.id }}").on("click", function() {
+                        let csrf = $('#csrf_token').val();
+                        $.ajax({
+                            url: '/order/complete/{{ order.id }}',
+                            type: 'POST',
+                            cache: false,
+                            data: {
+                                'cancel_order': true,
+                                'csrf_token': csrf
+                            },
+                            dataType: 'html',
+                            success: function(data) {
+                                $('.order-{{ order.id }}').remove();
+                                reloadPage(data);
+                            }
+                        });
+                    });
+
+                    $(".confirmOrder-{{ order.id }}").on("click", function() {
+                        let csrf = $('#csrf_token').val();
+                        $.ajax({
+                            url: '/order/complete/{{ order.id }}',
+                            type: 'POST',
+                            cache: false,
+                            data: {
+                                'confirm_order': true,
+                                'csrf_token': csrf
+                            },
+                            dataType: 'html',
+                            success: function(data) {
+                                $('.order-{{ order.id }}').remove();
+                                reloadPage(data);
+                            }
+                        });
+                    });
+                </script>
+                {% endfor %}
             </div>
-        </div><br>
-        {% endif %}
-        {% endfor %}
-        <div class="order-summary">
-            <p><b>Общая стоимость:</b> {{ order.total_price }}₽</p><br>
-            <p><b>Способ оплаты:</b> {{ order.payment_method }}</p><br>
-            <p><b>Адрес доставки:</b> {{ order.address }}</p>
         </div>
-        {% if order.status is same as 'Новый' %}
-        <form>
-            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token }}">
-            <button type="button" name="cancel_order" class="cancel-button cancelOrder-{{ order.id }}">Отменить</button>
-        </form>
-        {% elseif order.status is same as 'Доставлен' %}
-        <form>
-            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token }}">
-            <button type="button" name="confirm_order" class="confirm-button confirmOrder-{{ order.id }}">Подтвердить</button>        
-        </form>
-        {% endif %}
-        </div>
-
-        <script>
-        function reloadPage(csrf) {
-$.ajax({
-url: '/profile/active/orders',
-method: 'POST',
-dataType: 'html',
-data: {},
-success: function (data) {
-$('#csrf_token').val(csrf);
-}
-});
-}
-
-            $(".cancelOrder-{{ order.id }}").on("click", function() {
-            let csrf = $('#csrf_token').val();
-            $.ajax({
-                url: '/order/complete/{{ order.id }}',
-                type: 'POST',
-                cache: false,
-                data: {'cancel_order': true, 'csrf_token': csrf},
-                dataType: 'html',
-                success: function (data) {
-                    $('.order-{{ order.id }}').remove();
-                    reloadPage(data);        
-                }
-            });
-            });
-
-            $(".confirmOrder-{{ order.id }}").on("click", function() {
-            let csrf = $('#csrf_token').val();
-            $.ajax({
-                url: '/order/complete/{{ order.id }}',
-                type: 'POST',
-                cache: false,
-                data: {'confirm_order': true, 'csrf_token': csrf},
-                dataType: 'html',
-                success: function (data) {
-                    $('.order-{{ order.id }}').remove();
-                    reloadPage(data);
-                }
-            });
-        });
-        </script>
-                {% endfor %}     
-            </div>
-          </div>
     </main>
 
     {% include 'layouts/mobile_navigation.twig' %}
 
 </body>
+
 </html>

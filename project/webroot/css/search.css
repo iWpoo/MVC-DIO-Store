@@ -1,110 +1,110 @@
 body {
-	background-color: white;
+    background-color: white;
 }
 
 .filter-price {
-	border: 1px solid #E7E8EA;
-	background-color: white;
-	margin: 10px 0 0 25px;
-	width: 355px;
+    border: 1px solid #E7E8EA;
+    background-color: white;
+    margin: 10px 0 0 25px;
+    width: 355px;
 }
 
 .search_text {
-	color: #232323;
-	font-size: 18px;
-	font-family: "Montserrat", sans-serif;
+    color: #232323;
+    font-size: 18px;
+    font-family: "Montserrat", sans-serif;
     margin: 24px 0 0 24px;
 }
 
 .notFoundText {
-	color: #232323;
-	font-family: "Montserrat", sans-serif;
-	font-size: 28px;
-	margin-left: 24px;
+    color: #232323;
+    font-family: "Montserrat", sans-serif;
+    font-size: 28px;
+    margin-left: 24px;
 }
 
 .breadcrumbs {
-	margin: 24px 0 0 24px;
+    margin: 24px 0 0 24px;
 }
 
 @media (min-width: 2000px) {
-	.filter-price {
-	  margin-left: 0;
-	}
+    .filter-price {
+        margin-left: 0;
+    }
 }
 
 @media (max-width: 1200px) {
-  .filter-price {
-    width: 260px;
-  }
+    .filter-price {
+        width: 260px;
+    }
 }
 
 @media (max-width: 1280px) {
-  .filter-price {
-    width: 330px;
-  }
+    .filter-price {
+        width: 330px;
+    }
 }
 
 @media (max-width: 1366px) {
-  .filter-price {
-    width: 280px;
-  }
+    .filter-price {
+        width: 280px;
+    }
 }
 
 @media (max-width: 1550px) {
-  .filter-price {
-    width: 320px;
-  }
+    .filter-price {
+        width: 320px;
+    }
 }
 
 @media (max-width: 1024px) {
-	.block_search_products {
-	    margin-top: 20px;
-	}
+    .block_search_products {
+        margin-top: 20px;
+    }
 
-	.notFoundText {
-		font-size: 24px;
-		margin-bottom: 150px;
-	}
+    .notFoundText {
+        font-size: 24px;
+        margin-bottom: 150px;
+    }
 
-	.breadcrumbs {
-		margin: 100px 0 0 24px;
-	}
+    .breadcrumbs {
+        margin: 100px 0 0 24px;
+    }
 }
 
 @media (max-width: 425px) {
-	.breadcrumbs {
-		margin: 90px 0 0 16px;
-	}
+    .breadcrumbs {
+        margin: 90px 0 0 16px;
+    }
 
-	.search_text {
-		margin-left: 16px;
-	}
+    .search_text {
+        margin-left: 16px;
+    }
 }
 
 .filter-price .title {
-	color: black;
-	font-family: Montserrat;
+    color: black;
+    font-family: Montserrat;
     padding: 20px;
     margin-top: 0;
     margin-bottom: 10px;
 }
 
 .filter-price label {
-	color: black;
-	font-family: Montserrat;
-	font-size: 16px;
-	padding-left: 20px;
+    color: black;
+    font-family: Montserrat;
+    font-size: 16px;
+    padding-left: 20px;
 }
 
 .filter-price input {
-	border: 1px solid #CACACA;
-	border-radius: 4px;
-	height: 26px;
-	width: 68px;
-	outline: none;
-	padding-left: 5px;
-	margin-bottom: 25px;
+    border: 1px solid #CACACA;
+    border-radius: 4px;
+    height: 26px;
+    width: 68px;
+    outline: none;
+    padding-left: 5px;
+    margin-bottom: 25px;
 }
 
 .show-filter {
@@ -124,16 +124,114 @@ body {
 }
 
 .filter-price select {
-	border: 1px solid #E7E8EA;
-	border-radius: 4px;
-	font-size: 14px;
-	font-family: Montserrat;
-	outline: none;
-	padding: 5px;
-	color: gray;
+    border: 1px solid #E7E8EA;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: Montserrat;
+    outline: none;
+    padding: 5px;
+    color: gray;
     margin-left: 20px;
 }
 
 #category {
-	display: none;
+    display: none;
+}
+
+.block-search-breadcrumbs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filters {
+    width: 32px;
+    height: 32px;
+    margin-right: 24px;
+    display: none;
+}
+
+@media(max-width: 1024px) {
+    .filters {
+        display: block;
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 50;
+        font-family: Montserrat;
+    }
+
+    .modal {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        width: 400px;
+    }
+
+    .modal h2 {
+        margin-top: 0;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .modal-overlay label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .modal-overlay input[type="number"] {
+        width: 100%;
+        padding: 5px;
+        border-radius: 5px;
+        border: none;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-overlay select {
+        width: 100%;
+        padding: 5px;
+        border-radius: 5px;
+        border: none;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-overlay button[type="submit"],
+    button.modal-close {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .modal-overlay button[type="submit"]:hover,
+    button.modal-close:hover {
+        background-color: #0069d9;
+    }
+
+}
+
+@media(max-width:480px) {
+    .filters {
+        width: 32px;
+        height: 32px;
+        margin-right: 14px;
+    }
+
+    .modal {
+        width: 100%;
+    }
 }

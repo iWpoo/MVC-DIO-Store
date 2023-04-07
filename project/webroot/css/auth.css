@@ -31,19 +31,19 @@ body {
 
 @media (max-width: 2000px) {
   .auth-form form {
-    width: 30%;
+      width: 30%;
   }
 }
 
 @media (max-width: 1200px) {
   .auth-form form {
-    width: 40%;
+      width: 40%;
   }
 }
 
 @media (max-width: 992px) {
   .auth-form form {
-    width: 90%;
+      width: 90%;
   }
 }
 
@@ -68,12 +68,12 @@ body {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-} 
+}
 
 .auth-form form .btn {
   border: none;
   background-color: white;
-  color: #DC3545; 
+  color: #DC3545;
   font-family: Montserrat;
   font-size: 16px;
   font-weight: bold;
@@ -127,11 +127,11 @@ body {
   font-weight: bold;
   font-family: Pacifico;
   color: #232323;
-  margin: 0; 
+  margin: 0;
 }
 
 @media (max-width: 1024px) {
   .close {
-    display: block;
+      display: block;
   }
 }

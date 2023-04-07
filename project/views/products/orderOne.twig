@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,104 +12,105 @@
     <script src="/project/webroot/js/jquery-3.6.4.min.js"></script>
     <title>Оформление заказа</title>
 </head>
+
 <body>
     {% include 'layouts/header.twig' %}
 
     <main class="order">
         <div class="order_container">
-        <div class="breadcrumbs">
-			    <div class="pathPages">
-    <div class="breadcrumbs_arrow" onclick="goBack()">
-        <img src="/project/webroot/img/down-arrow.png">
-    </div>
-    <div class="path">
-        <a href="/">Главная / </a> 
-        <span>Оформление заказа</span>
-    </div>
-</div>
+            <div class="breadcrumbs">
+                <div class="pathPages">
+                    <div class="breadcrumbs_arrow" onclick="goBack()">
+                        <img src="/project/webroot/img/down-arrow.png">
+                    </div>
+                    <div class="path">
+                        <a href="/">Главная / </a>
+                        <span>Оформление заказа</span>
+                    </div>
+                </div>
 
-<script>
-    function goBack() {
-        window.history.back();
-    }
-</script>
-			</div>
-        <h3 class="order_title">ОФОРМЛЕНИЕ ЗАКАЗА</h3>
-        <div class="order_block">
-            <div class="address_info">
-                <h4>АДРЕС ДОСТАВКИ</h4>
-                <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.address_required }}</div>
-                <div class="info">{{ user.address ? user.address : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить адрес</li></a>" }}</div>
-                <hr>
-                <h4>КОНТАКТНАЯ ИНФОРМАЦИЯ</h4>
-                <div class="info">{{ user.first_name or user.last_name ? user.first_name : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить имя</li></a>" }} {{ user.last_name }}</div><br>
-                <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.phone_required }}</div>
-                <div class="info">{{ user.phone ? user.phone : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить телефон</li></a>" }}</div><br>
-                <div class="info">{{ user.email }}</div>
+                <script>
+                    function goBack() {
+                        window.history.back();
+                    }
+                </script>
             </div>
-            <div class="payments-methods">
-                <h4>СПОСОБЫ ОПЛАТЫ</h4>
-                <p id="payment_num" style="display: none;"></p>
-                <hr>
-                <div class="payment-methods">
-                <div class="payment-methods-method" onclick="updateText(this, 1)">
-                    <img alt="" src="/project/webroot/img/money.svg">
-                    <div>
-                        <span>Через курьера</span>
-                        <p>(оплаты наличными)</p>
-                    </div>
-                </div>   
-                <div class="payment-methods-method" onclick="updateText(this, 2)">
-                    <img alt="" src="/project/webroot/img/samovyzov.svg">
-                    <div>
-                        <span>Самовызов</span>
-                    </div>
-                </div> 
-                <div class="payment-methods-method" onclick="updateText(this, 3)">
-                    <img alt="" src="/project/webroot/img/payments.svg">
-                    <div>
-                        <span>Переводы</span>
-                        <p>(СберБанк, QiWi и WebMoney)</p>
-                    </div>
-                </div> 
-                <div class="payment-methods-method" onclick="updateText(this, 4)">
-                    <img alt="" src="/project/webroot/img/crypto.svg">
-                    <div>
-                        <span>Криптовалютой</span>
-                    </div>
-                </div> 
+            <h3 class="order_title">ОФОРМЛЕНИЕ ЗАКАЗА</h3>
+            <div class="order_block">
+                <div class="address_info">
+                    <h4>АДРЕС ДОСТАВКИ</h4>
+                    <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.address_required }}</div>
+                    <div class="info">{{ user.address ? user.address : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить адрес</li></a>" }}</div>
+                    <hr>
+                    <h4>КОНТАКТНАЯ ИНФОРМАЦИЯ</h4>
+                    <div class="info">{{ user.first_name or user.last_name ? user.first_name : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить имя</li></a>" }} {{ user.last_name }}</div><br>
+                    <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.phone_required }}</div>
+                    <div class="info">{{ user.phone ? user.phone : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить телефон</li></a>" }}</div><br>
+                    <div class="info">{{ user.email }}</div>
                 </div>
-                <span class="methods_description"></span>         
+                <div class="payments-methods">
+                    <h4>СПОСОБЫ ОПЛАТЫ</h4>
+                    <p id="payment_num" style="display: none;"></p>
+                    <hr>
+                    <div class="payment-methods">
+                        <div class="payment-methods-method" onclick="updateText(this, 1)">
+                            <img alt="" src="/project/webroot/img/money.svg">
+                            <div>
+                                <span>Через курьера</span>
+                                <p>(оплаты наличными)</p>
+                            </div>
+                        </div>
+                        <div class="payment-methods-method" onclick="updateText(this, 2)">
+                            <img alt="" src="/project/webroot/img/samovyzov.svg">
+                            <div>
+                                <span>Самовызов</span>
+                            </div>
+                        </div>
+                        <div class="payment-methods-method" onclick="updateText(this, 3)">
+                            <img alt="" src="/project/webroot/img/payments.svg">
+                            <div>
+                                <span>Переводы</span>
+                                <p>(СберБанк, QiWi и WebMoney)</p>
+                            </div>
+                        </div>
+                        <div class="payment-methods-method" onclick="updateText(this, 4)">
+                            <img alt="" src="/project/webroot/img/crypto.svg">
+                            <div>
+                                <span>Криптовалютой</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="methods_description"></span>
+                </div>
             </div>
-        </div>
-        <div class="order_block">
-            <form class="order-data">
-                <h4>ТОВАРЫ</h4>
-                <hr>
-                <div class="order-data_product">
-                    <div class="order-data_product-block">
-                        <span class="order-data_product-quan">1</span>
-                        <img alt="" src="/project/webroot/uploads/{{ product.image }}" class="order-data_product-image">
-                        <div class="order-data_product-data">
-                            <span class="order-data-title">{{ product.title }}</span>
-                        </div>  
+            <div class="order_block">
+                <form class="order-data">
+                    <h4>ТОВАРЫ</h4>
+                    <hr>
+                    <div class="order-data_product">
+                        <div class="order-data_product-block">
+                            <span class="order-data_product-quan">1</span>
+                            <img alt="" src="/project/webroot/uploads/{{ product.image }}" class="order-data_product-image">
+                            <div class="order-data_product-data">
+                                <span class="order-data-title">{{ product.title }}</span>
+                            </div>
+                        </div>
+                        <div class="order-data_product-prices">
+                            <span class="order-data_product-price"><span class="product_price">{{ product.price }}</span>₽</span>
+                        </div>
                     </div>
-                    <div class="order-data_product-prices">
-                        <span class="order-data_product-price"><span class="product_price">{{ product.price }}</span>₽</span>
+                    <div class="order-data_data">
+                        <span>Стоимость</span>
+                        <span class="order-data_data-price"><span class="pricesss">{{ product.price }}</span>₽</span>
                     </div>
-                </div>
-                <div class="order-data_data">
-                    <span>Стоимость</span>
-                    <span class="order-data_data-price"><span class="pricesss">{{ product.price }}</span>₽</span>
-                </div>
-                <hr>
-                <div class="order-data_total">
-                    <span class="order-data_total-total">Итого</span>
-                    <span class="order-data_total-price"><span class="total">{{ product.price }}</span>₽</span>
-                </div>
-                <button class="order-data_button" onclick="makeOrder()" type="button">Оформить заказ</button>
-            </form>
-        </div>
+                    <hr>
+                    <div class="order-data_total">
+                        <span class="order-data_total-total">Итого</span>
+                        <span class="order-data_total-price"><span class="total">{{ product.price }}</span>₽</span>
+                    </div>
+                    <button class="order-data_button" onclick="makeOrder()" type="button">Оформить заказ</button>
+                </form>
+            </div>
         </div>
     </main>
 
@@ -142,7 +144,7 @@
                 output.innerText = `Выбрав данный способ оплаты, наш оператор связывается с вами, объясняет инструкцию по переводу и подтверждает пополнение счёта. После завершения перевода, ваш товар, в зависимости от типа доставки, следует указанному маршруту.`;
             }
         }
-</script>
+    </script>
 
     {% include 'layouts/footer.twig' %}
 
@@ -151,57 +153,59 @@
             <button onclick="makeOrder()" type="button">Оформить заказ</button>
         </div>
         <div class="menu">
-        <a href="/"><img src="/project/webroot/img/home.png"></a>
-        <a href="/mobile/categories"><img src="/project/webroot/img/category.png"></a>
-<a href="/cart">
-            <span id="countCart" class="countCartMobile">{{ cart_qty }}</span>
-            <img src="/project/webroot/img/basketicon.png">
-        </a>        {% if auth %}
+            <a href="/"><img src="/project/webroot/img/home.png"></a>
+            <a href="/mobile/categories"><img src="/project/webroot/img/category.png"></a>
+            <a href="/cart">
+                <span id="countCart" class="countCartMobile">{{ cart_qty }}</span>
+                <img src="/project/webroot/img/basketicon.png">
+            </a> {% if auth %}
             <a href="/profile"><img src="/project/webroot/img/profile.png"></a>
-        {% else %}
+            {% else %}
             <a href="/login"><img src="/project/webroot/img/profile.png"></a>
-        {% endif %}
-    </div>
+            {% endif %}
+        </div>
     </div>
 
     <div class="modal" id="modal">
-  <div class="modal-content">
-    <p id="modal-text"></p>    
-    <button class="modal-button-ok" onclick="modalBtnOk()" id="modal-button-ok">ОК</button>
-  </div>
-</div>
+        <div class="modal-content">
+            <p id="modal-text"></p>
+            <button class="modal-button-ok" onclick="modalBtnOk()" id="modal-button-ok">ОК</button>
+        </div>
+    </div>
 
     <script>
         function makeOrder() {
-        const payment_method = document.getElementById('payment_num').innerText;
+            const payment_method = document.getElementById('payment_num').innerText;
 
-        let modal = document.getElementById("modal");
-let modalText = document.getElementById("modal-text");
-let btnOk = document.getElementById("modal-button-ok");
+            let modal = document.getElementById("modal");
+            let modalText = document.getElementById("modal-text");
+            let btnOk = document.getElementById("modal-button-ok");
 
-        $.ajax({
-          type: 'POST',
-          url: '/order/make/{{ product.id }}',
-          data: {'payment_method': payment_method, 'csrf_token': '{{ csrf_token }}'},
-          cache: false,
-          dataType: 'html',
-          success: function(data) {
-            if (data == 'Заказ успешно оформлен!') {
-                modalText.style.color = '#28A745';
-                btnOk.onclick = function () {
-                    window.location = '/profile/active/orders';
-                };
-            } else {
-                modalText.style.color = '#DC3545';
-            }
-            modalText.innerText = data;
-            modal.style.display = 'flex';
-          }
-        });
+            $.ajax({
+                type: 'POST',
+                url: '/order/make/{{ product.id }}',
+                data: {
+                    'payment_method': payment_method,
+                    'csrf_token': '{{ csrf_token }}'
+                },
+                cache: false,
+                dataType: 'html',
+                success: function(data) {
+                    if (data == 'Заказ успешно оформлен!') {
+                        modalText.style.color = '#28A745';
+                        btnOk.onclick = function() {
+                            window.location = '/profile/active/orders';
+                        };
+                    } else {
+                        modalText.style.color = '#DC3545';
+                    }
+                    modalText.innerText = data;
+                    modal.style.display = 'flex';
+                }
+            });
         }
 
-        function modalBtnOk()
-        {
+        function modalBtnOk() {
             let modal = document.getElementById("modal");
             modal.style.display = 'none';
         }

@@ -1,5 +1,5 @@
 <footer>
-        <div class="footer">
+    <div class="footer">
         <div class="subfooters">
             <div class="title" onclick="showList('category-list', 'c_arrow', 'c_title')" id="c_title">Категории<img id="c_arrow" alt="" src="/project/webroot/img/arrow.png" class="arrow"></div><br>
             <ul id="category-list" class="footer-categories-list">
@@ -20,7 +20,7 @@
                 <li><a href="/">Главная</a></li>
                 <li><a href="/about-us">О магазине</a></li>
                 <li><a href="/contacts">Контакты</a></li>
-            </ul> 
+            </ul>
         </div>
 
         <div class="subfooters">
@@ -28,31 +28,31 @@
             <ul id="contacts-list" class="footer-categories-list">
                 <li>EMAIL: dio@gmail.com</li>
                 <li>+7 (7777) 777-77-77</li>
-            </ul>  
+            </ul>
         </div>
-        </div>
-        <hr>
-        <div class="icons">
-            <a href="#"><img class="icon" src="/project/webroot/img/instagram.png"></a>
-            <a href="#"><img class="icon" src="/project/webroot/img/telegram.png"></a>
-            <a href="#"><img class="icon" src="/project/webroot/img/twitter.png"></a>
-            <a href="#"><img class="icon" src="/project/webroot/img/vk.png"></a>
-        </div>
-    </footer>
+    </div>
+    <hr>
+    <div class="icons">
+        <a href="#"><img class="icon" src="/project/webroot/img/instagram.png"></a>
+        <a href="#"><img class="icon" src="/project/webroot/img/telegram.png"></a>
+        <a href="#"><img class="icon" src="/project/webroot/img/twitter.png"></a>
+        <a href="#"><img class="icon" src="/project/webroot/img/vk.png"></a>
+    </div>
+</footer>
 
-    <script>
-        function showList(id, id_arrow, id_title) {
-            const x = document.getElementById(id);
-                    const arrow = document.getElementById(id_arrow);
-                    const title = document.getElementById(id_title);
-                    if (x.style.display === "block") {
-                        x.style.display = "none";
-                        title.style.color = "white";
-                        arrow.style = "transform: rotate(0deg); transition: 0.5s;";
-                    } else {
-                        x.style.display = "block";
-                        title.style.color = "#00D270";
-                        arrow.style = "transform: rotate(180deg); transition: 0.5s;";
-                    }
+<script>
+    function showList(id, id_arrow, id_title) {
+        const x = document.getElementById(id);
+        const arrow = document.getElementById(id_arrow);
+        const title = document.getElementById(id_title);
+        if (x.style.display === "block") {
+            x.style.display = "none";
+            title.style.color = "white";
+            arrow.style = "transform: rotate(0deg); transition: 0.5s;";
+        } else {
+            x.style.display = "block";
+            title.style.color = "#00D270";
+            arrow.style = "transform: rotate(180deg); transition: 0.5s;";
         }
-    </script>
+    }
+</script>

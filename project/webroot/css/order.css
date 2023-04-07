@@ -311,7 +311,7 @@
         margin-top: -30px;
         margin-right: auto;
         margin-left: 200px;
-    }    
+    }
 }
 
 
@@ -324,7 +324,7 @@
     .breadcrumbs {
         margin-top: 30px;
         margin-left: 16px;
-    }  
+    }
 
     .order_title {
         font-size: 20px;
@@ -357,7 +357,7 @@
     .payments-methods h4 {
         font-size: 14px;
     }
-    
+
     .payments-methods hr {
         margin: 16px 0;
     }
@@ -469,9 +469,9 @@
         color: #fff;
     }
 }
-  
-  /* Стили для модального окна */
-  .modal {
+
+/* Стили для модального окна */
+.modal {
     display: none;
     justify-content: center;
     align-items: center;
@@ -482,24 +482,24 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-  }
-  
-  .modal-content {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
     background-color: #fefefe;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
     max-width: 600px;
-  }
-  
-  .modal-content p {
+}
+
+.modal-content p {
     font-size: 16px;
     font-family: "Montserrat", sans-serif;
     font-weight: bold;
-  }
+}
 
-  /* Стили для кнопки "ОК" */
+/* Стили для кнопки "ОК" */
 .modal-button-ok {
     background-color: #4CAF50;
     border: none;
@@ -512,9 +512,8 @@
     margin-top: 20px;
     cursor: pointer;
     border-radius: 5px;
-  }
-  
-  .modal-button-ok:hover {
+}
+
+.modal-button-ok:hover {
     background-color: #3e8e41;
-  }
-  
+}

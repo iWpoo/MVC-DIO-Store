@@ -29,8 +29,11 @@ DIO использует следующие технологии:
 
 ## Скриншоты
 
-![Screenshot 1]()
-![Screenshot 2]()
+![Screenshot 1](screenshots/screenshot1.jpg "Главная страница")
+![Screenshot 2](screenshots/screenshot2.jpg "Страница товара")
+![Screenshot 3](screenshots/screenshot.jpg "Страница активных заказов")
+![Screenshot 4](screenshots/screenshot3.jpg "Страница корзинки мобильной версии")
+![Screenshot 5](screenshots/screenshot4.jpg "Страница активных заказов мобильной версии")
 
 ## Контакты
 

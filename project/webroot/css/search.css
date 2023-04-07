@@ -144,6 +144,10 @@ body {
     justify-content: space-between;
 }
 
+.modal-overlay {
+    display: none;
+}
+
 .filters {
     width: 32px;
     height: 32px;

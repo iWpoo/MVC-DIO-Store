@@ -45,6 +45,6 @@ DIO использует следующие технологии:
 
 Если у вас есть какие-либо вопросы или замечания относительно проекта, пожалуйста, свяжитесь со мной:
 
-- Email: iwpoo@gmail.com
+- Email: iwpoo23@gmail.com
 - Telegram: https://t.me/iwpoo
 - GitHub: https://github.com/iWpoo

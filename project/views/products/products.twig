@@ -66,7 +66,22 @@
     </main>
 
     {% include 'layouts/footer.twig' %}
-    {% include 'layouts/mobile_navigation.twig' %}
+    
+    <div class="MobileShowNavigation">
+    <div class="menu">
+        <a href="/"><img src="/project/webroot/img/active_home.png"></a>
+        <a href="/mobile/categories"><img src="/project/webroot/img/category.png"></a>
+        <a href="/cart">
+            <span id="countCart" class="countCartMobile">{{ cart_qty }}</span>
+            <img src="/project/webroot/img/basketicon.png">
+        </a>
+        {% if auth %}
+        <a href="/profile"><img src="/project/webroot/img/profile.png"></a>
+        {% else %}
+        <a href="/login"><img src="/project/webroot/img/profile.png"></a>
+        {% endif %}
+    </div>
+    </div>
 </body>
 
 </html>

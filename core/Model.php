@@ -11,7 +11,7 @@ class Model
 	
 	public function __construct()
 	{
-		if (!self::$link) {
+                if (!self::$link) {
 			self::$link = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8', DB_USER, DB_PASS);
 		}
 	}
@@ -19,61 +19,61 @@ class Model
 	public function find($value, $column = 'id')
 	{
 		$query = self::$link->prepare("SELECT * FROM ".$this->table." WHERE $column = :value");
-        $query->execute([':value' => $value]);
+                $query->execute([':value' => $value]);
         
-        return $query->fetch(PDO::FETCH_ASSOC);
+                return $query->fetch(PDO::FETCH_ASSOC);
 	}
 
 	public function create(array $data)
 	{
-        $fields = implode(', ', array_keys($data));
-        $values = implode(', :', array_keys($data));
-        $query = "INSERT INTO ".$this->table." ($fields) VALUES (:$values)";
-        $stmt = self::$link->prepare($query);
-        foreach ($data as $key => $value) {
-            $stmt->bindValue(":$key", $value);
-        }
-        $stmt->execute();
+                $fields = implode(', ', array_keys($data));
+                $values = implode(', :', array_keys($data));
+                $query = "INSERT INTO ".$this->table." ($fields) VALUES (:$values)";
+                $stmt = self::$link->prepare($query);
+                foreach ($data as $key => $value) {
+                      $stmt->bindValue(":$key", $value);
+                }
+                $stmt->execute();
 
-        if (isset($_SESSION['csrf_token'])) {
-            unset($_SESSION['csrf_token']);
-        }
+                if (isset($_SESSION['csrf_token'])) {
+                      unset($_SESSION['csrf_token']);
+                }
 	}
 
 	public function findAll($get = '', array $data = []) 
 	{
-        $query = self::$link->prepare("SELECT * FROM ". $this->table ." $get");
-        $query->execute($data);
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    }
+                $query = self::$link->prepare("SELECT * FROM ". $this->table ." $get");
+                $query->execute($data);
+                return $query->fetchAll(PDO::FETCH_ASSOC);
+        }
 
-    public function findSpecific($get, array $data = []) 
+        public function findSpecific($get, array $data = []) 
 	{
-        $query = self::$link->prepare("SELECT * FROM ". $this->table ." $get");
-        $query->execute($data);
-        return $query->fetch(PDO::FETCH_ASSOC);
-    }
+                $query = self::$link->prepare("SELECT * FROM ". $this->table ." $get");
+                $query->execute($data);
+                return $query->fetch(PDO::FETCH_ASSOC);
+        }
 
 	public function update($element, string $column, array $data) 
-    {
-        $query = "UPDATE ".$this->table." SET ";
-        $update_fields = [];
-        foreach ($data as $key => $value) {
-            $update_fields[] = "$key = :$key";
-        }
-        $query .= implode(', ', $update_fields);
-        $query .= " WHERE $column = :element";
-        $stmt = self::$link->prepare($query);
-        $stmt->bindValue(':element', $element);
-        foreach ($data as $key => $value) {
-            $stmt->bindValue(":$key", $value);
-        }
-        $stmt->execute();
+        {
+                $query = "UPDATE ".$this->table." SET ";
+                $update_fields = [];
+                foreach ($data as $key => $value) {
+                      $update_fields[] = "$key = :$key";
+                }
+                $query .= implode(', ', $update_fields);
+                $query .= " WHERE $column = :element";
+                $stmt = self::$link->prepare($query);
+                $stmt->bindValue(':element', $element);
+                foreach ($data as $key => $value) {
+                       $stmt->bindValue(":$key", $value);
+                }
+                $stmt->execute();
         
-        if (isset($_SESSION['csrf_token'])) {
-            unset($_SESSION['csrf_token']);
-        }
-    }
+                if (isset($_SESSION['csrf_token'])) {
+                       unset($_SESSION['csrf_token']);
+                }
+         }
 
 	public function delete($element, $column = 'id') 
     {

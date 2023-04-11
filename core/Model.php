@@ -107,4 +107,8 @@ class Model
 		$this->redis()->setex($key, $expireTime, serialize($data));
 		return $data;
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 00c41b5ab385e5e45256c41096a47c3e4acfa2c3

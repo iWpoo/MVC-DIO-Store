@@ -40,13 +40,13 @@
                 <div class="address_info">
                     <h4>АДРЕС ДОСТАВКИ</h4>
                     <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.address_required }}</div>
-                    <div class="info">{{ user.address ? user.address : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить адрес</li></a>" }}</div>
+                    <div class="info">{{ auth.address ? auth.address : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить адрес</li></a>" }}</div>
                     <hr>
                     <h4>КОНТАКТНАЯ ИНФОРМАЦИЯ</h4>
-                    <div class="info">{{ user.first_name or user.last_name ? user.first_name : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить имя</li></a>" }} {{ user.last_name }}</div><br>
+                    <div class="info">{{ auth.first_name or auth.last_name ? auth.first_name : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить имя</li></a>" }} {{ user.last_name }}</div><br>
                     <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.phone_required }}</div>
-                    <div class="info">{{ user.phone ? user.phone : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить телефон</li></a>" }}</div><br>
-                    <div class="info">{{ user.email }}</div>
+                    <div class="info">{{ auth.phone ? auth.phone : "<a href='/edit/profile'><li style='color: #318CE7;'>Добавить телефон</li></a>" }}</div><br>
+                    <div class="info">{{ auth.email }}</div>
                 </div>
                 <div class="payments-methods">
                     <h4>СПОСОБЫ ОПЛАТЫ</h4>

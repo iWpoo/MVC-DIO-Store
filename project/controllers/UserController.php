@@ -195,14 +195,12 @@ class UserController extends Controller
     public function logout()
     {
         if (isset($_POST['logout'])) {
-            // Получаем токен из куки и шифруем его для сравнения токена из Redis
+            // Получаем токен из куки и хешируем его для сравнения токена из Redis
             $token = $_COOKIE['session_token'];
-            $key = '5fQ-1VloNNPMsvo5HK_ylkX^%9%5+=B8';
-            $iv = 'iI^WL%GPVow6Ae3t';
-            $encrypted_token = openssl_encrypt($token, 'AES-128-CBC', $key, 0, $iv);
+            $hashed_token = hash('sha256', $token);
         
             // Если данный токен существует, то удаляем его из Redis и очищаем куки
-            $this->redisService->redis()->del($encrypted_token);
+            $this->redisService->redis()->del($hashed_token);
             setcookie('session_token', '', time() - 86400 * 30, '/');
 
             // Перенаправляем на страницу авторизации

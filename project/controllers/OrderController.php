@@ -27,7 +27,6 @@ class OrderController extends Controller
         }
 
         return $this->render('products/order.twig', [
-            'user' => $auth,
             'products' => $order->joinProductCart($auth['id']),
             'csrf_token' => $this->generateCsrfToken(),
             'auth' => $auth,
@@ -123,7 +122,6 @@ class OrderController extends Controller
         }
 
         return $this->render('products/orderOne.twig', [
-            'user' => $auth,
             'product' => (new Product)->getProduct($params['id']),
             'csrf_token' => $this->generateCsrfToken(),
             'auth' => $auth,

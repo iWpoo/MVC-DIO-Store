@@ -79,14 +79,14 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <label for="first-name">Имя:</label>
                     <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.max_fname }}</div>
-                    <input type="text" id="first-name" name="first_name" value="{{ user.first_name }}">
+                    <input type="text" id="first-name" name="first_name" value="{{ auth.first_name }}">
                     <label for="last-name">Фамилия:</label>
                     <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.max_lname }}</div>
-                    <input type="text" id="last-name" name="last_name" value="{{ user.last_name }}">
+                    <input type="text" id="last-name" name="last_name" value="{{ auth.last_name }}">
                     <label for="phone">Номер:</label>
-                    <input type="tel" id="phone" name="phone" value="{{ user.phone }}">
+                    <input type="tel" id="phone" name="phone" value="{{ auth.phone }}">
                     <label for="address">Адрес:</label>
-                    <input type="tel" id="address" name="address" placeholder="Город, улица, номер дома" value="{{ user.address }}">
+                    <input type="tel" id="address" name="address" placeholder="Город, улица, номер дома" value="{{ auth.address }}">
                     <button type="submit" name="edit_profile">Сохранить</button>
                 </form>
             </div>
@@ -106,11 +106,11 @@
             <form method="POST">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.max_fname }}</div>
-                <input type="text" id="first-name" name="first_name" placeholder="Имя" value="{{ user.first_name }}">
+                <input type="text" id="first-name" name="first_name" placeholder="Имя" value="{{ auth.first_name }}">
                 <div style="color: #DC3545; font-family: Roboto Mono;">{{ errors.max_lname }}</div>
-                <input type="text" id="last-name" name="last_name" placeholder="Фамилия" value="{{ user.last_name }}">
-                <input type="tel" id="phone" name="phone" placeholder="Номер телефона" value="{{ user.phone }}">
-                <input type="tel" id="address" name="address" placeholder="Город, улица, номер дома" value="{{ user.address }}">
+                <input type="text" id="last-name" name="last_name" placeholder="Фамилия" value="{{ auth.last_name }}">
+                <input type="tel" id="phone" name="phone" placeholder="Номер телефона" value="{{ auth.phone }}">
+                <input type="tel" id="address" name="address" placeholder="Город, улица, номер дома" value="{{ auth.address }}">
                 <button type="submit" name="edit_profile">Сохранить</button>
             </form>
         </div>

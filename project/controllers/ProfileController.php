@@ -28,7 +28,6 @@ class ProfileController extends Controller
         }
 
         return $this->render('profile/profile.twig', [
-            'user' => $auth,
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
@@ -80,7 +79,6 @@ class ProfileController extends Controller
         return $this->render('profile/edit_profile.twig', [
             'errors' => Request::$errors,
             'csrf_token' => $this->generateCsrfToken(),
-            'user' => $auth,
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
@@ -174,10 +172,8 @@ class ProfileController extends Controller
         if (isset($_POST['delete_user_account'])) {
             // Очистка токена и куки
             $token = $_COOKIE['session_token'];
-            $key = '5fQ-1VloNNPMsvo5HK_ylkX^%9%5+=B8';
-            $iv = 'iI^WL%GPVow6Ae3t';
-            $encrypted_token = openssl_encrypt($token, 'AES-128-CBC', $key, 0, $iv);
-            $this->redisService->redis()->del($encrypted_token);
+            $hashed_token = hash('sha256', $token);
+            $this->redisService->redis()->del($hashed_token);
             setcookie('session_token', '', time() - 86400 * 30, '/');
             setcookie('cart_qty', '', time() - 86400 * 30, '/');
 

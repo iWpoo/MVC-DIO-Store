@@ -3,11 +3,18 @@
 namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
-use App\Project\Models\User;
+use App\Project\Services\AuthService;
 use App\Project\Models\Product;
 	
 class SearchController extends Controller
 {
+    protected $authService;
+
+    public function __construct()
+    {
+        $this->authService = new AuthService();
+    }
+
     public function search()
     {
         $productModel = new Product();
@@ -36,7 +43,7 @@ class SearchController extends Controller
             'page' => $page ?? null,
             'total_pages' => $total_pages ?? null,
             'urlPages' => $productModel->cutUrlString('&page='),
-            'auth' => (new User)->verifyAuth(),
+            'auth' => $this->authService->verifyAuth(),
             'cart_qty' =>  $_COOKIE['cart_qty'] ?? null
         ]);
     }
@@ -69,7 +76,7 @@ class SearchController extends Controller
             'page' => $page ?? null,
             'total_pages' => $total_pages ?? null,
             'urlPages' => $productModel->cutUrlString('&page='),
-            'auth' => (new User)->verifyAuth(),
+            'auth' => $this->authService->verifyAuth(),
             'cart_qty' =>  $_COOKIE['cart_qty'] ?? null        
         ]);
     }
@@ -102,7 +109,7 @@ class SearchController extends Controller
             'page' => $page ?? null,
             'total_pages' => $total_pages ?? null,
             'urlPages' => $productModel->cutUrlString('&page='),
-            'auth' => (new User)->verifyAuth(),
+            'auth' => $this->authService->verifyAuth(),
             'cart_qty' =>  $_COOKIE['cart_qty'] ?? null
         ]);
     }

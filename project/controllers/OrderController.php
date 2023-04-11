@@ -3,29 +3,32 @@
 namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
-use App\Project\Models\User;
 use App\Project\Models\Order;
 use App\Project\Models\Product;
 use App\Project\Models\Cart;
+use App\Project\Services\AuthService;
 	
 class OrderController extends Controller
 {
+    protected $authService;
+
+    public function __construct()
+    {
+        $this->authService = new AuthService();
+    }
+
     public function order()
     {
-        $cart = new Cart();
-        $userModel = new User();
-        $auth = $userModel->verifyAuth();
+        $order = new Order();
+        $auth = $this->authService->verifyAuth();
 
         if (!$auth) {
             $this->redirect('/login');
         }
 
-        // Вывод данных о пользователя
-        $user = $userModel->find($auth['id']);
-
         return $this->render('products/order.twig', [
-            'user' => $user,
-            'products' => $cart->joinProductCart($auth['id']),
+            'user' => $auth,
+            'products' => $order->joinProductCart($auth['id']),
             'csrf_token' => $this->generateCsrfToken(),
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
@@ -34,8 +37,7 @@ class OrderController extends Controller
 
     public function makeOrder()
     {
-        $userModel = new User();
-        $auth = $userModel->verifyAuth();
+        $auth = $this->authService->verifyAuth();
 
         if (!$auth) {
             $this->redirect('/login');
@@ -66,10 +68,9 @@ class OrderController extends Controller
         }
 
         // Валидация данных для заказа
-        $user = $userModel->find($auth['id']);
         $validator = [
-            Request::validateRequired($user['address'], 'address_required'),
-            Request::validateRequired($user['phone'], 'phone_required'),
+            Request::validateRequired($auth['address'], 'address_required'),
+            Request::validateRequired($auth['phone'], 'phone_required'),
             Request::validateRequired($payment_method, 'payment_required'),
             Request::validateCsrfToken()
         ];
@@ -84,7 +85,7 @@ class OrderController extends Controller
                     'order_num' => $orderNumber,
                     'payment_method' => $payment_method,
                     'total_price' => $total_price,
-                    'address' => $user['address'],
+                    'address' => $auth['address'],
                     'status' => 'Новый',
                     'created_at' => date('d M Y H:i:s')
                 ]);
@@ -115,21 +116,15 @@ class OrderController extends Controller
 
     public function buy($params)
     {
-        $productModel = new Product();
-        $userModel = new User();
-        $auth = $userModel->verifyAuth();
+        $auth = $this->authService->verifyAuth();
 
         if (!$auth) {
             $this->redirect('/login');
         }
 
-        // Вывод данных о пользователя
-        $user = $userModel->find($auth['id']);
-        $product = $productModel->getProduct($params['id']);
-
         return $this->render('products/orderOne.twig', [
-            'user' => $user,
-            'product' => $product,
+            'user' => $auth,
+            'product' => (new Product)->getProduct($params['id']),
             'csrf_token' => $this->generateCsrfToken(),
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
@@ -138,8 +133,7 @@ class OrderController extends Controller
 
     public function makeOrderOne($params)
     {
-        $userModel = new User();
-        $auth = $userModel->verifyAuth();
+        $auth = $this->authService->verifyAuth();
 
         if (!$auth) {
             $this->redirect('/login');
@@ -158,10 +152,9 @@ class OrderController extends Controller
             return 'Выберите способ оплаты.';
         }
 
-        $user = $userModel->find($auth['id']);
         $validator = [
-            Request::validateRequired($user['address'], 'address_required'),
-            Request::validateRequired($user['phone'], 'phone_required'),
+            Request::validateRequired($auth['address'], 'address_required'),
+            Request::validateRequired($auth['phone'], 'phone_required'),
             Request::validateRequired($payment_method, 'payment_required'),
             Request::validateCsrfToken()
         ];
@@ -175,7 +168,7 @@ class OrderController extends Controller
                     'order_num' => $orderNumber,
                     'payment_method' => $payment_method,
                     'total_price' => $product['price'],
-                    'address' => $user['address'],
+                    'address' => $auth['address'],
                     'status' => 'Новый',
                     'created_at' => date('d M Y H:i:s')
                 ]);
@@ -202,7 +195,6 @@ class OrderController extends Controller
 
     public function completeOrder($params)
     {
-        $product = new Product();
         $order = new Order();
         $db = Order::getLink();
 

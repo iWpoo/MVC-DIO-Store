@@ -4,14 +4,26 @@ namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\User;
+use App\Project\Services\AuthService;
+use App\Project\Services\RedisService;
+use App\Project\Services\MailService;
 	
 class UserController extends Controller
 {
+    protected $authService;
+    protected $redisService;
+    protected $mailService;
+
+    public function __construct()
+    {
+        $this->authService = new AuthService();
+        $this->redisService = new RedisService();
+        $this->mailService = new MailService();
+    }
+
 	public function register() 
     {
-        $user = new User();
-
-        if ($user->verifyAuth()) {
+        if ($this->authService->verifyAuth()) {
             $this->redirect('/');
         }
 
@@ -34,8 +46,16 @@ class UserController extends Controller
                 try {
                     // Отправляем случайный код в Redis
                     $code = mt_rand(100000, 999999);
-                    $dataUser = ['email' => $email, 'password' => password_hash($password, PASSWORD_DEFAULT)];
-                    $this->redis()->setex(hash('sha256', $code), 3600 * 12, serialize($dataUser));
+                    $dataUser = [
+                        'email' => $email, 
+                        'password' => password_hash($password, PASSWORD_DEFAULT),
+                        'first_name' => null,
+                        'last_name' => null,
+                        'address' => null,
+                        'phone' => null,
+                        'created_at' => date('Y-m-d H:i:s')
+                    ];
+                    $this->redisService->redis()->setex(hash('sha256', $code), 3600 * 12, serialize($dataUser));
 
                     $data = [
                         'from' => 'iwpoo23@gmail.com',
@@ -53,9 +73,9 @@ class UserController extends Controller
                     ];
                     
                     // Отправляем код на почту
-                    $this->mail('iwpoo23@gmail.com', 'jifpsnwtcrtodnhj', $data);
+                    $this->mailService->mail('iwpoo23@gmail.com', 'jifpsnwtcrtodnhj', $data);
                 } catch (Exception $e) {
-                    Request::$errors['mail'] = $this->mailException();
+                    Request::$errors['mail'] = $this->mailService->mailException();
                 }   
 
                 $this->redirect('/register/verification');
@@ -78,7 +98,7 @@ class UserController extends Controller
         if (isset($_POST['send-code'])) {
             $code = $this->add('code');
             $encrypted_code = hash('sha256', $code);  
-            $code_redis = $this->redis()->get($encrypted_code);
+            $code_redis = $this->redisService->redis()->get($encrypted_code);
 
             $validator = [
                 Request::validateCsrfToken()
@@ -101,10 +121,18 @@ class UserController extends Controller
                     $id = User::getLink()->lastInsertId();
 
                     // Авторизовываем
-                    $user->auth(['id' => $id, 'email' => $data['email']]);
+                    $this->authService->auth([
+                        'id' => $id, 
+                        'email' => $data['email'],
+                        'first_name' => $data['first_name'],
+                        'last_name' => $data['last_name'],
+                        'address' => $data['address'],
+                        'phone' => $data['phone'],
+                        'created_at' => $data['created_at']
+                    ]);
 
                     // Удаляем токен из Redis
-                    $this->redis()->del($encrypted_code);
+                    $this->redisService->redis()->del($encrypted_code);
 
                     $db->commit();
                     $this->redirect('/');
@@ -128,7 +156,7 @@ class UserController extends Controller
         $userModel = new User;
         $auth_error = '';
 
-        if ($userModel->verifyAuth()) {
+        if ($this->authService->verifyAuth()) {
             $this->redirect('/');
         }
         
@@ -143,7 +171,15 @@ class UserController extends Controller
             $user = $userModel->find($email, 'email');
 
             if (Request::validate($validator) and $user and password_verify($password, $user['password'])) {
-                $userModel->auth(['id' => $user['id'], 'email' => $user['email']]);
+                $this->authService->auth([
+                    'id' => $user['id'], 
+                    'email' => $user['email'], 
+                    'first_name' => $user['first_name'],
+                    'last_name' => $user['last_name'],
+                    'address' => $user['address'],
+                    'phone' => $user['phone'],
+                    'created_at' => $user['created_at']
+                ]);
                 $this->redirect('/');
             } else {
                 $auth_error = "Неверный email или пароль.";
@@ -158,8 +194,6 @@ class UserController extends Controller
 
     public function logout()
     {
-        $user = new User;
-
         if (isset($_POST['logout'])) {
             // Получаем токен из куки и шифруем его для сравнения токена из Redis
             $token = $_COOKIE['session_token'];
@@ -168,7 +202,7 @@ class UserController extends Controller
             $encrypted_token = openssl_encrypt($token, 'AES-128-CBC', $key, 0, $iv);
         
             // Если данный токен существует, то удаляем его из Redis и очищаем куки
-            $this->redis()->del($encrypted_token);
+            $this->redisService->redis()->del($encrypted_token);
             setcookie('session_token', '', time() - 86400 * 30, '/');
 
             // Перенаправляем на страницу авторизации

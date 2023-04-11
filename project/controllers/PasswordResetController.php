@@ -4,9 +4,23 @@ namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\User;
+use App\Project\Services\AuthService;
+use App\Project\Services\RedisService;
+use App\Project\Services\MailService;
 
 class PasswordResetController extends Controller
 {
+    protected $authService;
+    protected $redisService;
+    protected $mailService;
+
+    public function __construct()
+    {
+        $this->authService = new AuthService();
+        $this->redisService = new RedisService();
+        $this->mailService = new MailService();
+    }
+
 	public function sendResetToken() 
     {
         $error = ''; 
@@ -25,7 +39,7 @@ class PasswordResetController extends Controller
                 try {
                     // Отправляем случайный токен в БД
                     $token = bin2hex(random_bytes(16));
-                    $this->redis()->setex(hash('sha256', $token), 86400, $email);
+                    $this->redisService->redis()->setex(hash('sha256', $token), 86400, $email);
 
                     $data = [
                         'from' => 'iwpoo23@gmail.com',
@@ -42,11 +56,11 @@ class PasswordResetController extends Controller
                         "
                     ];
         
-                    $this->mail('iwpoo23@gmail.com', 'jifpsnwtcrtodnhj', $data);
+                    $this->mailService->mail('iwpoo23@gmail.com', 'jifpsnwtcrtodnhj', $data);
 
                     $success = 'Проверьте вашу почту.';
                 } catch (Exception $e) {
-                    $error = $this->mailException();
+                    $error = $this->mailService->mailException();
                 }   
             } else {
                 $error = 'Профиль пользователя не найден.';
@@ -66,7 +80,7 @@ class PasswordResetController extends Controller
 
         // Шифруем токен и добавляем в Redis
         $encrypted_token = hash('sha256', $params['token']);  
-        $token = $this->redis()->get($encrypted_token);  
+        $token = $this->redisService->redis()->get($encrypted_token);  
         
         // В случае если токен не верный или устарел
         if (!$token) {
@@ -93,9 +107,9 @@ class PasswordResetController extends Controller
                 $user->update($token, 'email', [
                     'password' => password_hash($new_pass, PASSWORD_DEFAULT)
                 ]); 
-                $this->redis()->del($encrypted_token);
+                $this->redisService->redis()->del($encrypted_token);
 
-                if ($user->verifyAuth()) {
+                if ($this->authService->verifyAuth()) {
                     $this->redirect('/change/password');   
                 } else {
                     $this->redirect('/login');

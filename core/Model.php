@@ -23,9 +23,6 @@ class Model
         
         return $query->fetch(PDO::FETCH_ASSOC);
 	}
-    
-
-    // CRUD
 
 	public function create(array $data)
 	{
@@ -88,7 +85,6 @@ class Model
         }
     }
 
-    // REDIS
     public function redis()
     {
         $redis = new Client([
@@ -99,7 +95,6 @@ class Model
         return $redis;
     }
 
-    // Caching data
     public function caching($key, $data, $expireTime)
     {
         if ($this->redis()->exists($key)) {

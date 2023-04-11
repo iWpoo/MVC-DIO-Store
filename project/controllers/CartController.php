@@ -3,62 +3,64 @@
 namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
-use App\Project\Models\User;
 use App\Project\Models\Product;
 use App\Project\Models\Cart;
-use App\Project\Models\Order;
+use App\Project\Services\AuthService;
 	
 class CartController extends Controller
 {
+    protected $authService;
+
+    public function __construct()
+    {
+        $this->authService = new AuthService();
+    }
+
     public function cart($params)
     {
-        $user = new User();
-        $auth = $user->verifyAuth();
+        $auth = $this->authService->verifyAuth();
         $cart = new Cart();
-        $product = new Product();
         
         $validator = [
             Request::validateCsrfToken()
         ];
         
         if (Request::validate($validator)) {
-            // Удаление или добавление товара из куки (корзинки) если клиент не авторизован
             if (!$auth) {
                 $cart_qty = $cart->modifyCartCookie($params['id']);
+
+                // Отправка данных на клиент в формате JSON
                 $data = ['csrf_token' => $this->generateCsrfToken(), 'countCart' => $cart_qty];
                 return json_encode($data);
             }
-
             // Удаление или добавление товара из БД (корзинки) если клиент авторизован
-            $price = $product->getProduct($params['id']);
-            $cart->modifyCart($auth['id'], $params['id'], $price['price']);
-            
+            $price = $this->add('price');
+            $cart->modifyCart($auth['id'], $params['id'], $price);
             $cart_qty = $cart->getCountCartProducts($auth['id']);
-            setcookie('cart_qty', $cart_qty, $cart_qty == 0 ? time() - 86400 * 30 : time() + 86400 * 30, '/');
-        
+
             // Отправка данных на клиент в формате JSON
-            $data = ['csrf_token' => $this->generateCsrfToken(), 'countCart' => $cart_qty];
+            setcookie('cart_qty', $cart_qty, $cart_qty == 0 ? time() - 86400 * 30 : time() + 86400 * 30, '/');            $data = ['csrf_token' => $this->generateCsrfToken(), 'countCart' => $cart_qty];
             return json_encode($data);
         }
     }
 
     public function showCart()
     {
-        $user = new User();
-        $auth = $user->verifyAuth();
+        $auth = $this->authService->verifyAuth();
 
         $cart = new Cart();
-        $productModel = new Product();
 
-        // Вывод товаров в корзину из куки
+        // Вывод товаров в корзину из куки если пользователь не авторизован
         $products = '';
         if (isset($_COOKIE['cart'])) {
+            $productModel = new Product();
+
             $cartCookie = unserialize($_COOKIE['cart']);
             $carts = implode(' OR id = ', $cartCookie);
             $products = $productModel->findAll("WHERE id = $carts");
         }
 
-        // Вывод данные о товарах
+        // Вывод данные о товарах если авторизован
         $productsCart = $auth ? $cart->joinProductCart($auth['id']) : null;
 
         return $this->render('products/cart.twig', [
@@ -71,16 +73,15 @@ class CartController extends Controller
 
     public function changeAmountPrice()
     {
-        $user = new User();
-        $auth = $user->verifyAuth();
+        $auth = $this->authService->verifyAuth();
         $cart = new Cart();
 
         // Запрос на обновление кол-во товара в корзинке
         if (isset($_POST['counter']) and $auth) {
-            $idCart = $cart->findSpecific("WHERE user_id = :user_id AND product_id = :product_id", [':user_id' => $auth['id'], ':product_id' => $_POST['product_id']]);
-            $cart->update($idCart['id'], 'id', [
-                'count' => $_POST['counter'],
-                'price' => $_POST['price'] * $_POST['counter']
+            $cart_id = $this->add('cart_id');
+            $cart->update($cart_id, 'id', [
+                'count' => $this->add('counter'),
+                'price' => $this->add('price') * $this->add('counter')
             ]); 
 
             // Отправка данных на клиент в формате JSON
@@ -91,8 +92,7 @@ class CartController extends Controller
 
     public function deleteSelectedCart()
     {
-        $user = new User();
-        $auth = $user->verifyAuth();
+        $auth = $this->authService->verifyAuth();
 
         $deleteCart = $_POST['delete_cart'] ?? false;
 

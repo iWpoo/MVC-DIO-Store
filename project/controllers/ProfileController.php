@@ -4,22 +4,31 @@ namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\User;
-use App\Project\Models\Product;
 use App\Project\Models\Order;
+use App\Project\Services\AuthService;
+use App\Project\Services\RedisService;
 	
 class ProfileController extends Controller
 {
+    protected $authService;
+    protected $redisService;
+
+    public function __construct()
+    {
+        $this->authService = new AuthService();
+        $this->redisService = new RedisService();
+    }
+
     public function profile()
     {
-        $user = new User();
-        $auth = $user->verifyAuth();
+        $auth = $this->authService->verifyAuth();
 
         if (!$auth) {
             $this->redirect('/login');
         }
 
         return $this->render('profile/profile.twig', [
-            'user' => $user->find($auth['id']),
+            'user' => $auth,
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
@@ -28,7 +37,7 @@ class ProfileController extends Controller
     public function editProfile()
     {
         $user = new User();
-        $auth = $user->verifyAuth();
+        $auth = $this->authService->verifyAuth();
 
         if (!$auth) {
             $this->redirect('/login');
@@ -55,6 +64,15 @@ class ProfileController extends Controller
                     'address' => $address,
                     'phone' => $phone,
                 ]);
+                $this->redisService->redis()->setex(hash('sha256', $_COOKIE['session_token']), 86400 * 30, serialize([
+                    'id' => $auth['id'], 
+                    'email' => $auth['email'], 
+                    'first_name' => $fname,
+                    'last_name' => $lname,
+                    'address' => $address,
+                    'phone' => $phone,
+                    'created_at' => $auth['created_at']
+                ]));
                 $this->redirect('/profile');
             }
         }
@@ -62,7 +80,7 @@ class ProfileController extends Controller
         return $this->render('profile/edit_profile.twig', [
             'errors' => Request::$errors,
             'csrf_token' => $this->generateCsrfToken(),
-            'user' => $user->find($auth['id']),
+            'user' => $auth,
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
@@ -71,7 +89,7 @@ class ProfileController extends Controller
     public function changePassword()
     {
         $user = new User();
-        $auth = $user->verifyAuth();
+        $auth = $this->authService->verifyAuth();
 
         if (!$auth) {
             $this->redirect('/login');
@@ -111,39 +129,19 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function favorites()
-    {
-        $user = new User();
-        $auth = $user->verifyAuth();
-
-        if (!$auth) {
-            $this->redirect('/login');
-        }
-
-        $products = new Product();
-
-        return $this->render('profile/favorites.twig', [
-            'products' => $products->findAll("WHERE id IN (SELECT product_id FROM favorites WHERE user_id = :user_id)", [':user_id' => $auth['id']]),
-            'auth' => $auth,
-            'cart_qty' => $_COOKIE['cart_qty'] ?? null
-        ]);
-    }
-
     public function activeOrders()
     {
-        $user = new User();
-        $auth = $user->verifyAuth();
-        
+        $auth = $this->authService->verifyAuth();
+
         if (!$auth) {
             $this->redirect('/login');
         }
 
-        $products = new Product();
         $order = new Order();
 
         return $this->render('profile/active_orders.twig', [
             'orders' => $order->getOrdersInfo($auth['id']),
-            'products' => $products->getOrdersByUser($auth['id']),
+            'products' => $order->getOrdersByUser($auth['id']),
             'csrf_token' => $this->generateCsrfToken(),
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
@@ -152,19 +150,17 @@ class ProfileController extends Controller
 
     public function historyOrders()
     {
-        $user = new User();
-        $auth = $user->verifyAuth();
-        
+        $auth = $this->authService->verifyAuth();
+
         if (!$auth) {
             $this->redirect('/login');
         }
 
-        $products = new Product();
         $order = new Order();
 
         return $this->render('profile/history_orders.twig', [
             'orders' => $order->getHistoryOrdersInfo($auth['id']),
-            'products' => $products->getHistoryOrdersByUser($auth['id']),
+            'products' => $order->getHistoryOrdersByUser($auth['id']),
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
@@ -173,16 +169,17 @@ class ProfileController extends Controller
     public function deleteProfile()
     {
         $user = new User;
-        $auth = $user->verifyAuth();
-
+        $auth = $this->authService->verifyAuth();
+        
         if (isset($_POST['delete_user_account'])) {
             // Очистка токена и куки
             $token = $_COOKIE['session_token'];
             $key = '5fQ-1VloNNPMsvo5HK_ylkX^%9%5+=B8';
             $iv = 'iI^WL%GPVow6Ae3t';
             $encrypted_token = openssl_encrypt($token, 'AES-128-CBC', $key, 0, $iv);
-            $this->redis()->del($encrypted_token);
+            $this->redisService->redis()->del($encrypted_token);
             setcookie('session_token', '', time() - 86400 * 30, '/');
+            setcookie('cart_qty', '', time() - 86400 * 30, '/');
 
             // Удаление аккаунта
             $user->delete($auth['id']);

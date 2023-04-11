@@ -159,7 +159,7 @@
                             type: 'POST',
                             cache: false,
                             data: {
-                                'csrf_token': csrf
+                                'csrf_token': csrf, 'price': ''
                             },
                             dataType: 'html',
                             success: function(data) {
@@ -190,7 +190,7 @@
                             data: {
                                 'csrf_token': csrf,
                                 'counter': quantity,
-                                'product_id': '{{ product.id }}',
+                                'cart_id': '{{ product.cart_id }}',
                                 'price': '{{ product.price }}'
                             },
                             dataType: 'html',

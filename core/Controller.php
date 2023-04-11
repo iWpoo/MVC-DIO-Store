@@ -3,11 +3,6 @@ namespace App\Core;
 
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-use Predis\Client;
 
 class Controller
 {	
@@ -80,54 +75,5 @@ class Controller
 		    $token = $_SESSION['csrf_token'];
 		}
         return $token;
-    }
-
-	// PHPMailer
-	protected function mail($username, $password, array $data)
-	{
-		// Создаем новый объект PHPMailer
-		$mail = new PHPMailer(true);
-		$mail->CharSet = 'UTF-8';
-
-		// Настраиваем SMTP
-		$mail->isSMTP();
-		$mail->Host = 'smtp.gmail.com';
-		$mail->SMTPAuth = true;
-		$mail->Username = $username;  
-		$mail->Password = $password;
-		$mail->SMTPSecure = 'ssl';
-		$mail->Port = 465;
-
-		// Настраиваем отправителя и получателя
-		$mail->setFrom($data['from'], $data['from_name']); 
-		$mail->addAddress($data['to']);
-
-		// Настраиваем содержимое письма
-		$mail->isHTML(true);
-		$mail->Subject = $data['subject'];
-		$mail->Body = $data['body'];
-
-		// Добавляем HTML-шаблон в сообщение
-        $mail->msgHTML($data['html']);
-
-		// Отправляем письмо
-		$mail->send();
-	}
-
-	protected function mailException()
-	{
-		$mail = new PHPMailer(true);
-        return 'Письмо не отправлено. Ошибка: ' . $mail->ErrorInfo;
-	}
-    
-	// Redis
-	public function redis()
-    {
-        $redis = new Client([
-            'scheme' => REDIS_SCHEME,
-            'host' => REDIS_HOST,
-            'port' => REDIS_PORT,
-        ]);
-        return $redis;
     }
 }

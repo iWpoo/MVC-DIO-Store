@@ -43,6 +43,15 @@ class Product extends Model
         return $query->fetchAll();
     }
 
+    // Получение характеристик товара с учетом кэширования
+    public function getChar($product_id)
+    {
+        $query = self::$link->prepare("SELECT * FROM characteristics WHERE product_id = :product_id");
+        $query->execute([':product_id' => $product_id]);
+        $ch = $query->fetchAll();
+        return $this->caching("ch:$product_id", $ch, 3600 * 6);
+    }
+
     // Получение дополнительных изображений товара
     public function images($product_id)
     {
@@ -50,48 +59,6 @@ class Product extends Model
         $query->execute([':product_id' => $product_id]);
         $images = $query->fetchAll();
         return $this->caching("images:$product_id", $images, 3600 * 6);
-    }
-
-    // Показ активных заказов
-    public function getOrdersByUser($user_id)
-    {
-        $query = self::$link->prepare("SELECT 
-            products.title, 
-            products.image, 
-            orders_products.order_id,
-            orders_products.product_id,
-            orders_products.quantity, 
-            orders_products.price 
-        FROM 
-            products 
-        INNER JOIN orders_products ON orders_products.product_id = products.id 
-        INNER JOIN orders ON orders.id = orders_products.order_id 
-        WHERE 
-            orders.user_id = :user_id
-        ");
-        $query->execute([':user_id' => $user_id]);
-        return $query->fetchAll();
-    }
-
-    // Показ историю покупок
-    public function getHistoryOrdersByUser($user_id)
-    {
-        $query = self::$link->prepare("SELECT 
-            products.title, 
-            products.image, 
-            order_history_products.order_id,
-            order_history_products.product_id,
-            order_history_products.quantity, 
-            order_history_products.price 
-        FROM 
-            products 
-        INNER JOIN order_history_products ON order_history_products.product_id = products.id 
-        INNER JOIN order_history ON order_history.id = order_history_products.order_id 
-        WHERE 
-            order_history.user_id = :user_id
-        ");
-        $query->execute([':user_id' => $user_id]);
-        return $query->fetchAll();
     }
 
     // Поиск товаров

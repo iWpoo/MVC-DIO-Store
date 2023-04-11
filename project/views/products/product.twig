@@ -158,7 +158,7 @@
                         {% endif %}
                         <a href="/product/{{ similar_product.id }}" class="picture"><img src="/project/webroot/uploads/{{ similar_product.image }}"></a>
                         <a href="/product/{{ similar_product.id }}" class="title"><span>{{ similar_product.title }}</span></a>
-                        <a href="/product/{{ similar_product.id }}" class="price"><span>{{ similar_product.price }}₽</span></a>
+                        <a href="/product/{{ similar_product.id }}" class="price"><span><span id="productPrice">{{ similar_product.price }}</span>₽</span></a>
                     </div>
                     {% endif %}
                     {% endfor %}
@@ -240,7 +240,7 @@
                         }
                     } else if (element === 'cart') {
                         if (textCart.html() === 'В корзину') {
-                            textCart.html('Удалить из корзины');
+                            textCart.html('Удалить из корзинки');
                             $('.countCart').text(jsonObj.countCart != 0 ? jsonObj.countCart : '');
                             $('.countCartMobile').text(jsonObj.countCart != 0 ? jsonObj.countCart : '');
                         } else {
@@ -293,12 +293,13 @@
         // Добавление товара в корзинку
         $("#addCart, #addCartMobile").on("click", function() {
             let csrf = $('#csrf_token').val();
+            let price = $('#productPrice').text();
             $.ajax({
                 url: '/product/cart/{{ product.id }}',
                 type: 'POST',
                 cache: false,
                 data: {
-                    'csrf_token': csrf
+                    'csrf_token': csrf, 'price': price
                 },
                 dataType: 'html',
                 success: function(data) {
@@ -310,12 +311,13 @@
         // Удаление товара из корзинки
         $("#deleteCart, #deleteCartMobile").on("click", function() {
             let csrf = $('#csrf_token').val();
+            let price = $('#productPrice').text();
             $.ajax({
                 url: '/product/cart/{{ product.id }}',
                 type: 'POST',
                 cache: false,
                 data: {
-                    'csrf_token': csrf
+                    'csrf_token': csrf, 'price': price
                 },
                 dataType: 'html',
                 success: function(data) {

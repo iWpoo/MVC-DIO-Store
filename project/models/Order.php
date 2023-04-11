@@ -10,6 +10,14 @@ class Order extends Model
     public static function getLink() {
         return static::$link;
     }
+
+    // Объединение данных Product and Cart
+    public function joinProductCart($user_id)
+    {
+        $query = self::$link->prepare("SELECT products.*, carts.id as cart_id, carts.count FROM products INNER JOIN carts ON products.id = carts.product_id WHERE carts.user_id = :user_id");
+        $query->execute([':user_id' => $user_id]);
+        return $query->fetchAll();
+    }
     
     // Создание записей в таблице orders_products
     public function setOrdersProducts(array $data)
@@ -30,6 +38,48 @@ class Order extends Model
     public function getHistoryOrdersInfo($user_id)
     {
         $query = self::$link->prepare("SELECT * FROM order_history WHERE user_id = :user_id ORDER BY created_at DESC", [':user_id' => $user_id]);
+        $query->execute([':user_id' => $user_id]);
+        return $query->fetchAll();
+    }
+
+    // Показ активных заказов
+    public function getOrdersByUser($user_id)
+    {
+        $query = self::$link->prepare("SELECT 
+            products.title, 
+            products.image, 
+            orders_products.order_id,
+            orders_products.product_id,
+            orders_products.quantity, 
+            orders_products.price 
+        FROM 
+            products 
+        INNER JOIN orders_products ON orders_products.product_id = products.id 
+        INNER JOIN orders ON orders.id = orders_products.order_id 
+        WHERE 
+            orders.user_id = :user_id
+        ");
+        $query->execute([':user_id' => $user_id]);
+        return $query->fetchAll();
+    }
+
+    // Показ историю покупок
+    public function getHistoryOrdersByUser($user_id)
+    {
+        $query = self::$link->prepare("SELECT 
+            products.title, 
+            products.image, 
+            order_history_products.order_id,
+            order_history_products.product_id,
+            order_history_products.quantity, 
+            order_history_products.price 
+        FROM 
+            products 
+        INNER JOIN order_history_products ON order_history_products.product_id = products.id 
+        INNER JOIN order_history ON order_history.id = order_history_products.order_id 
+        WHERE 
+            order_history.user_id = :user_id
+        ");
         $query->execute([':user_id' => $user_id]);
         return $query->fetchAll();
     }

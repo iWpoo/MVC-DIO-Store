@@ -20,7 +20,7 @@ $routes = [
 	new Route('/edit/profile', 'profile', 'editProfile'),
 	new Route('/change/password', 'profile', 'changePassword'),
 	new Route('/delete/profile', 'profile', 'deleteProfile'),
-	new Route('/profile/favorites', 'profile', 'favorites'),
+	new Route('/profile/favorites', 'favorite', 'favorites'),
 	new Route('/profile/active/orders', 'profile', 'activeOrders'),
 	new Route('/profile/history/orders', 'profile', 'historyOrders'),
 
@@ -29,7 +29,7 @@ $routes = [
 	new Route('/product/:id', 'product', 'showProduct'),
 
 	// Favorites
-	new Route('/product/favorite/:id', 'product', 'favorite'),
+	new Route('/product/favorite/:id', 'favorite', 'favorite'),
 
 	// Carts
 	new Route('/product/cart/:id', 'cart', 'cart'),

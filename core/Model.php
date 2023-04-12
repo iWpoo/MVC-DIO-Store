@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Core;
-use \PDO;
+
+use App\Core\Database;
+use PDO;
 use Predis\Client;
 
 class Model
@@ -11,9 +13,7 @@ class Model
 
 	public function __construct()
 	{
-		if (!self::$link) {
-			self::$link = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
-		}
+		self::$link = Database::getInstance()->getPdo();
 	}
 
 	public function find($value, $column = 'id')

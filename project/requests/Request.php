@@ -1,7 +1,9 @@
 <?php 
 
 namespace App\Project\Requests;
-use \PDO;
+
+use App\Core\Database;
+use PDO;
 
 class Request
 {
@@ -64,7 +66,7 @@ class Request
 
     public static function validatePasswordsMatch($input, $table, $column, $new_password, $key = 'passwords_match', $errorMessage = "Новый пароль не должен совпадать со старым.")
     {
-        $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.'', DB_USER, DB_PASS);
+        $pdo = Database::getInstance()->getPdo();
         $query = $pdo->prepare("SELECT * FROM $table WHERE $column = :input");
         $query->execute([':input' => $input]);
         $user = $query->fetch(PDO::FETCH_ASSOC);
@@ -77,7 +79,7 @@ class Request
 
     public static function validateUnique($input, $table, $column, $key = 'unique', $errorMessage = "Данный запись уже используется.") 
     {
-        $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.'', DB_USER, DB_PASS);
+        $pdo = Database::getInstance()->getPdo();
         $query = $pdo->prepare("SELECT * FROM $table WHERE $column = :input");
         $query->execute([':input' => $input]);
         if ($query->rowCount() > 0) {

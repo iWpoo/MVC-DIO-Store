@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Project\Controllers;
+
 use App\Core\Controller;
-use App\Project\Models\User;
 use App\Project\Services\AuthService;
 	
 class StaticPagesController extends Controller

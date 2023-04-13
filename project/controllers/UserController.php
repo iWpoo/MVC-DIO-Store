@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Project\Controllers;
+
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\User;
@@ -204,7 +205,7 @@ class UserController extends Controller
             setcookie('session_token', '', time() - 86400 * 30, '/');
 
             // Перенаправляем на страницу авторизации
-            $this->redirect('/login');
+            $this->redirect('/');
         }        
     }
 }

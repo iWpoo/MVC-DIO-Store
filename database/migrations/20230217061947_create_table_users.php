@@ -25,7 +25,7 @@ final class CreateTableUsers extends AbstractMigration
             [
                 'role' => 'admin',
                 'email' => 'admin@gmail.com',
-                'password' => '12345678',
+                'password' => password_hash('12345678', PASSWORD_DEFAULT),
             ]
         ];
 

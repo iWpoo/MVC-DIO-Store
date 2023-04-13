@@ -3,7 +3,7 @@
 namespace App\Project\Services;
 
 use App\Project\Services\RedisService;
-use App\Project\Models\Cart;
+use App\Project\Services\CartService;
 
 class AuthService
 {
@@ -21,7 +21,7 @@ class AuthService
         setcookie('session_token', $token, time() + 86400 * 30, '/', 'localhost', false, true);
         
         // Перенести данные корзинки из куки в БД после авторизации
-        (new Cart)->addProductsToCart($user['id']);
+        (new CartService)->addProductsToCart($user['id']);
     }
 
     public function verifyAuth()

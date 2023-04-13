@@ -5,22 +5,23 @@ namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\Product;
-use App\Project\Models\Favorite;
 use App\Project\Services\AuthService;
+use App\Project\Services\FavoriteService;
 	
 class FavoriteController extends Controller
 {
     protected $authService;
+    protected $favoriteService;
 
     public function __construct()
     {
         $this->authService = new AuthService();
+        $this->favoriteService = new FavoriteService();
     }
 
     public function favorite($params)
     {
         $auth = $this->authService->verifyAuth();
-        $favorite = new Favorite();
         
         $validator = [
             Request::validateCsrfToken()
@@ -28,7 +29,7 @@ class FavoriteController extends Controller
         
         if (Request::validate($validator)) {
             // Удаление или добавление товара в избранное
-            $favorite->modifyFavorite($auth['id'], $params['id']);
+            $this->favoriteService->modifyFavorite($auth['id'], $params['id']);
             return json_encode(['csrf_token' => $this->generateCsrfToken()]);
         }
     }

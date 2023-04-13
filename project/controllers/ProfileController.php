@@ -1,22 +1,25 @@
 <?php
 
 namespace App\Project\Controllers;
+
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\User;
-use App\Project\Models\Order;
 use App\Project\Services\AuthService;
 use App\Project\Services\RedisService;
+use App\Project\Services\OrderService;
 	
 class ProfileController extends Controller
 {
     protected $authService;
     protected $redisService;
+    protected $orderService;
 
     public function __construct()
     {
         $this->authService = new AuthService();
         $this->redisService = new RedisService();
+        $this->orderService = new OrderService();
     }
 
     public function profile()
@@ -135,11 +138,9 @@ class ProfileController extends Controller
             $this->redirect('/login');
         }
 
-        $order = new Order();
-
         return $this->render('profile/active_orders.twig', [
-            'orders' => $order->getOrdersInfo($auth['id']),
-            'products' => $order->getOrdersByUser($auth['id']),
+            'orders' => $this->orderService->getOrdersInfo($auth['id']),
+            'products' => $this->orderService->getOrdersByUser($auth['id']),
             'csrf_token' => $this->generateCsrfToken(),
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
@@ -154,11 +155,9 @@ class ProfileController extends Controller
             $this->redirect('/login');
         }
 
-        $order = new Order();
-
         return $this->render('profile/history_orders.twig', [
-            'orders' => $order->getHistoryOrdersInfo($auth['id']),
-            'products' => $order->getHistoryOrdersByUser($auth['id']),
+            'orders' => $this->orderService->getHistoryOrdersInfo($auth['id']),
+            'products' => $this->orderService->getHistoryOrdersByUser($auth['id']),
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
         ]);
@@ -181,7 +180,7 @@ class ProfileController extends Controller
             $user->delete($auth['id']);
 
             // Перенаправляем пользователя на страницу авторизации
-            $this->redirect('/login');
+            $this->redirect('/');
         }
     }
 }

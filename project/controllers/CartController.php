@@ -1,25 +1,28 @@
 <?php
 
 namespace App\Project\Controllers;
+
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\Product;
 use App\Project\Models\Cart;
 use App\Project\Services\AuthService;
+use App\Project\Services\CartService;
 	
 class CartController extends Controller
 {
     protected $authService;
+    protected $cartService;
 
     public function __construct()
     {
         $this->authService = new AuthService();
+        $this->cartService = new CartService();
     }
 
     public function cart($params)
     {
         $auth = $this->authService->verifyAuth();
-        $cart = new Cart();
         
         $validator = [
             Request::validateCsrfToken()
@@ -27,7 +30,7 @@ class CartController extends Controller
         
         if (Request::validate($validator)) {
             if (!$auth) {
-                $cart_qty = $cart->modifyCartCookie($params['id']);
+                $cart_qty = $this->cartService->modifyCartCookie($params['id']);
 
                 // Отправка данных на клиент в формате JSON
                 $data = ['csrf_token' => $this->generateCsrfToken(), 'countCart' => $cart_qty];
@@ -35,8 +38,8 @@ class CartController extends Controller
             }
             // Удаление или добавление товара из БД (корзинки) если клиент авторизован
             $price = $this->add('price');
-            $cart->modifyCart($auth['id'], $params['id'], $price);
-            $cart_qty = $cart->getCountCartProducts($auth['id']);
+            $this->cartService->modifyCart($auth['id'], $params['id'], $price);
+            $cart_qty = $this->cartService->getCountCartProducts($auth['id']);
 
             // Отправка данных на клиент в формате JSON
             setcookie('cart_qty', $cart_qty, $cart_qty == 0 ? time() - 86400 * 30 : time() + 86400 * 30, '/');            
@@ -49,8 +52,6 @@ class CartController extends Controller
     {
         $auth = $this->authService->verifyAuth();
 
-        $cart = new Cart();
-
         // Вывод товаров в корзину из куки если пользователь не авторизован
         $products = '';
         if (isset($_COOKIE['cart'])) {
@@ -62,7 +63,7 @@ class CartController extends Controller
         }
 
         // Вывод данные о товарах если авторизован
-        $productsCart = $auth ? $cart->joinProductCart($auth['id']) : null;
+        $productsCart = $auth ? $this->cartService->joinProductCart($auth['id']) : null;
 
         return $this->render('products/cart.twig', [
             'products' => $auth ? $productsCart : $products,
@@ -115,10 +116,9 @@ class CartController extends Controller
         }
 
         // Удаление выбранных товаров из БД (корзинки) если клиент авторизован
-        $cart = new Cart();
         if ($deleteCart) {
-            $cart->deleteSelected($deleteCart, $auth['id']);
-            $cart_qty = $cart->getCountCartProducts($auth['id']);
+            $this->cartService->deleteSelected($deleteCart, $auth['id']);
+            $cart_qty = $this->cartService->getCountCartProducts($auth['id']);
             setcookie('cart_qty', $cart_qty, $cart_qty == 0 ? time() - 86400 * 30 : time() + 86400 * 30, '/');
 
             $data = ['csrf_token' => $this->generateCsrfToken(), 'countCart' => $cart_qty];

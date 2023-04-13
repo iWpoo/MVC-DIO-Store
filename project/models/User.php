@@ -2,7 +2,6 @@
 
 namespace App\Project\Models;
 use App\Core\Model;
-use App\Project\Services\RedisService;
 
 class User extends Model
 {

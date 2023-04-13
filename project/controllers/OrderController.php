@@ -1,25 +1,30 @@
 <?php
 
 namespace App\Project\Controllers;
+
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\Order;
-use App\Project\Models\Product;
 use App\Project\Models\Cart;
 use App\Project\Services\AuthService;
+use App\Project\Services\ProductService;
+use App\Project\Services\OrderService;
 	
 class OrderController extends Controller
 {
     protected $authService;
+    protected $orderService;
+    protected $productService;
 
     public function __construct()
     {
         $this->authService = new AuthService();
+        $this->orderService = new OrderService();
+        $this->productService = new ProductService();
     }
 
     public function order()
     {
-        $order = new Order();
         $auth = $this->authService->verifyAuth();
 
         if (!$auth) {
@@ -27,7 +32,7 @@ class OrderController extends Controller
         }
 
         return $this->render('products/order.twig', [
-            'products' => $order->joinProductCart($auth['id']),
+            'products' => $this->orderService->joinProductCart($auth['id']),
             'csrf_token' => $this->generateCsrfToken(),
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
@@ -92,7 +97,7 @@ class OrderController extends Controller
                 $order_id = Order::getLink()->lastInsertId();
     
                 foreach ($productsCart as $product) {
-                    $order->setOrdersProducts([
+                    $this->orderService->setOrdersProducts([
                         ':order_id' => $order_id,
                         ':product_id' => $product['product_id'],
                         ':quantity' => $product['count'],
@@ -122,7 +127,7 @@ class OrderController extends Controller
         }
 
         return $this->render('products/orderOne.twig', [
-            'product' => (new Product)->getProduct($params['id']),
+            'product' => $this->productService->getProduct($params['id']),
             'csrf_token' => $this->generateCsrfToken(),
             'auth' => $auth,
             'cart_qty' => $_COOKIE['cart_qty'] ?? null
@@ -136,9 +141,7 @@ class OrderController extends Controller
         if (!$auth) {
             $this->redirect('/login');
         }
-
-        $productModel = new Product();
-        
+                
         $order = new Order();
         $db = Order::getLink();
 
@@ -160,7 +163,7 @@ class OrderController extends Controller
         if (Request::validate($validator)) {
             $db->beginTransaction();
             try {
-                $product = $productModel->getProduct($params['id']);
+                $product = $this->productService->getProduct($params['id']);
                 $order->create([
                     'user_id' => $auth['id'],
                     'order_num' => $orderNumber,
@@ -172,7 +175,7 @@ class OrderController extends Controller
                 ]);
     
                 $order_id = $db->lastInsertId();
-                $order->setOrdersProducts([
+                $this->orderService->setOrdersProducts([
                     ':order_id' => $order_id,
                     ':product_id' => $params['id'],
                     ':quantity' => 1,
@@ -206,9 +209,9 @@ class OrderController extends Controller
         // Запрос на отмену заказа и перемещение заказа в историю покупок
         if (isset($_POST['cancel_order']) and Request::validate($validator)) {
             try {
-                $order->moveToOrderHistory($params['id'], 'Отменен');
+                $this->orderService->moveToOrderHistory($params['id'], 'Отменен');
                 $lastInsertOrderId = $db->lastInsertId();        ;
-                $order->moveToOrdersProductsHistory($params['id'], $lastInsertOrderId, 'canceled');
+                $this->orderService->moveToOrdersProductsHistory($params['id'], $lastInsertOrderId, 'canceled');
                 $order->delete($params['id']);
                 $db->commit();
 
@@ -221,9 +224,9 @@ class OrderController extends Controller
         // Запрос на подтверждение заказа и перемещение заказа в историю покупок
         if (isset($_POST['confirm_order']) and Request::validate($validator)) {
             try {
-                $order->moveToOrderHistory($params['id'], 'Доставлен');
+                $this->orderService->moveToOrderHistory($params['id'], 'Доставлен');
                 $lastInsertOrderId = $db->lastInsertId();        ;
-                $order->moveToOrdersProductsHistory($params['id'], $lastInsertOrderId, 'delivered');
+                $this->orderService->moveToOrdersProductsHistory($params['id'], $lastInsertOrderId, 'delivered');
                 $order->delete($params['id']);
                 $db->commit();
 

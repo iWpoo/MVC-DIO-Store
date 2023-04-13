@@ -35,7 +35,7 @@ class Controller
 		}
 	}
 
-        // Upload files
+    // Upload files
 	protected function uploadFile($file, $filename, $path)
 	{
 		$allPath = '/project/webroot/' . $path . '/';
@@ -68,7 +68,6 @@ class Controller
 		return $this;
 	}
 	
-
 	// CSRF token
 	protected function generateCsrfToken()
 	{
@@ -80,4 +79,18 @@ class Controller
 		}
 		return $token;
 	}
+
+	// Cut part of url string
+    public function cutUrlString($string)
+    {
+        if (isset($_SERVER['QUERY_STRING'])) {
+            $query = $_SERVER['QUERY_STRING'];
+            if (strpos($query, $string) !== false) {
+              $query = preg_replace("/$string.*/", '', $query);
+              $url = strtok($_SERVER['REQUEST_URI'], '?') . '?' . $query;
+              return $url;
+            }
+            return '?' . $_SERVER['QUERY_STRING'];
+        }  
+    }
 }

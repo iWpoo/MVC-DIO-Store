@@ -10,10 +10,10 @@ class ProductService
 {
     protected static $link;
 
-	public function __construct()
-	{
-		self::$link = Database::getInstance()->getPdo();
-	}
+    public function __construct()
+    {
+	self::$link = Database::getInstance()->getPdo();
+    }
     
     // Получение бестселлеров с учетом кэширования
     public function getBestsellers()

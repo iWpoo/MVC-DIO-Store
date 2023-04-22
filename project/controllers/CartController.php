@@ -43,7 +43,7 @@ class CartController extends Controller
 
             // Отправка данных на клиент в формате JSON
             setcookie('cart_qty', $cart_qty, $cart_qty == 0 ? time() - 86400 * 30 : time() + 86400 * 30, '/');            
-	        $data = ['csrf_token' => $this->generateCsrfToken(), 'countCart' => $cart_qty];
+	    $data = ['csrf_token' => $this->generateCsrfToken(), 'countCart' => $cart_qty];
             return json_encode($data);
         }
     }

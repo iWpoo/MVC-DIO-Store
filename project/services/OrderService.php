@@ -9,10 +9,10 @@ class OrderService
 {
     protected static $link;
 
-	public function __construct()
-	{
-		self::$link = Database::getInstance()->getPdo();
-	}
+    public function __construct()
+    {
+        self::$link = Database::getInstance()->getPdo();
+    }
     
     // Объединение данных Product and Cart
     public function joinProductCart($user_id)

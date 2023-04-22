@@ -3,7 +3,7 @@
 use App\Core\Route;
 	
 $routes = [
-    // Auth
+        // Auth
 	new Route('/register', 'user', 'register'),
 	new Route('/register/verification', 'user', 'registerVerification'),
 	new Route('/login', 'user', 'login'),

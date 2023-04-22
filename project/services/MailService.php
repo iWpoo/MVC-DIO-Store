@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class MailService
 {
-    // PHPMailer
+        // PHPMailer
 	public function mail($username, $password, array $data)
 	{
 		// Создаем новый объект PHPMailer
@@ -33,7 +33,7 @@ class MailService
 		$mail->Body = $data['body'];
 
 		// Добавляем HTML-шаблон в сообщение
-        $mail->msgHTML($data['html']);
+                $mail->msgHTML($data['html']);
 
 		// Отправляем письмо
 		$mail->send();
@@ -42,6 +42,6 @@ class MailService
 	public function mailException()
 	{
 		$mail = new PHPMailer(true);
-        return 'Письмо не отправлено. Ошибка: ' . $mail->ErrorInfo;
+                return 'Письмо не отправлено. Ошибка: ' . $mail->ErrorInfo;
 	}
 }

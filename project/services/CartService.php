@@ -9,10 +9,10 @@ class CartService
 {
     protected static $link;
 
-	public function __construct()
-	{
-		self::$link = Database::getInstance()->getPdo();
-	}
+    public function __construct()
+    {
+	self::$link = Database::getInstance()->getPdo();
+    }
 
     // Добавление или удаление товара из корзинки
     public function modifyCart($user_id, $product_id, $price)

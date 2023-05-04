@@ -6,23 +6,9 @@ use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\Order;
 use App\Project\Models\Cart;
-use App\Project\Services\AuthService;
-use App\Project\Services\ProductService;
-use App\Project\Services\OrderService;
-	
-class OrderController extends Controller
+
+class OrderController extends BaseController
 {
-    protected $authService;
-    protected $orderService;
-    protected $productService;
-
-    public function __construct()
-    {
-        $this->authService = new AuthService();
-        $this->orderService = new OrderService();
-        $this->productService = new ProductService();
-    }
-
     public function order()
     {
         $auth = $this->authService->verifyAuth();

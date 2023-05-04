@@ -2,10 +2,18 @@
 
 namespace App\Project\Services;
 
+use App\Core\Database;
 use App\Project\Models\Favorite;
 
 class FavoriteService
 {
+    protected static $link;
+
+    public function __construct()
+    {
+       self::$link = Database::getInstance()->getPdo();
+    }
+
     // Добавление или удаление товара из избранных
     public function modifyFavorite($user_id, $product_id)
     {

@@ -5,20 +5,9 @@ namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\Product;
-use App\Project\Services\AuthService;
-use App\Project\Services\FavoriteService;
 	
-class FavoriteController extends Controller
+class FavoriteController extends BaseController
 {
-    protected $authService;
-    protected $favoriteService;
-
-    public function __construct()
-    {
-        $this->authService = new AuthService();
-        $this->favoriteService = new FavoriteService();
-    }
-
     public function favorite($params)
     {
         $auth = $this->authService->verifyAuth();

@@ -11,7 +11,7 @@ class OrderService
 
     public function __construct()
     {
-        self::$link = Database::getInstance()->getPdo();
+       self::$link = Database::getInstance()->getPdo();
     }
     
     // Объединение данных Product and Cart

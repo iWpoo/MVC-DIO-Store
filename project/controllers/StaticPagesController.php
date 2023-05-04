@@ -3,17 +3,9 @@
 namespace App\Project\Controllers;
 
 use App\Core\Controller;
-use App\Project\Services\AuthService;
 	
-class StaticPagesController extends Controller
+class StaticPagesController extends BaseController
 {
-    protected $authService;
-
-    public function __construct()
-    {
-        $this->authService = new AuthService();
-    }
-    
     public function aboutUs()
     {
         return $this->render('about-us.twig', ['auth' => $this->authService->verifyAuth(), 'cart_qty' => $_COOKIE['cart_qty'] ?? null]);

@@ -11,7 +11,7 @@ class CartService
 
     public function __construct()
     {
-	self::$link = Database::getInstance()->getPdo();
+	   self::$link = Database::getInstance()->getPdo();
     }
 
     // Добавление или удаление товара из корзинки

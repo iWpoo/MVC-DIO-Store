@@ -2,11 +2,19 @@
 
 namespace App\Project\Services;
 
+use App\Core\Database;
 use App\Project\Services\RedisService;
 use App\Project\Services\CartService;
 
 class AuthService
 {
+    protected static $link;
+
+    public function __construct()
+    {
+       self::$link = Database::getInstance()->getPdo();
+    }
+
     public function auth(array $user)
     {
         // Генерируем токен сессии

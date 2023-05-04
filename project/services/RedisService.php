@@ -1,10 +1,19 @@
 <?php 
 
 namespace App\Project\Services;
+
+use App\Core\Database;
 use Predis\Client;
 
 class RedisService
 {
+    protected static $link;
+
+    public function __construct()
+    {
+       self::$link = Database::getInstance()->getPdo();
+    }
+
     public function redis()
     {
         $redis = new Client([

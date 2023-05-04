@@ -5,24 +5,10 @@ namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\User;
-use App\Project\Services\AuthService;
-use App\Project\Services\RedisService;
-use App\Project\Services\MailService;
-	
-class UserController extends Controller
+    
+class UserController extends BaseController
 {
-    protected $authService;
-    protected $redisService;
-    protected $mailService;
-
-    public function __construct()
-    {
-        $this->authService = new AuthService();
-        $this->redisService = new RedisService();
-        $this->mailService = new MailService();
-    }
-
-	public function register() 
+    public function register() 
     {
         if ($this->authService->verifyAuth()) {
             $this->redirect('/');

@@ -6,20 +6,9 @@ use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\Product;
 use App\Project\Models\Cart;
-use App\Project\Services\AuthService;
-use App\Project\Services\CartService;
 	
-class CartController extends Controller
+class CartController extends BaseController
 {
-    protected $authService;
-    protected $cartService;
-
-    public function __construct()
-    {
-        $this->authService = new AuthService();
-        $this->cartService = new CartService();
-    }
-
     public function cart($params)
     {
         $auth = $this->authService->verifyAuth();
@@ -43,7 +32,7 @@ class CartController extends Controller
 
             // Отправка данных на клиент в формате JSON
             setcookie('cart_qty', $cart_qty, $cart_qty == 0 ? time() - 86400 * 30 : time() + 86400 * 30, '/');            
-	    $data = ['csrf_token' => $this->generateCsrfToken(), 'countCart' => $cart_qty];
+	        $data = ['csrf_token' => $this->generateCsrfToken(), 'countCart' => $cart_qty];
             return json_encode($data);
         }
     }

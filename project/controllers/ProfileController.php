@@ -5,23 +5,9 @@ namespace App\Project\Controllers;
 use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\User;
-use App\Project\Services\AuthService;
-use App\Project\Services\RedisService;
-use App\Project\Services\OrderService;
 	
-class ProfileController extends Controller
+class ProfileController extends BaseController
 {
-    protected $authService;
-    protected $redisService;
-    protected $orderService;
-
-    public function __construct()
-    {
-        $this->authService = new AuthService();
-        $this->redisService = new RedisService();
-        $this->orderService = new OrderService();
-    }
-
     public function profile()
     {
         $auth = $this->authService->verifyAuth();

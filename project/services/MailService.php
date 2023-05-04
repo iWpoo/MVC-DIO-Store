@@ -2,11 +2,19 @@
 
 namespace App\Project\Services;
 
+use App\Core\Database;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 class MailService
 {
+        protected static $link;
+
+        public function __construct()
+        {
+                self::$link = Database::getInstance()->getPdo();
+        }
+
         // PHPMailer
 	public function mail($username, $password, array $data)
 	{

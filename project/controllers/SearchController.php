@@ -4,20 +4,9 @@ namespace App\Project\Controllers;
 
 use App\Core\Controller;
 use App\Project\Requests\Request;
-use App\Project\Services\AuthService;
-use App\Project\Services\ProductService;
 	
-class SearchController extends Controller
+class SearchController extends BaseController
 {
-    protected $authService;
-    protected $productService;
-
-    public function __construct()
-    {
-        $this->authService = new AuthService();
-        $this->productService = new ProductService();
-    }
-
     public function search()
     {
         if (isset($_GET['q'])) {

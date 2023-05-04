@@ -12,7 +12,7 @@ class ProductService
 
     public function __construct()
     {
-	self::$link = Database::getInstance()->getPdo();
+       self::$link = Database::getInstance()->getPdo();
     }
     
     // Получение бестселлеров с учетом кэширования

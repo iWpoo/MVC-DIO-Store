@@ -6,23 +6,9 @@ use App\Core\Controller;
 use App\Project\Requests\Request;
 use App\Project\Models\Favorite;
 use App\Project\Models\Cart;
-use App\Project\Services\AuthService;
-use App\Project\Services\CartService;
-use App\Project\Services\ProductService;
 	
-class ProductController extends Controller
+class ProductController extends BaseController
 {
-    protected $authService;
-    protected $cartService;
-    protected $productService;
-
-    public function __construct()
-    {
-        $this->authService = new AuthService();
-        $this->cartService = new CartService();
-        $this->productService = new ProductService();
-    }
-
     public function showProducts()
     {
         $auth = $this->authService->verifyAuth();

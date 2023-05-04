@@ -3,7 +3,6 @@
 namespace App\Project\Controllers;
 
 use App\Core\Controller;
-use App\Project\Services\Interfaces\ServiceInterface;
 use App\Project\Services\AuthService;
 use App\Project\Services\CartService;
 use App\Project\Services\FavoriteService;
